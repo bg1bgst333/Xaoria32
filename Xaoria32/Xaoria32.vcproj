@@ -219,6 +219,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Title.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\TitleScene.cpp"
 				>
 			</File>
@@ -289,6 +293,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Title.h"
+				>
+			</File>
+			<File
 				RelativePath=".\TitleScene.h"
 				>
 			</File>
@@ -304,6 +312,10 @@
 			>
 			<File
 				RelativePath=".\background1.bmp"
+				>
+			</File>
+			<File
+				RelativePath=".\titile1.bmp"
 				>
 			</File>
 			<File
