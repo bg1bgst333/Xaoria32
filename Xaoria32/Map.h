@@ -23,6 +23,8 @@ class CMap : public CSharedObject{
 		int m_iCursorY;	// 描画開始位置y.
 		int m_iPixelX;	// 描画開始位置(ピクセル単位)x.
 		int m_iPixelY;	// 描画開始位置(ピクセル単位)y.
+		int m_iScreenRX;	// スクリーン座標RX.(右を+としたx座標.)
+		int m_iScreenUY;	// スクリーン座標UY.(上を+としたy座標.)
 		MapData** m_ppMapDataMatrix;	// MapData2次元配列m_ppMapDataMatrix.
 		BOOL m_bDown;	// 下が押されているフラグm_bDown.
 		BOOL m_bUp;	// 上が押されているフラグm_bUp.
@@ -33,6 +35,8 @@ class CMap : public CSharedObject{
 		BOOL m_bLoopY;	// 縦方向ループかどうかフラグm_bLoopY.
 		DWORD m_dwScrollTimerInterval;	// スクロールタイマー間隔m_dwScrollTimerInterval.
 		DWORD m_dwScrollTimerStart;	// スクロールタイマー開始時刻m_dwScrollTimerStart.
+		HFONT m_hFont;	// フォントm_hFont.
+		HFONT m_hOldFont;	// 以前のフォントm_hOldFont.
 
 		// publicメンバ関数
 		// コンストラクタ・デストラクタ
@@ -43,6 +47,8 @@ class CMap : public CSharedObject{
 		virtual BOOL Create(int iChipWidth, int iChipHeight, int iChipCountX, int iChipCountY);	// マップの作成Create.
 		virtual void Destroy();	// マップの破棄Destroy.
 		virtual void Draw();	// マップの描画Draw.
+		virtual void DrawText(int x, int y, int iWidth, int iHeight, LPCTSTR lpctszText, COLORREF clrColor);	// DrawTextでテキストを描画.
+		virtual void DrawScreenRXUY(int x, int y, int iWidth, int iHeight, COLORREF clrColor);	// DrawScreenRXUYでスクリーン座標を描画.
 		virtual BOOL ExportFile(LPCTSTR lpctszFileName);	// マップデータをファイルとしてエクスポートExportFile.
 		virtual BOOL ImportFile(LPCTSTR lpctszFileName);	// マップデータをファイルとしてインポートImportFile.
 		virtual BOOL ImportResource(int nID);	// マップデータをリソースとしてインポートImportResource.

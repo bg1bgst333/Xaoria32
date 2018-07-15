@@ -26,6 +26,8 @@ CMap::CMap() : CSharedObject(){
 	m_iPixelY = 0;	// m_iPixelYに0をセット.
 	m_dwScrollTimerInterval = 0;	// m_dwScrollTimerIntervalを0で初期化.
 	m_dwScrollTimerStart = 0;	// m_dwScrollTimerStartを0で初期化.
+	m_iScreenRX = 0;	// m_iScreenRXを0にセット.
+	m_iScreenUY = 0;	// m_iScreenUYを0にセット.
 
 }
 
@@ -51,6 +53,8 @@ CMap::CMap(CScene *pScene) : CSharedObject(pScene){
 	m_iPixelY = 0;	// m_iPixelYに0をセット.
 	m_dwScrollTimerInterval = 0;	// m_dwScrollTimerIntervalを0で初期化.
 	m_dwScrollTimerStart = 0;	// m_dwScrollTimerStartに0をセット.
+	m_iScreenRX = 0;	// m_iScreenRXを0にセット.
+	m_iScreenUY = 0;	// m_iScreenUYを0にセット.
 
 }
 
@@ -131,6 +135,18 @@ BOOL CMap::Create(int iChipWidth, int iChipHeight, int iChipCountX, int iChipCou
 // マップの破棄Destroy.
 void CMap::Destroy(){
 	
+	// フォントを戻す.
+	if (m_hOldFont != NULL){	// m_hOldFontがNULLでなければ.
+		SelectObject(m_pScene->m_hMemDC, m_hOldFont);	// SelectObjectでm_hOldFontに戻す.
+		m_hOldFont = NULL;	// m_hOldFontにNULLをセット.
+	}
+
+	// フォントの削除.
+	if (m_hFont != NULL){	// m_hFontがNULLでなければ.
+		DeleteObject(m_hFont);	// DeleteObjectでm_hFontを削除.
+		m_hFont = NULL;	// m_hFontにNULLをセット.
+	}
+
 	// マップ配列の破棄.
 	for (int i = 0; i < m_iChipCountY + 2; i++){	// (縦方向の要素数 + 2)分繰り返す.
 		delete [] m_ppMapDataMatrix[i];	// m_ppMapDataMatrix[i]を解放.
@@ -199,6 +215,28 @@ void CMap::Draw(){
 			}
 		}
 	}
+
+}
+
+// DrawTextでテキストを描画.
+void CMap::DrawText(int x, int y, int iWidth, int iHeight, LPCTSTR lpctszText, COLORREF clrColor){
+
+	// テキストを描画.
+	RECT rc = {x, y, x + iWidth, y + iHeight};	// rcを引数を使って初期化.
+	SetTextColor(m_pScene->m_hMemDC, clrColor);	// SetTextColorで色はclrColorを指定.
+	SetBkMode(m_pScene->m_hMemDC, TRANSPARENT);	// SetBkModeで背景は透過.
+	SelectObject(m_pScene->m_hMemDC, m_hFont);	// SelectObjectでm_hFontを選択.
+	::DrawText(m_pScene->m_hMemDC, lpctszText, _tcslen(lpctszText), &rc, DT_CENTER | DT_VCENTER | DT_SINGLELINE);	// WindowsAPIのDrawTextでタイトル文字列の描画.
+	
+}
+
+// DrawScreenRXUYでスクリーン座標を描画.
+void CMap::DrawScreenRXUY(int x, int y, int iWidth, int iHeight, COLORREF clrColor){
+
+	// RXUYを取得.
+	TCHAR tszRXUY[256] = {0};	// TCHAR配列tszRXUYを{0}で初期化.
+	_stprintf(tszRXUY, _T("(%lu,%lu)"), m_iScreenRX, m_iScreenUY);	// _stprintfでm_iScreenRX, m_iScreenUYからtszRXUYに変換.
+	DrawText(x, y, iWidth, iHeight, tszRXUY, clrColor);	// DrawTextでRXUYを描画.
 
 }
 
@@ -295,6 +333,15 @@ BOOL CMap::ImportFile(LPCTSTR lpctszFileName){
 	delete pBinaryFile;	// pBinaryFileの終了処理.
 #endif
 
+	// フォントの作成.
+	m_hFont = CreateFont(36, 0, 0, 0, FW_REGULAR, FALSE, FALSE, FALSE, SHIFTJIS_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, _T("ＭＳ ゴシック"));	// CreateFontでフォントを作成し, m_hFontに格納.
+	if (m_hFont == NULL){	// m_hFontがNULLなら.
+		return FALSE;	// FALSEを返す.
+	}
+
+	// フォントの選択.
+	m_hOldFont = (HFONT)SelectObject(m_pScene->m_hMemDC, m_hFont);	// SelectObjectでm_hFontを選択.
+
 	// 成功ならTRUE.
 	return TRUE;	// TRUEを返す.
 
@@ -323,6 +370,7 @@ BOOL CMap::ImportResource(int nID){
 			CopyMemory(&m_ppMapDataMatrix[y][x], (MapData *)pBinaryResource->Get(sizeof(MapData)), sizeof(MapData));	// CopyMemoryでバイナリデータをコピー.
 		}
 	}
+	m_iScreenUY = m_iChipHeight * 15;	// 32 * 15 = 480.
 	// バイナリリソースオブジェクトの破棄.
 	delete pBinaryResource;	// pBinaryResourceの終了処理.
 #else
@@ -416,10 +464,12 @@ int CMap::Proc(){
 			//m_iCursorY--;
 			if (m_bLoopY){
 				m_iPixelY = m_iPixelY + 1;	// yを1増やす.
+				m_iScreenUY++;	// 上に行くほど増える.
 			}
 			else{
 				if (!(m_iCursorY == 0 && m_iPixelY >= 0)){
 					m_iPixelY = m_iPixelY + 1;	// yを1増やす.
+					m_iScreenUY++;	// 上に行くほど増える.
 				}
 			}
 		}

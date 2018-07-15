@@ -258,6 +258,11 @@ int CGameScene::DrawGameObjects(){
 		m_pGameTimeBox->DrawFrameIntervalMilliTime(0, 60, 160, 30, RGB(0x98, 0xfb, 0x98));	// m_pGameTimeBox->DrawFrameIntervalMilliTimeでフレーム間隔を描画.
 	}
 
+	// マップ情報の描画.
+	if (m_pMap != NULL){	// m_pMapがNULLでなければ.
+		m_pMap->DrawScreenRXUY(0, 90, 160, 30, RGB(0x98, 0xfb, 0x98));	// m_pMap->DrawScreenRXUYでスクリーン座標を描画.
+	}
+
 	// 基底クラスの処理.
 	return CScene::DrawGameObjects();	// CScene::DrawGameObjectsを呼ぶ.
 
