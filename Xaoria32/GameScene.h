@@ -7,6 +7,7 @@
 #include "Scene.h"	// CScene
 #include "Map.h"	// CMap
 //#include "Character.h"	// CCharacter
+#include "Enemy.h"	// CEnemy
 #include "Player.h"	// CPlayer
 #include "GameTimeBox.h"	// CGameTimeBox
 
@@ -30,6 +31,7 @@ class CGameScene : public CScene{
 #endif
 		CMap *m_pMap;	// CMapオブジェクトポインタm_pMap.
 		//CCharacter *m_pCharacter;	// CCharacterオブジェクトポインタm_pCharacter.
+		CEnemy *m_pEnemy;	// エネミーm_pEnemy.
 		CPlayer *m_pPlayer;	// プレイヤーm_pPlayer.
 		CGameTimeBox *m_pGameTimeBox;	// ゲームタイムボックスm_pGameTimeBox.
 		

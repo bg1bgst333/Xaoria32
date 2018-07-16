@@ -14,6 +14,7 @@ CGameScene::CGameScene() : CScene(){
 #endif
 	m_pMap = NULL;	// m_pMapにNULLをセット.
 	//m_pCharacter = NULL;	// m_pCharacterにNULLをセット.
+	m_pEnemy = NULL;	// m_pEnemyにNULLをセット.
 	m_pPlayer = NULL;	// m_pPlayerにNULLをセット.
 	m_pGameTimeBox = NULL;	// m_pGameTimeBoxをNULLで初期化.
 
@@ -30,6 +31,7 @@ CGameScene::CGameScene(const CWindow *pWnd) : CScene(pWnd){
 #endif
 	m_pMap = NULL;	// m_pMapにNULLをセット.
 	//m_pCharacter = NULL;	// m_pCharacterにNULLをセット.
+	m_pEnemy = NULL;	// m_pEnemyにNULLをセット.
 	m_pPlayer = NULL;	// m_pPlayerにNULLをセット.
 	m_pGameTimeBox = NULL;	// m_pGameTimeBoxをNULLで初期化.
 
@@ -46,6 +48,7 @@ CGameScene::CGameScene(const CWindow *pWnd, CGameTime *pTime) : CScene(pWnd, pTi
 #endif
 	m_pMap = NULL;	// m_pMapにNULLをセット.
 	//m_pCharacter = NULL;	// m_pCharacterにNULLをセット.
+	m_pEnemy = NULL;	// m_pEnemyにNULLをセット.
 	m_pPlayer = NULL;	// m_pPlayerにNULLをセット.
 	m_pGameTimeBox = NULL;	// m_pGameTimeBoxをNULLで初期化.
 
@@ -62,6 +65,7 @@ CGameScene::CGameScene(const CWindow *pWnd, CGameTime *pTime, CGameSystem *pSyst
 #endif
 	m_pMap = NULL;	// m_pMapにNULLをセット.
 	//m_pCharacter = NULL;	// m_pCharacterにNULLをセット.
+	m_pEnemy = NULL;	// m_pEnemyにNULLをセット.
 	m_pPlayer = NULL;	// m_pPlayerにNULLをセット.
 	m_pGameTimeBox = NULL;	// m_pGameTimeBoxをNULLで初期化.
 
@@ -94,6 +98,7 @@ int CGameScene::InitGameObjects(){
 #endif
 	m_pMap = new CMap(this);	// CMapのオブジェクト生成.
 
+	// マップの描画.
 #if 0
 	m_pMap->Create(32, 32, 21, 17);	// Createで生成.
 #else
@@ -105,7 +110,15 @@ int CGameScene::InitGameObjects(){
 	m_pMap->SetScrollTimer(16);	// 16ミリ秒後にスクロール.(これ以上はFPS値60では速くならない.)
 #endif
 
-	// キャラクターの描画.
+	// エネミーの描画.
+	m_pEnemy = new CEnemy(this);	// CEnemyオブジェクトを生成.
+	m_pEnemy->Add(0, 0, 64, 64, IDB_SHARED3);	// Addで追加.
+	m_pEnemy->Add(64, 0, 64, 64, IDB_SHARED3);	// Add	で追加.
+	m_pEnemy->AddMask(320 + 0, 0, 64, 64, IDB_SHARED3);	// AddMaskで追加.
+	m_pEnemy->AddMask(320 + 64, 0, 64, 64, IDB_SHARED3);	// AddMaskで追加.
+	m_pEnemy->Set(640 / 2 - 64 / 2, 0);	// Setで中央上で初期位置をセット.
+
+	// プレイヤーの描画.
 #if 1
 	m_pPlayer = new CPlayer(this);	// CPlayerオブジェクトを生成.
 	m_pPlayer->Add(0, 0, 32, 32, IDB_SHARED2);	// Addで追加.
@@ -202,6 +215,11 @@ int CGameScene::RunProc(){
 		m_pMap->Proc();	// m_pMap->Procで処理.
 	}
 
+	// エネミー処理.
+	if (m_pEnemy != NULL){	// m_pEnemyがNULLでなければ.
+		m_pEnemy->Proc();	// m_pEnemy->Procで処理.
+	}
+
 	// プレイヤー処理.
 	if (m_pPlayer != NULL){	// m_pPlayerがNULLでなければ.
 		m_pPlayer->Proc();	// m_pPlayer->Procで処理.
@@ -230,6 +248,11 @@ int CGameScene::DrawGameObjects(){
 	// マップの描画.
 	if (m_pMap != NULL){	// m_pMapがNULLでなければ.
 		m_pMap->Draw();	// m_pMap->Drawでマップを描画.
+	}
+
+	// エネミーの描画.
+	if (m_pEnemy != NULL){	// m_pEnemyがNULLでなければ.
+		m_pEnemy->Draw();	// m_pEnemy->Drawでエネミーを描画.
 	}
 
 	// キャラの描画.
@@ -291,6 +314,8 @@ int CGameScene::ExitGameObjects(){
 	m_pCharacter->Destroy();	// Destroyで破棄.
 	delete m_pCharacter;	// m_pCharacterを削除.
 #endif
+	m_pEnemy->Destroy();	// Destroyで破棄.
+	delete m_pEnemy;	// m_pEnemyを削除.
 	m_pMap->Destroy();	// Destroyで破棄.
 	delete m_pMap;	// m_pMapを削除.
 	m_pMap = NULL;	// m_pMapにNULLをセット.
