@@ -14,7 +14,8 @@ CGameScene::CGameScene() : CScene(){
 #endif
 	m_pMap = NULL;	// m_pMapにNULLをセット.
 	//m_pCharacter = NULL;	// m_pCharacterにNULLをセット.
-	m_pEnemy = NULL;	// m_pEnemyにNULLをセット.
+	//m_pEnemy = NULL;	// m_pEnemyにNULLをセット.
+	m_pEnemyMap = NULL;	// m_pEnemyMapにNULLをセット.
 	m_pPlayer = NULL;	// m_pPlayerにNULLをセット.
 	m_pGameTimeBox = NULL;	// m_pGameTimeBoxをNULLで初期化.
 
@@ -31,7 +32,8 @@ CGameScene::CGameScene(const CWindow *pWnd) : CScene(pWnd){
 #endif
 	m_pMap = NULL;	// m_pMapにNULLをセット.
 	//m_pCharacter = NULL;	// m_pCharacterにNULLをセット.
-	m_pEnemy = NULL;	// m_pEnemyにNULLをセット.
+	//m_pEnemy = NULL;	// m_pEnemyにNULLをセット.
+	m_pEnemyMap = NULL;	// m_pEnemyMapにNULLをセット.
 	m_pPlayer = NULL;	// m_pPlayerにNULLをセット.
 	m_pGameTimeBox = NULL;	// m_pGameTimeBoxをNULLで初期化.
 
@@ -48,7 +50,8 @@ CGameScene::CGameScene(const CWindow *pWnd, CGameTime *pTime) : CScene(pWnd, pTi
 #endif
 	m_pMap = NULL;	// m_pMapにNULLをセット.
 	//m_pCharacter = NULL;	// m_pCharacterにNULLをセット.
-	m_pEnemy = NULL;	// m_pEnemyにNULLをセット.
+	//m_pEnemy = NULL;	// m_pEnemyにNULLをセット.
+	m_pEnemyMap = NULL;	// m_pEnemyMapにNULLをセット.
 	m_pPlayer = NULL;	// m_pPlayerにNULLをセット.
 	m_pGameTimeBox = NULL;	// m_pGameTimeBoxをNULLで初期化.
 
@@ -65,7 +68,8 @@ CGameScene::CGameScene(const CWindow *pWnd, CGameTime *pTime, CGameSystem *pSyst
 #endif
 	m_pMap = NULL;	// m_pMapにNULLをセット.
 	//m_pCharacter = NULL;	// m_pCharacterにNULLをセット.
-	m_pEnemy = NULL;	// m_pEnemyにNULLをセット.
+	//m_pEnemy = NULL;	// m_pEnemyにNULLをセット.
+	m_pEnemyMap = NULL;	// m_pEnemyMapにNULLをセット.
 	m_pPlayer = NULL;	// m_pPlayerにNULLをセット.
 	m_pGameTimeBox = NULL;	// m_pGameTimeBoxをNULLで初期化.
 
@@ -111,12 +115,67 @@ int CGameScene::InitGameObjects(){
 #endif
 
 	// エネミーの描画.
-	m_pEnemy = new CEnemy(this);	// CEnemyオブジェクトを生成.
-	m_pEnemy->Add(0, 0, 64, 64, IDB_SHARED3);	// Addで追加.
-	m_pEnemy->Add(64, 0, 64, 64, IDB_SHARED3);	// Add	で追加.
-	m_pEnemy->AddMask(320 + 0, 0, 64, 64, IDB_SHARED3);	// AddMaskで追加.
-	m_pEnemy->AddMask(320 + 64, 0, 64, 64, IDB_SHARED3);	// AddMaskで追加.
-	m_pEnemy->Set(640 / 2 - 64 / 2, 0);	// Setで中央上で初期位置をセット.
+	//m_pEnemy = new CEnemy(this);	// CEnemyオブジェクトを生成.
+	//m_pEnemy->Add(0, 0, 64, 64, IDB_SHARED3);	// Addで追加.
+	//m_pEnemy->Add(64, 0, 64, 64, IDB_SHARED3);	// Add	で追加.
+	//m_pEnemy->AddMask(320 + 0, 0, 64, 64, IDB_SHARED3);	// AddMaskで追加.
+	//m_pEnemy->AddMask(320 + 64, 0, 64, 64, IDB_SHARED3);	// AddMaskで追加.
+	//m_pEnemy->Set(640 / 2 - 64 / 2, 0);	// Setで中央上で初期位置をセット.
+
+	// エネミーマップの描画.
+	m_pEnemyMap = new CEnemyMap(this);	// CEnemyMapオブジェクトを生成.
+	// 1
+	EnemyMapData *pEMD = new EnemyMapData();	// pEMDの生成.
+	pEMD->m_x = 0;
+	//pEMD->m_y = 64;	// 一番下に最初から配置の場合64でいける!
+	pEMD->m_y = 600;	// 同時表示は現段階では無理.
+	pEMD->m_nEnemyNo = 0;
+	pEMD->m_nState = 0;
+	if (pEMD->m_nEnemyNo == 0){	// エネミー0.
+		// エネミーの描画.
+		m_pEnemy = new CEnemy(this);	// CEnemyオブジェクトを生成.
+		m_pEnemy->Add(0, 0, 64, 64, IDB_SHARED3);	// Addで追加.
+		m_pEnemy->Add(64, 0, 64, 64, IDB_SHARED3);	// Add	で追加.
+		m_pEnemy->AddMask(320 + 0, 0, 64, 64, IDB_SHARED3);	// AddMaskで追加.
+		m_pEnemy->AddMask(320 + 64, 0, 64, 64, IDB_SHARED3);	// AddMaskで追加.
+		m_pEnemy->m_iHeight = 64;	// 暫定的に高さを入れておく.(実際はEnemiesリストに入れる.)
+	}
+	m_pEnemyMap->m_vecEnemyMapDataList.push_back(pEMD);	// 追加.
+	// 2
+	EnemyMapData *pEMD2 = new EnemyMapData();	// pEMD2の生成.
+	pEMD2->m_x = 200;
+	//pEMD2->m_y = 64;	// 一番下に最初から配置の場合64でいける!
+	pEMD2->m_y = 1200;	// 同時表示は現段階では無理.
+	pEMD2->m_nEnemyNo = 0;
+	pEMD2->m_nState = 0;
+	if (pEMD2->m_nEnemyNo == 0){	// エネミー0.
+		// エネミーの描画.
+		m_pEnemy = new CEnemy(this);	// CEnemyオブジェクトを生成.
+		m_pEnemy->Add(0, 0, 64, 64, IDB_SHARED3);	// Addで追加.
+		m_pEnemy->Add(64, 0, 64, 64, IDB_SHARED3);	// Add	で追加.
+		m_pEnemy->AddMask(320 + 0, 0, 64, 64, IDB_SHARED3);	// AddMaskで追加.
+		m_pEnemy->AddMask(320 + 64, 0, 64, 64, IDB_SHARED3);	// AddMaskで追加.
+		m_pEnemy->m_iHeight = 64;	// 暫定的に高さを入れておく.(実際はEnemiesリストに入れる.)
+	}
+	m_pEnemyMap->m_vecEnemyMapDataList.push_back(pEMD2);	// 追加.
+	// 3
+	EnemyMapData *pEMD3 = new EnemyMapData();	// pEMD3の生成.
+	pEMD3->m_x = 400;
+	//pEMD3->m_y = 64;	// 一番下に最初から配置の場合64でいける!
+	pEMD3->m_y = 1800;	// 同時表示は現段階では無理.
+	pEMD3->m_nEnemyNo = 0;
+	pEMD3->m_nState = 0;
+	if (pEMD3->m_nEnemyNo == 0){	// エネミー0.
+		// エネミーの描画.
+		m_pEnemy = new CEnemy(this);	// CEnemyオブジェクトを生成.
+		m_pEnemy->Add(0, 0, 64, 64, IDB_SHARED3);	// Addで追加.
+		m_pEnemy->Add(64, 0, 64, 64, IDB_SHARED3);	// Add	で追加.
+		m_pEnemy->AddMask(320 + 0, 0, 64, 64, IDB_SHARED3);	// AddMaskで追加.
+		m_pEnemy->AddMask(320 + 64, 0, 64, 64, IDB_SHARED3);	// AddMaskで追加.
+		m_pEnemy->m_iHeight = 64;	// 暫定的に高さを入れておく.(実際はEnemiesリストに入れる.)
+	}
+	m_pEnemyMap->m_vecEnemyMapDataList.push_back(pEMD3);	// 追加.
+
 
 	// プレイヤーの描画.
 #if 1
@@ -216,8 +275,13 @@ int CGameScene::RunProc(){
 	}
 
 	// エネミー処理.
-	if (m_pEnemy != NULL){	// m_pEnemyがNULLでなければ.
-		m_pEnemy->Proc();	// m_pEnemy->Procで処理.
+	//if (m_pEnemy != NULL){	// m_pEnemyがNULLでなければ.
+	//	m_pEnemy->Proc();	// m_pEnemy->Procで処理.
+	//}
+
+	// エネミーマップ処理.
+	if (m_pEnemyMap != NULL){
+		m_pEnemyMap->Proc();
 	}
 
 	// プレイヤー処理.
@@ -251,8 +315,13 @@ int CGameScene::DrawGameObjects(){
 	}
 
 	// エネミーの描画.
-	if (m_pEnemy != NULL){	// m_pEnemyがNULLでなければ.
-		m_pEnemy->Draw();	// m_pEnemy->Drawでエネミーを描画.
+	//if (m_pEnemy != NULL){	// m_pEnemyがNULLでなければ.
+	//	m_pEnemy->Draw();	// m_pEnemy->Drawでエネミーを描画.
+	//}
+
+	// エネミーマップ描画.
+	if (m_pEnemyMap != NULL){
+		m_pEnemyMap->Draw();
 	}
 
 	// キャラの描画.
@@ -314,8 +383,10 @@ int CGameScene::ExitGameObjects(){
 	m_pCharacter->Destroy();	// Destroyで破棄.
 	delete m_pCharacter;	// m_pCharacterを削除.
 #endif
-	m_pEnemy->Destroy();	// Destroyで破棄.
-	delete m_pEnemy;	// m_pEnemyを削除.
+	//m_pEnemy->Destroy();	// Destroyで破棄.
+	//delete m_pEnemy;	// m_pEnemyを削除.
+	m_pEnemyMap->RemoveAll();	// クリア.
+	delete m_pEnemyMap;	// 削除.
 	m_pMap->Destroy();	// Destroyで破棄.
 	delete m_pMap;	// m_pMapを削除.
 	m_pMap = NULL;	// m_pMapにNULLをセット.

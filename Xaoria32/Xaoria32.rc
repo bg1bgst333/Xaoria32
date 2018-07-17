@@ -50,8 +50,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,0,0,55
- PRODUCTVERSION 0,0,0,55
+ FILEVERSION 0,0,0,56
+ PRODUCTVERSION 0,0,0,56
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x29L
@@ -66,10 +66,10 @@ BEGIN
     BEGIN
         BLOCK "041104b0"
         BEGIN
-            VALUE "Comments", "Yorii #55"
+            VALUE "Comments", "Yorii #56"
             VALUE "CompanyName", "B.G-STATION"
-            VALUE "FileDescription", "Yorii #55"
-            VALUE "FileVersion", "0, 0, 0, 55"
+            VALUE "FileDescription", "Yorii #56"
+            VALUE "FileVersion", "0, 0, 0, 56"
             VALUE "InternalName", "Xaoria32"
             VALUE "LegalCopyright", "Copyright (C) 2005-2017 B.G-STATION, All rights reserved."
             VALUE "LegalTrademarks", "B.G-STATION"

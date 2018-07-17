@@ -201,6 +201,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\EnemyMap.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\File.cpp"
 				>
 			</File>
@@ -328,6 +332,14 @@
 			</File>
 			<File
 				RelativePath=".\Enemy.h"
+				>
+			</File>
+			<File
+				RelativePath=".\EnemyMap.h"
+				>
+			</File>
+			<File
+				RelativePath=".\EnemyMapData.h"
 				>
 			</File>
 			<File
