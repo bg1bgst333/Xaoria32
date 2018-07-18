@@ -46,8 +46,8 @@ int CEnemyMap::Proc(){
 							m_vecEnemyMapDataList[i]->m_nState = 2;		
 						}
 						if (m_vecEnemyMapDataList[i]->m_nState == 1){
-							((CGameScene *)m_pScene)->m_pEnemy->Set(0);
-							((CGameScene *)m_pScene)->m_pEnemy->Set(m_vecEnemyMapDataList[i]->m_x, ((CGameScene *)m_pScene)->m_pMap->m_iScreenUY - m_vecEnemyMapDataList[i]->m_y);
+							//((CGameScene *)m_pScene)->m_pEnemy->Set(0);
+							//((CGameScene *)m_pScene)->m_pEnemy->Set(m_vecEnemyMapDataList[i]->m_x, ((CGameScene *)m_pScene)->m_pMap->m_iScreenUY - m_vecEnemyMapDataList[i]->m_y);
 						}
 					}
 				}
@@ -69,6 +69,8 @@ void CEnemyMap::Draw(){
 			if (((CGameScene *)m_pScene) != NULL){	// NULL‚Å‚È‚¢.
 				if (((CGameScene *)m_pScene)->m_pEnemy != NULL){	// NULL‚Å‚È‚¢.
 					if (m_vecEnemyMapDataList[i]->m_nState == 1){
+						((CGameScene *)m_pScene)->m_pEnemy->Set(0);
+						((CGameScene *)m_pScene)->m_pEnemy->Set(m_vecEnemyMapDataList[i]->m_x, ((CGameScene *)m_pScene)->m_pMap->m_iScreenUY - m_vecEnemyMapDataList[i]->m_y);
 						((CGameScene *)m_pScene)->m_pEnemy->Draw();
 					}
 				}

@@ -115,12 +115,13 @@ int CGameScene::InitGameObjects(){
 #endif
 
 	// エネミーの描画.
-	//m_pEnemy = new CEnemy(this);	// CEnemyオブジェクトを生成.
-	//m_pEnemy->Add(0, 0, 64, 64, IDB_SHARED3);	// Addで追加.
-	//m_pEnemy->Add(64, 0, 64, 64, IDB_SHARED3);	// Add	で追加.
-	//m_pEnemy->AddMask(320 + 0, 0, 64, 64, IDB_SHARED3);	// AddMaskで追加.
-	//m_pEnemy->AddMask(320 + 64, 0, 64, 64, IDB_SHARED3);	// AddMaskで追加.
+	m_pEnemy = new CEnemy(this);	// CEnemyオブジェクトを生成.
+	m_pEnemy->Add(0, 0, 64, 64, IDB_SHARED3);	// Addで追加.
+	m_pEnemy->Add(64, 0, 64, 64, IDB_SHARED3);	// Add	で追加.
+	m_pEnemy->AddMask(320 + 0, 0, 64, 64, IDB_SHARED3);	// AddMaskで追加.
+	m_pEnemy->AddMask(320 + 64, 0, 64, 64, IDB_SHARED3);	// AddMaskで追加.
 	//m_pEnemy->Set(640 / 2 - 64 / 2, 0);	// Setで中央上で初期位置をセット.
+	m_pEnemy->m_iHeight = 64;	// 暫定的に高さを入れておく.(実際はEnemiesリストに入れる.)
 
 	// エネミーマップの描画.
 	m_pEnemyMap = new CEnemyMap(this);	// CEnemyMapオブジェクトを生成.
@@ -128,52 +129,25 @@ int CGameScene::InitGameObjects(){
 	EnemyMapData *pEMD = new EnemyMapData();	// pEMDの生成.
 	pEMD->m_x = 0;
 	//pEMD->m_y = 64;	// 一番下に最初から配置の場合64でいける!
-	pEMD->m_y = 600;	// 同時表示は現段階では無理.
+	pEMD->m_y = 100;	// 同時表示は現段階では無理.
 	pEMD->m_nEnemyNo = 0;
 	pEMD->m_nState = 0;
-	if (pEMD->m_nEnemyNo == 0){	// エネミー0.
-		// エネミーの描画.
-		m_pEnemy = new CEnemy(this);	// CEnemyオブジェクトを生成.
-		m_pEnemy->Add(0, 0, 64, 64, IDB_SHARED3);	// Addで追加.
-		m_pEnemy->Add(64, 0, 64, 64, IDB_SHARED3);	// Add	で追加.
-		m_pEnemy->AddMask(320 + 0, 0, 64, 64, IDB_SHARED3);	// AddMaskで追加.
-		m_pEnemy->AddMask(320 + 64, 0, 64, 64, IDB_SHARED3);	// AddMaskで追加.
-		m_pEnemy->m_iHeight = 64;	// 暫定的に高さを入れておく.(実際はEnemiesリストに入れる.)
-	}
 	m_pEnemyMap->m_vecEnemyMapDataList.push_back(pEMD);	// 追加.
 	// 2
 	EnemyMapData *pEMD2 = new EnemyMapData();	// pEMD2の生成.
 	pEMD2->m_x = 200;
 	//pEMD2->m_y = 64;	// 一番下に最初から配置の場合64でいける!
-	pEMD2->m_y = 1200;	// 同時表示は現段階では無理.
+	pEMD2->m_y = 200;	// 同時表示は現段階では無理.
 	pEMD2->m_nEnemyNo = 0;
 	pEMD2->m_nState = 0;
-	if (pEMD2->m_nEnemyNo == 0){	// エネミー0.
-		// エネミーの描画.
-		m_pEnemy = new CEnemy(this);	// CEnemyオブジェクトを生成.
-		m_pEnemy->Add(0, 0, 64, 64, IDB_SHARED3);	// Addで追加.
-		m_pEnemy->Add(64, 0, 64, 64, IDB_SHARED3);	// Add	で追加.
-		m_pEnemy->AddMask(320 + 0, 0, 64, 64, IDB_SHARED3);	// AddMaskで追加.
-		m_pEnemy->AddMask(320 + 64, 0, 64, 64, IDB_SHARED3);	// AddMaskで追加.
-		m_pEnemy->m_iHeight = 64;	// 暫定的に高さを入れておく.(実際はEnemiesリストに入れる.)
-	}
 	m_pEnemyMap->m_vecEnemyMapDataList.push_back(pEMD2);	// 追加.
 	// 3
 	EnemyMapData *pEMD3 = new EnemyMapData();	// pEMD3の生成.
 	pEMD3->m_x = 400;
 	//pEMD3->m_y = 64;	// 一番下に最初から配置の場合64でいける!
-	pEMD3->m_y = 1800;	// 同時表示は現段階では無理.
+	pEMD3->m_y = 300;	// 同時表示は現段階では無理.
 	pEMD3->m_nEnemyNo = 0;
 	pEMD3->m_nState = 0;
-	if (pEMD3->m_nEnemyNo == 0){	// エネミー0.
-		// エネミーの描画.
-		m_pEnemy = new CEnemy(this);	// CEnemyオブジェクトを生成.
-		m_pEnemy->Add(0, 0, 64, 64, IDB_SHARED3);	// Addで追加.
-		m_pEnemy->Add(64, 0, 64, 64, IDB_SHARED3);	// Add	で追加.
-		m_pEnemy->AddMask(320 + 0, 0, 64, 64, IDB_SHARED3);	// AddMaskで追加.
-		m_pEnemy->AddMask(320 + 64, 0, 64, 64, IDB_SHARED3);	// AddMaskで追加.
-		m_pEnemy->m_iHeight = 64;	// 暫定的に高さを入れておく.(実際はEnemiesリストに入れる.)
-	}
 	m_pEnemyMap->m_vecEnemyMapDataList.push_back(pEMD3);	// 追加.
 
 
