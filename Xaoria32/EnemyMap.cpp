@@ -10,6 +10,7 @@ CEnemyMap::CEnemyMap() : CSharedObject(){
 
 	// メンバの初期化.
 	m_vecEnemyMapDataList.clear();	// クリア.
+	m_pEnemies = NULL;	// NULLをセット.
 
 }
 
@@ -18,6 +19,7 @@ CEnemyMap::CEnemyMap(CScene *pScene) : CSharedObject(pScene){
 
 	// メンバの初期化.
 	m_vecEnemyMapDataList.clear();	// クリア.
+	m_pEnemies = NULL;	// NULLをセット.
 
 }
 
@@ -25,30 +27,39 @@ CEnemyMap::CEnemyMap(CScene *pScene) : CSharedObject(pScene){
 CEnemyMap::~CEnemyMap(){
 
 	// メンバの終了処理.
-	m_vecEnemyMapDataList.clear();	// クリア.
+	Destroy();	// Destroyで終了処理.
 
+}
+
+// 作成するCreate.
+int CEnemyMap::Create(){
+
+	// エネミー図の作成.
+	m_pEnemies = new CEnemies(m_pScene);	// m_pEnemiesの作成.
+	return 0;	// 0を返す.
 }
 
 // 処理をするProc.
 int CEnemyMap::Proc(){
 
 	// 有効なら描画状態にする.
-	for (int i = 0; i < m_vecEnemyMapDataList.size(); i++){
-		if (m_vecEnemyMapDataList[i] != NULL){	// NULLでなければ.
-			if (((CGameScene *)m_pScene) != NULL){	// NULLでない.
-				if (((CGameScene *)m_pScene)->m_pMap != NULL){	// NULLでない.
-					if (((CGameScene *)m_pScene)->m_pEnemy != NULL){	// NULLでない.
-						int pos = m_vecEnemyMapDataList[i]->m_y - ((CGameScene *)m_pScene)->m_pEnemy->m_iHeight;
-						if (((CGameScene *)m_pScene)->m_pMap->m_iScreenUY >= pos && ((CGameScene *)m_pScene)->m_pMap->m_iScreenUY < pos + 480 + ((CGameScene *)m_pScene)->m_pEnemy->m_iHeight){
-							m_vecEnemyMapDataList[i]->m_nState = 1;							
-						}
-						else{
-							m_vecEnemyMapDataList[i]->m_nState = 2;		
-						}
-						if (m_vecEnemyMapDataList[i]->m_nState == 1){
-							//((CGameScene *)m_pScene)->m_pEnemy->Set(0);
-							//((CGameScene *)m_pScene)->m_pEnemy->Set(m_vecEnemyMapDataList[i]->m_x, ((CGameScene *)m_pScene)->m_pMap->m_iScreenUY - m_vecEnemyMapDataList[i]->m_y);
-						}
+	if (m_pEnemies != NULL){	// NULLでない.
+		CGameScene *pGameScene = (CGameScene *)m_pScene;	// pGameSceneにキャスト.
+		CMap *pMap = pGameScene->m_pMap;	// pMapに保持.
+		int iScreenUY = pMap->m_iScreenUY;	// スクリーン座標y.
+		if (pGameScene != NULL && pMap != NULL){	// どちらもNULLでない.
+			for (int i = 0; i < m_vecEnemyMapDataList.size(); i++){
+				int iDrawPos = m_vecEnemyMapDataList[i]->m_y;	// 配置場所.
+				int nEnemyNo = m_vecEnemyMapDataList[i]->m_nEnemyNo;	// エネミー番号.
+				if (nEnemyNo < m_pEnemies->m_vecEnemiesList.size()){	// 番号がサイズ未満.
+					int iHeight = m_pEnemies->m_vecEnemiesList[nEnemyNo]->m_iHeight;	// 高さ.
+					int iDrawPosStart = iDrawPos - iHeight;	// 配置場所から高さを引く.
+					int iDrawPosEnd = iDrawPosStart + iHeight + 480;	// 描画開始にエネミー高さとスクリーン高さを足す.
+					if (iDrawPosStart <= iScreenUY && iDrawPosEnd > iScreenUY){	// 描画位置.
+						m_vecEnemyMapDataList[i]->m_nState = 1;	// 表示状態.
+					}
+					else if (iDrawPosEnd <= iScreenUY){	// 超えたら.
+						m_vecEnemyMapDataList[i]->m_nState = 2;	// 通過非表示状態.
 					}
 				}
 			}
@@ -64,14 +75,21 @@ int CEnemyMap::Proc(){
 void CEnemyMap::Draw(){
 
 	// 有効なら描画状態にする.
-	for (int i = 0; i < m_vecEnemyMapDataList.size(); i++){
-		if (m_vecEnemyMapDataList[i] != NULL){	// NULLでなければ.
-			if (((CGameScene *)m_pScene) != NULL){	// NULLでない.
-				if (((CGameScene *)m_pScene)->m_pEnemy != NULL){	// NULLでない.
-					if (m_vecEnemyMapDataList[i]->m_nState == 1){
-						((CGameScene *)m_pScene)->m_pEnemy->Set(0);
-						((CGameScene *)m_pScene)->m_pEnemy->Set(m_vecEnemyMapDataList[i]->m_x, ((CGameScene *)m_pScene)->m_pMap->m_iScreenUY - m_vecEnemyMapDataList[i]->m_y);
-						((CGameScene *)m_pScene)->m_pEnemy->Draw();
+	if (m_pEnemies != NULL){	// NULLでない.
+		CGameScene *pGameScene = (CGameScene *)m_pScene;	// pGameSceneにキャスト.
+		CMap *pMap = pGameScene->m_pMap;	// pMapに保持.
+		int iScreenUY = pMap->m_iScreenUY;	// スクリーン座標y.
+		for (int i = 0; i < m_vecEnemyMapDataList.size(); i++){
+			if (m_vecEnemyMapDataList[i] != NULL){	// NULLでなければ.
+				int nEnemyNo = m_vecEnemyMapDataList[i]->m_nEnemyNo;
+				if (nEnemyNo < m_pEnemies->m_vecEnemiesList.size()){	// 番号がサイズ未満.
+					CEnemy *pEnemy = m_pEnemies->m_vecEnemiesList[nEnemyNo];	// pEnemyを取り出し.
+					if (m_vecEnemyMapDataList[i]->m_nState == 1){	// 1の時は表示.
+						pEnemy->Set(0);	// アニメーション0.
+						int x = m_vecEnemyMapDataList[i]->m_x;	// x
+						int y = iScreenUY - m_vecEnemyMapDataList[i]->m_y;	// スクリーン位置yからエネミーyを引く.
+						pEnemy->Set(x, y);	// セット.
+						pEnemy->Draw();	// 描画.
 					}
 				}
 			}
@@ -91,5 +109,18 @@ void CEnemyMap::RemoveAll(){
 		}
 	}
 	m_vecEnemyMapDataList.clear();	// クリア.
+
+}
+
+// キャラクターの破棄Destroy.
+void CEnemyMap::Destroy(){
+
+	// 全て削除.
+	RemoveAll();	// RemoveAllで全て削除.
+	if (m_pEnemies != NULL){	// NULLでない.
+		m_pEnemies->Destroy();	// 破棄.
+		delete m_pEnemies;	// 削除.
+		m_pEnemies = NULL;	// NULLをセット.
+	}
 
 }

@@ -5,6 +5,7 @@
 // ヘッダのインクルード
 // 独自のヘッダ
 #include "EnemyMapData.h"	// 構造体EnemyMapData
+#include "Enemies.h"	// CEnemies
 #include "SharedObject.h"	// CSharedObject
 #include "BinaryFile.h"	// CBinaryFile
 
@@ -16,7 +17,8 @@ class CEnemyMap : public CSharedObject{
 
 		// publicメンバ変数
 		std::vector<EnemyMapData *> m_vecEnemyMapDataList;	// エネミーマップデータリスト.
-	
+		CEnemies *m_pEnemies;	// エネミーズオブジェクトポインタm_pEnemies.
+
 		// publicメンバ関数
 		// コンストラクタ・デストラクタ
 		CEnemyMap();	// コンストラクタCEnemyMap
@@ -24,9 +26,11 @@ class CEnemyMap : public CSharedObject{
 		virtual ~CEnemyMap();	// デストラクタ~CEnemyMap
 
 		// メンバ関数
+		int Create();	// 作成するCreate.
 		virtual int Proc();	// 処理をするProc.
 		virtual void Draw();	// 描画をするDraw.
 		void RemoveAll();	// 全て削除.
+		void Destroy();	// 破棄Destroy.
 
 };
 
