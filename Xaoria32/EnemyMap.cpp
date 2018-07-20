@@ -39,6 +39,47 @@ int CEnemyMap::Create(){
 	return 0;	// 0を返す.
 }
 
+// エネミー追加.
+int CEnemyMap::AddEnemy(int x, int y, int iWidth, int iHeight){
+
+	// エネミー作成.
+	CEnemy *pEnemy = new CEnemy(m_pScene);	// pEnemy作成.
+	pEnemy->Set(x, y);	// xとyをセット.
+	pEnemy->m_iWidth = iWidth;	// iWidthをセット.
+	pEnemy->m_iHeight = iHeight;	// iHeightをセット.
+	int iNo = m_pEnemies->m_vecEnemiesList.size();	// iNo == 挿入前のサイズ.
+	m_pEnemies->m_vecEnemiesList.push_back(pEnemy);	// pEnemyを追加.
+	return iNo;	// iNoを返す.
+
+}
+
+// 指定のエネミーにアニメーションイメージを追加. 
+void CEnemyMap::AddEnemyAnimation(int iEnemyNo, RECT *lprcImgSrc, int nImgSrcID, RECT *lprcMaskSrc, int nMaskSrcID){
+
+	// iEnemyNo番目があるかチェック.
+	if (iEnemyNo < m_pEnemies->m_vecEnemiesList.size()){	// インデックスを超えないかチェック.
+		CEnemy *pEnemy = m_pEnemies->m_vecEnemiesList[iEnemyNo];	// iEnemyNo番目を取り出す.
+		pEnemy->Add(lprcImgSrc->left, lprcImgSrc->top, lprcImgSrc->right - lprcImgSrc->left, lprcImgSrc->bottom - lprcImgSrc->top, nImgSrcID);	// アニメーションイメージ追加.
+		pEnemy->AddMask(lprcMaskSrc->left, lprcMaskSrc->top, lprcMaskSrc->right - lprcMaskSrc->left, lprcMaskSrc->bottom - lprcMaskSrc->top, nMaskSrcID);	// アニメーションマスク追加.
+	}
+
+}
+
+// エネミー配置.
+void CEnemyMap::DeployEnemy(int x, int y, int iEnemyNo, int iState){
+
+	// エネミーマップデータの生成.
+	EnemyMapData *pEMD = new EnemyMapData();	// pEMDの生成.
+	// 値の設定.
+	pEMD->m_x = x;	// x
+	pEMD->m_y = y;	// y
+	pEMD->m_nEnemyNo = iEnemyNo;	// エネミー番号.
+	pEMD->m_nState = iState;	// 状態.
+	// 追加.
+	m_vecEnemyMapDataList.push_back(pEMD);	// 追加.
+
+}
+
 // 処理をするProc.
 int CEnemyMap::Proc(){
 
