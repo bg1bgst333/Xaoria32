@@ -73,7 +73,8 @@ BOOL CEnemyMap::ExportFileEnemies(LPCTSTR lpctszFileName){
 		if (m_pEnemies->m_vecEnemiesList.size() > 0){	// 0より大きいなら.
 			// バイナリファイルの作成.
 			CBinaryFile *pBinaryFile = new CBinaryFile();	// CBinaryFileオブジェクトpBinaryFileの生成.
-			pBinaryFile->Set(NULL, 0);	// ループ対応するために, あえて0バイト書き込む.
+			int n = m_pEnemies->m_vecEnemiesList.size();	// 最初にエネミー数を取得.
+			pBinaryFile->Set((BYTE *)&n, sizeof(int));	// エネミー数を書き込む.
 			pBinaryFile->Write(lpctszFileName);	// lpctszFileNameに書き込み.
 			for (int i = 0; i < m_pEnemies->m_vecEnemiesList.size(); i++){	// エネミーズのサイズ繰り返す.
 				CEnemy *pEnemy = m_pEnemies->m_vecEnemiesList[i];	// pEnemy取得.
@@ -118,6 +119,62 @@ BOOL CEnemyMap::ExportFileEnemies(LPCTSTR lpctszFileName){
 		}
 	}
 	return FALSE;	// FALSE.
+
+}
+
+// エネミーズデータをファイルからインポートImportFileEnemies.
+BOOL CEnemyMap::ImportFileEnemies(LPCTSTR lpctszFileName){
+
+	// エネミーズがなければ.
+	if (m_pEnemies == NULL){
+		m_pEnemies = new CEnemies(m_pScene);	// m_pEnemiesの生成.
+	}
+
+	// バイナリファイルの読み込み.
+	CBinaryFile *pBinaryFile = new CBinaryFile();	// CBinaryFileオブジェクトpBinaryFileの生成.
+	pBinaryFile->Read(lpctszFileName, 0, sizeof(int));	// pBinaryFile->Readで読み込み.
+	int n = *(int *)pBinaryFile->m_pBytes;	// n.
+	for (int i = 0; i < n; i++){	// n繰り返す. 
+		CEnemy *pEnemy = new CEnemy(m_pScene);	// pEnemyを生成.
+		pBinaryFile->Read(sizeof(int));	// pBinaryFile->Readで読み込み.
+		pEnemy->m_x = *(int *)pBinaryFile->m_pBytes;	// x.
+		pBinaryFile->Read(sizeof(int));	// pBinaryFile->Readで読み込み.
+		pEnemy->m_y = *(int *)pBinaryFile->m_pBytes;	// y.
+		pBinaryFile->Read(sizeof(int));	// pBinaryFile->Readで読み込み.
+		pEnemy->m_iWidth = *(int *)pBinaryFile->m_pBytes;	// iWidth.
+		pBinaryFile->Read(sizeof(int));	// pBinaryFile->Readで読み込み.
+		pEnemy->m_iHeight = *(int *)pBinaryFile->m_pBytes;	// iHeight.
+		int iSize = 0;	// アニメーションリストサイズ.
+		pBinaryFile->Read(sizeof(int));	// pBinaryFile->Readで読み込み.
+		iSize = *(int *)pBinaryFile->m_pBytes;	// iSize.
+		for (int j = 0; j < iSize; j++){	// iSize分繰り返す.
+			pBinaryFile->Read(sizeof(int));	// pBinaryFile->Readで読み込み.
+			int iSOSX = *(int *)pBinaryFile->m_pBytes;	// sx
+			pBinaryFile->Read(sizeof(int));	// pBinaryFile->Readで読み込み.
+			int iSOSY = *(int *)pBinaryFile->m_pBytes;	// sy.
+			pBinaryFile->Read(sizeof(int));	// pBinaryFile->Readで読み込み.
+			int iSOWidth = *(int *)pBinaryFile->m_pBytes;	// iWidth.
+			pBinaryFile->Read(sizeof(int));	// pBinaryFile->Readで読み込み.
+			int iSOHeight = *(int *)pBinaryFile->m_pBytes;	// iHeight.
+			pBinaryFile->Read(sizeof(int));	// pBinaryFile->Readで読み込み.
+			int iSOnID = *(int *)pBinaryFile->m_pBytes;	// nID.
+			pEnemy->Add(iSOSX, iSOSY, iSOWidth, iSOHeight, iSOnID);	// イメージ追加.
+			pBinaryFile->Read(sizeof(int));	// pBinaryFile->Readで読み込み.
+			int iMaskSX = *(int *)pBinaryFile->m_pBytes;	// sx
+			pBinaryFile->Read(sizeof(int));	// pBinaryFile->Readで読み込み.
+			int iMaskSY = *(int *)pBinaryFile->m_pBytes;	// sy.
+			pBinaryFile->Read(sizeof(int));	// pBinaryFile->Readで読み込み.
+			int iMaskWidth = *(int *)pBinaryFile->m_pBytes;	// iWidth.
+			pBinaryFile->Read(sizeof(int));	// pBinaryFile->Readで読み込み.
+			int iMaskHeight = *(int *)pBinaryFile->m_pBytes;	// iHeight.
+			pBinaryFile->Read(sizeof(int));	// pBinaryFile->Readで読み込み.
+			int iMasknID = *(int *)pBinaryFile->m_pBytes;	// nID.
+			pEnemy->AddMask(iMaskSX, iMaskSY, iMaskWidth, iMaskHeight, iMasknID);	// マスク追加.
+		}
+		m_pEnemies->m_vecEnemiesList.push_back(pEnemy);	
+	}
+	delete pBinaryFile;	// ファイルを削除.(内部で閉じる.)
+	return TRUE;	// TRUE.
 
 }
 

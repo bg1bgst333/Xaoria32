@@ -128,15 +128,18 @@ int CGameScene::InitGameObjects(){
 	m_pEnemyMap->Create();	// 作成.
 #if 1
 	// エネミーズの追加.
+#if 0
+	// エネミーズエクスポート.
 	// エネミー追加.
 	int iEnemyNo = m_pEnemyMap->AddEnemy(640 / 2 - 64 / 2, 0, 64, 64);	// エネミー追加.
 	// アニメーション追加.
 	RECT rcImg = {0, 0, 64, 64};	// 左上.
 	RECT rcMask = {320, 0, 320 + 64, 0 + 64};	// 真ん中から左上.
 	m_pEnemyMap->AddEnemyAnimation(iEnemyNo, &rcImg, IDB_SHARED3, &rcMask, IDB_SHARED3);
-#if 1	
-	// エネミーズエクスポート.
 	m_pEnemyMap->ExportFileEnemies(_T("testenemies1.bin"));	// "testenemies1.bin"としてエクスポート.
+#else
+	// エネミーズインポート.
+	m_pEnemyMap->ImportFileEnemies(_T("testenemies1.bin"));	// "testenemies1.bin"からインポート.
 #endif
 	// エネミー配置.
 	m_pEnemyMap->DeployEnemy(0, 100, 0, 0);	// (0, 100)にエネミー0を状態0で配置.

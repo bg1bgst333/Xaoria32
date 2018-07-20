@@ -306,13 +306,13 @@ BOOL CMap::ImportFile(LPCTSTR lpctszFileName){
 	// バイナリファイルから読み込み.
 	CBinaryFile *pBinaryFile = new CBinaryFile();
 	pBinaryFile->Read(lpctszFileName, 0, sizeof(int));	// pBinaryFile->Readで読み込み.
-	m_iChipWidth = (int)*pBinaryFile->m_pBytes;	// チップ幅を取得.
+	m_iChipWidth = *(int *)pBinaryFile->m_pBytes;	// チップ幅を取得.
 	pBinaryFile->Read(sizeof(int));	// pBinaryFile->Readで読み込み.
-	m_iChipHeight = (int)*pBinaryFile->m_pBytes;	// チップ高さを取得.
+	m_iChipHeight = *(int *)pBinaryFile->m_pBytes;	// チップ高さを取得.
 	pBinaryFile->Read(sizeof(int));	// pBinaryFile->Readで読み込み.
-	m_iChipCountX = (int)*pBinaryFile->m_pBytes;	// チップ横要素数を取得.
+	m_iChipCountX = *(int *)pBinaryFile->m_pBytes;	// チップ横要素数を取得.
 	pBinaryFile->Read(sizeof(int));	// pBinaryFile->Readで読み込み.
-	m_iChipCountY = (int)*pBinaryFile->m_pBytes;	// チップ縦要素数を取得.
+	m_iChipCountY = *(int *)pBinaryFile->m_pBytes;	// チップ縦要素数を取得.
 
 	// マップ配列作成.
 	m_ppMapDataMatrix = new MapData * [m_iChipCountY + 2];	// (縦方向の要素数 + 2)分newする.
