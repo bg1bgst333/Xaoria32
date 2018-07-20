@@ -65,6 +65,62 @@ void CEnemyMap::AddEnemyAnimation(int iEnemyNo, RECT *lprcImgSrc, int nImgSrcID,
 
 }
 
+// エネミーズデータをファイルとしてエクスポートExportFileEnemies.
+BOOL CEnemyMap::ExportFileEnemies(LPCTSTR lpctszFileName){
+
+	// エネミーズがあれば.
+	if (m_pEnemies != NULL){	// NULLでない.
+		if (m_pEnemies->m_vecEnemiesList.size() > 0){	// 0より大きいなら.
+			// バイナリファイルの作成.
+			CBinaryFile *pBinaryFile = new CBinaryFile();	// CBinaryFileオブジェクトpBinaryFileの生成.
+			pBinaryFile->Set(NULL, 0);	// ループ対応するために, あえて0バイト書き込む.
+			pBinaryFile->Write(lpctszFileName);	// lpctszFileNameに書き込み.
+			for (int i = 0; i < m_pEnemies->m_vecEnemiesList.size(); i++){	// エネミーズのサイズ繰り返す.
+				CEnemy *pEnemy = m_pEnemies->m_vecEnemiesList[i];	// pEnemy取得.
+				pBinaryFile->Set((BYTE *)&pEnemy->m_x, sizeof(int));	// m_x.
+				pBinaryFile->Write();	// 書き込み.
+				pBinaryFile->Set((BYTE *)&pEnemy->m_y, sizeof(int));	// m_y.
+				pBinaryFile->Write();	// 書き込み.
+				pBinaryFile->Set((BYTE *)&pEnemy->m_iWidth, sizeof(int));	// m_iWidth.
+				pBinaryFile->Write();	// 書き込み.
+				pBinaryFile->Set((BYTE *)&pEnemy->m_iHeight, sizeof(int));	// m_iHeight.
+				pBinaryFile->Write();	// 書き込み.
+				int iSize = pEnemy->m_vecpSharedObjectList.size();	// iSizeの取得.
+				pBinaryFile->Set((BYTE *)&iSize, sizeof(int));	// iSizeのセット.
+				pBinaryFile->Write();	// 書き込み.
+				for (int j = 0; j < iSize; j++){	// iSize分繰り返す.
+					CSharedObject *pSO = pEnemy->m_vecpSharedObjectList[j];	// pSO取得.
+					pBinaryFile->Set((BYTE *)&pSO->m_sx, sizeof(int));	// m_sx.
+					pBinaryFile->Write();	// 書き込み.
+					pBinaryFile->Set((BYTE *)&pSO->m_sy, sizeof(int));	// m_sy.
+					pBinaryFile->Write();	// 書き込み.
+					pBinaryFile->Set((BYTE *)&pSO->m_iWidth, sizeof(int));	// m_iWidth.
+					pBinaryFile->Write();	// 書き込み.
+					pBinaryFile->Set((BYTE *)&pSO->m_iHeight, sizeof(int));	// m_iHeight.
+					pBinaryFile->Write();	// 書き込み.
+					pBinaryFile->Set((BYTE *)&pSO->m_nID, sizeof(int));	// m_nID.
+					pBinaryFile->Write();	// 書き込み.
+					CSharedObject *pMask = pEnemy->m_vecpMaskList[j];	// pMask取得.
+					pBinaryFile->Set((BYTE *)&pMask->m_sx, sizeof(int));	// m_sx.
+					pBinaryFile->Write();	// 書き込み.
+					pBinaryFile->Set((BYTE *)&pMask->m_sy, sizeof(int));	// m_sy.
+					pBinaryFile->Write();	// 書き込み.
+					pBinaryFile->Set((BYTE *)&pMask->m_iWidth, sizeof(int));	// m_iWidth.
+					pBinaryFile->Write();	// 書き込み.
+					pBinaryFile->Set((BYTE *)&pMask->m_iHeight, sizeof(int));	// m_iHeight.
+					pBinaryFile->Write();	// 書き込み.
+					pBinaryFile->Set((BYTE *)&pMask->m_nID, sizeof(int));	// m_nID.
+					pBinaryFile->Write();	// 書き込み.
+				}
+			}
+			delete pBinaryFile;	// pBinaryFileの終了処理.
+			return TRUE;	// TRUE.
+		}
+	}
+	return FALSE;	// FALSE.
+
+}
+
 // エネミー配置.
 void CEnemyMap::DeployEnemy(int x, int y, int iEnemyNo, int iState){
 

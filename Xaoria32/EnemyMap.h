@@ -29,6 +29,7 @@ class CEnemyMap : public CSharedObject{
 		int Create();	// 作成するCreate.
 		int AddEnemy(int x, int y, int iWidth, int iHeight);	// エネミー追加.
 		void AddEnemyAnimation(int iEnemyNo, RECT *lprcImgSrc, int nImgSrcID, RECT *lprcMaskSrc, int nMaskSrcID);	// 指定のエネミーにアニメーションイメージを追加.
+		BOOL ExportFileEnemies(LPCTSTR lpctszFileName);	// エネミーズデータをファイルとしてエクスポートExportFileEnemies.
 		void DeployEnemy(int x, int y, int iEnemyNo, int iState);	// エネミー配置.
 		virtual int Proc();	// 処理をするProc.
 		virtual void Draw();	// 描画をするDraw.
