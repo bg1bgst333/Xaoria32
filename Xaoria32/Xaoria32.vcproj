@@ -489,6 +489,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\testenemies1.bin"
+				>
+			</File>
+			<File
 				RelativePath=".\testmap1.bin"
 				>
 			</File>

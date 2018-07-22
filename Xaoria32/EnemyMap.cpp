@@ -178,6 +178,48 @@ BOOL CEnemyMap::ImportFileEnemies(LPCTSTR lpctszFileName){
 
 }
 
+// エネミーズデータをリソースとしてインポートImportResourceEnemies.
+BOOL CEnemyMap::ImportResourceEnemies(int nID){
+
+	// エネミーズがなければ.
+	if (m_pEnemies == NULL){
+		m_pEnemies = new CEnemies(m_pScene);	// m_pEnemiesの生成.
+	}
+
+	// バイナリリソースから読み込み.
+	CBinaryResource *pBinaryResource = new CBinaryResource();
+	pBinaryResource->Load(m_pScene->m_pMainWnd->m_hWnd, nID, _T("BIN"));	// pBinaryResource->Loadでロード.
+	int n = *(int *)pBinaryResource->Get(sizeof(int));	// リソースからn取得.
+	for (int i = 0; i < n; i++){	// n繰り返す.
+		CEnemy *pEnemy = new CEnemy(m_pScene);	// pEnemyを生成.
+		pEnemy->m_x = *(int *)pBinaryResource->Get(sizeof(int));	// リソースからm_x取得.
+		pEnemy->m_y = *(int *)pBinaryResource->Get(sizeof(int));	// リソースからm_y取得.
+		pEnemy->m_iWidth = *(int *)pBinaryResource->Get(sizeof(int));	// m_iWidth.
+		pEnemy->m_iHeight = *(int *)pBinaryResource->Get(sizeof(int));	// m_iHeight.
+		int iSize = 0;	// アニメーションリストサイズ.
+		iSize = *(int *)pBinaryResource->Get(sizeof(int));	// リソースからiSize取得.
+		for (int j = 0; j < iSize; j++){	// iSize分繰り返す.
+			int iSOSX = *(int *)pBinaryResource->Get(sizeof(int));	// iSOSXを取得.
+			int iSOSY = *(int *)pBinaryResource->Get(sizeof(int));	// iSOSYを取得.
+			int iSOWidth = *(int *)pBinaryResource->Get(sizeof(int));	// iSOWidthを取得.
+			int iSOHeight = *(int *)pBinaryResource->Get(sizeof(int));	// iSOHeightを取得.
+			int iSOnID = *(int *)pBinaryResource->Get(sizeof(int));	// iSOnIDを取得.
+			pEnemy->Add(iSOSX, iSOSY, iSOWidth, iSOHeight, iSOnID);	// イメージ追加.
+			int iMaskSX = *(int *)pBinaryResource->Get(sizeof(int));	// iMaskSXを取得.
+			int iMaskSY = *(int *)pBinaryResource->Get(sizeof(int));	// iMaskSYを取得.
+			int iMaskWidth = *(int *)pBinaryResource->Get(sizeof(int));	// iMaskWidthを取得.
+			int iMaskHeight = *(int *)pBinaryResource->Get(sizeof(int));	// iMaskHeightを取得.
+			int iMasknID = *(int *)pBinaryResource->Get(sizeof(int));	// iMasknIDを取得.
+			pEnemy->AddMask(iMaskSX, iMaskSY, iMaskWidth, iMaskHeight, iMasknID);	// マスク追加.
+		}
+		m_pEnemies->m_vecEnemiesList.push_back(pEnemy);		// pEnemyの追加.
+	}
+	// バイナリリソースオブジェクトの破棄.
+	delete pBinaryResource;	// pBinaryResourceの終了処理.
+	return TRUE;	// TRUEを返す.
+
+}
+
 // エネミー配置.
 void CEnemyMap::DeployEnemy(int x, int y, int iEnemyNo, int iState){
 

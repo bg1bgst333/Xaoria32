@@ -125,7 +125,7 @@ int CGameScene::InitGameObjects(){
 
 	// エネミーマップの描画.
 	m_pEnemyMap = new CEnemyMap(this);	// CEnemyMapオブジェクトを生成.
-	m_pEnemyMap->Create();	// 作成.
+	//m_pEnemyMap->Create();	// 作成.
 #if 1
 	// エネミーズの追加.
 #if 0
@@ -139,7 +139,8 @@ int CGameScene::InitGameObjects(){
 	m_pEnemyMap->ExportFileEnemies(_T("testenemies1.bin"));	// "testenemies1.bin"としてエクスポート.
 #else
 	// エネミーズインポート.
-	m_pEnemyMap->ImportFileEnemies(_T("testenemies1.bin"));	// "testenemies1.bin"からインポート.
+	//m_pEnemyMap->ImportFileEnemies(_T("testenemies1.bin"));	// "testenemies1.bin"からインポート.
+	m_pEnemyMap->ImportResourceEnemies(IDR_TESTENEMIES1);	// リソースからインポート.
 #endif
 	// エネミー配置.
 	m_pEnemyMap->DeployEnemy(0, 100, 0, 0);	// (0, 100)にエネミー0を状態0で配置.
