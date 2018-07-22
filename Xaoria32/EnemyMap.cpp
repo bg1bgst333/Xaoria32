@@ -220,6 +220,30 @@ BOOL CEnemyMap::ImportResourceEnemies(int nID){
 
 }
 
+// エネミーマップデータをファイルとしてエクスポートExportFileEnemyMapData.
+BOOL CEnemyMap::ExportFileEnemyMapData(LPCTSTR lpctszFileName){
+
+	// エネミーマップデータをファイルに書き込む.
+	// バイナリファイルの作成.
+	CBinaryFile *pBinaryFile = new CBinaryFile();	// CBinaryFileオブジェクトpBinaryFileの生成.
+	int n = m_vecEnemyMapDataList.size();	// サイズをnとする.
+	pBinaryFile->Set((BYTE *)&n, sizeof(int));	// エネミー配置数をセット.
+	pBinaryFile->Write(lpctszFileName);	// lpctszFileNameに書き込み.
+	for (int i = 0; i < n; i++){	// リストのサイズ分繰り返す.
+		pBinaryFile->Set((BYTE *)&m_vecEnemyMapDataList[i]->m_x, sizeof(int));	// m_x.
+		pBinaryFile->Write();	// 書き込み.
+		pBinaryFile->Set((BYTE *)&m_vecEnemyMapDataList[i]->m_y, sizeof(int));	// m_y.
+		pBinaryFile->Write();	// 書き込み.
+		pBinaryFile->Set((BYTE *)&m_vecEnemyMapDataList[i]->m_nEnemyNo, sizeof(int));	// m_nEnemyNo.
+		pBinaryFile->Write();	// 書き込み.
+		pBinaryFile->Set((BYTE *)&m_vecEnemyMapDataList[i]->m_nState, sizeof(int));	// m_nState.
+		pBinaryFile->Write();	// 書き込み.
+	}
+	delete pBinaryFile;	// 削除.
+	return TRUE;	// TRUEを返す.
+
+}
+
 // エネミー配置.
 void CEnemyMap::DeployEnemy(int x, int y, int iEnemyNo, int iState){
 
