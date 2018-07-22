@@ -268,6 +268,26 @@ BOOL CEnemyMap::ImportFileEnemyMapData(LPCTSTR lpctszFileName){
 
 }
 
+// エネミーマップデータをリソースからインポートImportResourceEnemyMapData.
+BOOL CEnemyMap::ImportResourceEnemyMapData(int nID){
+
+	// バイナリリソースから読み込み.
+	CBinaryResource *pBinaryResource = new CBinaryResource();
+	pBinaryResource->Load(m_pScene->m_pMainWnd->m_hWnd, nID, _T("BIN"));	// pBinaryResource->Loadでロード.
+	int n = *(int *)pBinaryResource->Get(sizeof(int));	// リソースからn取得.
+	for (int i = 0; i < n; i++){	// n繰り返す.
+		int x = *(int *)pBinaryResource->Get(sizeof(int));	// x.
+		int y = *(int *)pBinaryResource->Get(sizeof(int));	// y.
+		int iEnemyNo = *(int *)pBinaryResource->Get(sizeof(int));	// iEnemyNo.
+		int iState = *(int *)pBinaryResource->Get(sizeof(int));	// iState.
+		DeployEnemy(x, y, iEnemyNo, iState);	// DeployEnemyでエネミーマップデータに追加.
+	}
+	// バイナリリソースオブジェクトの破棄.
+	delete pBinaryResource;	// pBinaryResourceの終了処理.
+	return TRUE;	// TRUEを返す.
+
+}
+
 // エネミー配置.
 void CEnemyMap::DeployEnemy(int x, int y, int iEnemyNo, int iState){
 

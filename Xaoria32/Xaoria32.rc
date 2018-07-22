@@ -50,8 +50,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 0,0,0,64
- PRODUCTVERSION 0,0,0,64
+ FILEVERSION 0,0,0,65
+ PRODUCTVERSION 0,0,0,65
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x29L
@@ -66,10 +66,10 @@ BEGIN
     BEGIN
         BLOCK "041104b0"
         BEGIN
-            VALUE "Comments", "Yorii #64"
+            VALUE "Comments", "Yorii #65"
             VALUE "CompanyName", "B.G-STATION"
-            VALUE "FileDescription", "Yorii #64"
-            VALUE "FileVersion", "0, 0, 0, 64"
+            VALUE "FileDescription", "Yorii #65"
+            VALUE "FileVersion", "0, 0, 0, 65"
             VALUE "InternalName", "Xaoria32"
             VALUE "LegalCopyright", "Copyright (C) 2005-2017 B.G-STATION, All rights reserved."
             VALUE "LegalTrademarks", "B.G-STATION"
@@ -121,6 +121,7 @@ IDB_SHARED2             BITMAP                  "shared2.bmp"
 
 IDR_TESTMAP1            BIN                     "testmap1.bin"
 IDR_TESTENEMIES1        BIN                     "testenemies1.bin"
+IDR_TESTENEMYMAPDATA1   BIN                     "testenemymapdata1.bin"
 #endif    // “ú–{Œê resources
 /////////////////////////////////////////////////////////////////////////////
 

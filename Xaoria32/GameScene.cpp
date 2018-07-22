@@ -148,8 +148,8 @@ int CGameScene::InitGameObjects(){
 	//m_pEnemyMap->DeployEnemy(200, 1000, 0, 0);	// (200, 1000)にエネミー0を状態0で配置.
 #endif
 	//m_pEnemyMap->ExportFileEnemyMapData(_T("testenemymapdata1.bin"));	// エネミーマップデータをファイルにエクスポート.
-	m_pEnemyMap->ImportFileEnemyMapData(_T("testenemymapdata1.bin"));	// エネミーマップデータをファイルからインポート.
-
+	//m_pEnemyMap->ImportFileEnemyMapData(_T("testenemymapdata1.bin"));	// エネミーマップデータをファイルからインポート.
+	m_pEnemyMap->ImportResourceEnemyMapData(IDR_TESTENEMYMAPDATA1);	// リソースからインポート.
 	// プレイヤーの描画.
 #if 1
 	m_pPlayer = new CPlayer(this);	// CPlayerオブジェクトを生成.
