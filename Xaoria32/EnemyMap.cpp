@@ -244,6 +244,30 @@ BOOL CEnemyMap::ExportFileEnemyMapData(LPCTSTR lpctszFileName){
 
 }
 
+// エネミーマップデータをファイルからインポートImportFileEnemyMapData.
+BOOL CEnemyMap::ImportFileEnemyMapData(LPCTSTR lpctszFileName){
+
+	// エネミーマップデータをファイルから読み込む.
+	// バイナリファイルの読み込み.
+	CBinaryFile *pBinaryFile = new CBinaryFile();	// CBinaryFileオブジェクトpBinaryFileの生成.
+	pBinaryFile->Read(lpctszFileName, 0, sizeof(int));	// pBinaryFile->Readで読み込み.
+	int n = *(int *)pBinaryFile->m_pBytes;	// n.
+	for (int i = 0; i < n; i++){	// n繰り返す.
+		pBinaryFile->Read(sizeof(int));	// pBinaryFile->Readで読み込み.
+		int x = *(int *)pBinaryFile->m_pBytes;	// x.
+		pBinaryFile->Read(sizeof(int));	// pBinaryFile->Readで読み込み.
+		int y = *(int *)pBinaryFile->m_pBytes;	// y.
+		pBinaryFile->Read(sizeof(int));	// pBinaryFile->Readで読み込み.
+		int iEnemyNo = *(int *)pBinaryFile->m_pBytes;	// iEnemyNo.
+		pBinaryFile->Read(sizeof(int));	// pBinaryFile->Readで読み込み.
+		int iState = *(int *)pBinaryFile->m_pBytes;	// iState.
+		DeployEnemy(x, y, iEnemyNo, iState);	// DeployEnemyでエネミーマップデータに追加.
+	}
+	delete pBinaryFile;	// 削除.
+	return TRUE;	// TRUEを返す.
+
+}
+
 // エネミー配置.
 void CEnemyMap::DeployEnemy(int x, int y, int iEnemyNo, int iState){
 

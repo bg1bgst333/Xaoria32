@@ -143,11 +143,12 @@ int CGameScene::InitGameObjects(){
 	m_pEnemyMap->ImportResourceEnemies(IDR_TESTENEMIES1);	// リソースからインポート.
 #endif
 	// エネミー配置.
-	m_pEnemyMap->DeployEnemy(0, 100, 0, 0);	// (0, 100)にエネミー0を状態0で配置.
-	m_pEnemyMap->DeployEnemy(100, 600, 0, 0);	// (100, 600)にエネミー0を状態0で配置.
-	m_pEnemyMap->DeployEnemy(200, 1000, 0, 0);	// (200, 1000)にエネミー0を状態0で配置.
+	//m_pEnemyMap->DeployEnemy(0, 100, 0, 0);	// (0, 100)にエネミー0を状態0で配置.
+	//m_pEnemyMap->DeployEnemy(100, 600, 0, 0);	// (100, 600)にエネミー0を状態0で配置.
+	//m_pEnemyMap->DeployEnemy(200, 1000, 0, 0);	// (200, 1000)にエネミー0を状態0で配置.
 #endif
-	m_pEnemyMap->ExportFileEnemyMapData(_T("testenemymapdata1.bin"));	// エネミーマップデータをファイルにエクスポート.
+	//m_pEnemyMap->ExportFileEnemyMapData(_T("testenemymapdata1.bin"));	// エネミーマップデータをファイルにエクスポート.
+	m_pEnemyMap->ImportFileEnemyMapData(_T("testenemymapdata1.bin"));	// エネミーマップデータをファイルからインポート.
 
 	// プレイヤーの描画.
 #if 1
