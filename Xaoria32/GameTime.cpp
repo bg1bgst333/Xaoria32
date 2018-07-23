@@ -97,12 +97,14 @@ BOOL CGameTime::IsNextSecond(){
 	else{
 		bRet = FALSE;	// FALSEを返す.
 	}
+#if 0
 	m_dwFrameIntervalMilliTime = dwUserTime - m_dwFrameIntervalStart;	// 現在時刻からフレーム間隔開始秒を引く.
 	DWORD dwSleep = 1000 / m_dwTargetFPS;	// Sleepミリ秒を計算.
 	m_dwFrameIntervalStart = dwUserTime;	// 現在時刻に更新.
 	if (m_dwFrameIntervalMilliTime <= dwSleep){	// Sleepより間隔が小さい場合.
 		Sleep(dwSleep - m_dwFrameIntervalMilliTime);	// スリープ.(スリープ時間からフレーム間隔を引いた時間.)
 	}
+#endif
 	return bRet;	// bRetを返す.
 
 }
@@ -144,16 +146,23 @@ BOOL CGameTime::IsProc(){
 
 	// 1つのフレーム以外は処理をしないようにする.
 	DWORD dwNowFrame = m_dwFPS / m_dwTargetFPS;	// 現在余計なものを含めたフレームはdwNowFrame.
-	if (m_dwFPS <= m_dwTargetFPS){	// FPSが少ない場合はTRUEとして処理をまわす.
+	if (dwNowFrame == 0){	// 0の時.
 		m_dwRunFrame++;	// m_dwRunFrameをインクリメント.
 		return TRUE;	// TRUEを返す.
 	}
-	if ((m_dwFrame % dwNowFrame) == 0){	// dwNowFrameの時だけ処理する.
-		m_dwRunFrame++;	// m_dwRunFrameをインクリメント.
-		return TRUE;	// TRUEを返す.
+	else{	// 0以外.
+		if (m_dwFPS <= m_dwTargetFPS){	// FPSが少ない場合はTRUEとして処理をまわす.
+			m_dwRunFrame++;	// m_dwRunFrameをインクリメント.
+			return TRUE;	// TRUEを返す.
+		}
+		else{
+			if ((m_dwFrame % dwNowFrame) == 0){	// dwNowFrameの時だけ処理する.
+				m_dwRunFrame++;	// m_dwRunFrameをインクリメント.
+				return TRUE;	// TRUEを返す.
+			}
+			else{
+				return FALSE;	// FALSEを返す.
+			}
+		}
 	}
-	else{
-		return FALSE;	// FALSEを返す.
-	}
-
 }
