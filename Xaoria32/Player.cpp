@@ -2,6 +2,8 @@
 // 独自のヘッダ
 #include "Player.h"	// CPlayer
 #include "Shot.h"	// CShot
+#include "GameScene.h"	// CGameScene
+#include "EnemyMap.h"	// CEnemyMap
 #include "resource.h"	// リソース.
 
 // コンストラクタCPlayer
@@ -168,6 +170,36 @@ int CPlayer::Proc(){
 			((CShot *)m_vecpShotList[j])->m_y--;	// y座標を1減らす.
 			if (((CShot *)m_vecpShotList[j])->m_y <= -32){	// -32以下.
 				((CShot *)m_vecpShotList[j])->Set(2);
+			}
+			else{	// ショットが有効な場合.
+				CGameScene *pGameScene = (CGameScene *)m_pScene;	// pGameSceneにキャスト.
+				CEnemyMap *pEnemyMap = pGameScene->m_pEnemyMap;	// pEnemyMapを取得.
+				CEnemies *pEnemies = pEnemyMap->m_pEnemies;	// pEnemiesの取得.
+				CMap *pMap = pGameScene->m_pMap;	// pMapを取得.
+				int n = pEnemyMap->m_vecEnemyMapDataList.size();	// サイズを取得.
+				for (int k = 0; k < n; k++){	// n繰り返す.
+					if (pEnemyMap->m_vecEnemyMapDataList[k]->m_nState == 1){	// 表示.
+						int ex = pEnemyMap->m_vecEnemyMapDataList[k]->m_x - pMap->m_iScreenRX;	// 敵の画面座標ex.(こちらは右が正, なので正.)
+						int ey = pMap->m_iScreenUY - pEnemyMap->m_vecEnemyMapDataList[k]->m_y;	// 敵の画面座標ey.(こちらは上が正, なので逆.)
+						int ew = pEnemies->m_vecEnemiesList[pEnemyMap->m_vecEnemyMapDataList[k]->m_nEnemyNo]->m_iWidth;	// 幅.
+						int eh = pEnemies->m_vecEnemiesList[pEnemyMap->m_vecEnemyMapDataList[k]->m_nEnemyNo]->m_iHeight;	// 高さ.
+						int sx = ((CShot *)m_vecpShotList[j])->m_x;	// ショットx.
+						int sy = ((CShot *)m_vecpShotList[j])->m_y;	// ショットy.
+						int sw = ((CShot *)m_vecpShotList[j])->m_iWidth;	// 幅.
+						int sh = ((CShot *)m_vecpShotList[j])->m_iHeight;	// 高さ.
+						if ((ex <= sx && sx <= ex + ew && ey <= sy && sy <= ey + eh)		// ショットの左上.
+							|| (sx <= ex && ex <= sx + sw && ey <= sy && sy <= ey + eh)		// ショットの右上.
+							|| (ex <= sx && sx <= ex + ew && sy <= ey && ey <= sy + sh)		// ショットの左下.
+							|| (sx <= ex && ex <= sx + sw && sy <= ey && ey <= sy + sh))	// ショットの右下.
+						{
+							((CShot *)m_vecpShotList[j])->Set(2);	// 2にセット.
+							pEnemyMap->m_vecEnemyMapDataList[k]->m_nLife--;	// ライフを減らす.
+							if (pEnemyMap->m_vecEnemyMapDataList[k]->m_nLife <= 0){	// 0以下.
+								pEnemyMap->m_vecEnemyMapDataList[k]->m_nState = 3;	// 状態3.
+							}
+						}
+					}
+				}
 			}
 		}
 		else if (iState == 2){	// 2なら.

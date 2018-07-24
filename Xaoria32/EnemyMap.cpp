@@ -236,6 +236,8 @@ BOOL CEnemyMap::ExportFileEnemyMapData(LPCTSTR lpctszFileName){
 		pBinaryFile->Write();	// 書き込み.
 		pBinaryFile->Set((BYTE *)&m_vecEnemyMapDataList[i]->m_nEnemyNo, sizeof(int));	// m_nEnemyNo.
 		pBinaryFile->Write();	// 書き込み.
+		pBinaryFile->Set((BYTE *)&m_vecEnemyMapDataList[i]->m_nLife, sizeof(int));	// m_nLife.
+		pBinaryFile->Write();	// 書き込み.
 		pBinaryFile->Set((BYTE *)&m_vecEnemyMapDataList[i]->m_nState, sizeof(int));	// m_nState.
 		pBinaryFile->Write();	// 書き込み.
 	}
@@ -260,8 +262,10 @@ BOOL CEnemyMap::ImportFileEnemyMapData(LPCTSTR lpctszFileName){
 		pBinaryFile->Read(sizeof(int));	// pBinaryFile->Readで読み込み.
 		int iEnemyNo = *(int *)pBinaryFile->m_pBytes;	// iEnemyNo.
 		pBinaryFile->Read(sizeof(int));	// pBinaryFile->Readで読み込み.
+		int iLife = *(int *)pBinaryFile->m_pBytes;	// iLife.
+		pBinaryFile->Read(sizeof(int));	// pBinaryFile->Readで読み込み.
 		int iState = *(int *)pBinaryFile->m_pBytes;	// iState.
-		DeployEnemy(x, y, iEnemyNo, iState);	// DeployEnemyでエネミーマップデータに追加.
+		DeployEnemy(x, y, iEnemyNo, iLife, iState);	// DeployEnemyでエネミーマップデータに追加.
 	}
 	delete pBinaryFile;	// 削除.
 	return TRUE;	// TRUEを返す.
@@ -279,8 +283,9 @@ BOOL CEnemyMap::ImportResourceEnemyMapData(int nID){
 		int x = *(int *)pBinaryResource->Get(sizeof(int));	// x.
 		int y = *(int *)pBinaryResource->Get(sizeof(int));	// y.
 		int iEnemyNo = *(int *)pBinaryResource->Get(sizeof(int));	// iEnemyNo.
+		int iLife = *(int *)pBinaryResource->Get(sizeof(int));	// iEnemyNo.
 		int iState = *(int *)pBinaryResource->Get(sizeof(int));	// iState.
-		DeployEnemy(x, y, iEnemyNo, iState);	// DeployEnemyでエネミーマップデータに追加.
+		DeployEnemy(x, y, iEnemyNo, iLife, iState);	// DeployEnemyでエネミーマップデータに追加.
 	}
 	// バイナリリソースオブジェクトの破棄.
 	delete pBinaryResource;	// pBinaryResourceの終了処理.
@@ -289,7 +294,7 @@ BOOL CEnemyMap::ImportResourceEnemyMapData(int nID){
 }
 
 // エネミー配置.
-void CEnemyMap::DeployEnemy(int x, int y, int iEnemyNo, int iState){
+void CEnemyMap::DeployEnemy(int x, int y, int iEnemyNo, int iLife, int iState){
 
 	// エネミーマップデータの生成.
 	EnemyMapData *pEMD = new EnemyMapData();	// pEMDの生成.
@@ -297,6 +302,7 @@ void CEnemyMap::DeployEnemy(int x, int y, int iEnemyNo, int iState){
 	pEMD->m_x = x;	// x
 	pEMD->m_y = y;	// y
 	pEMD->m_nEnemyNo = iEnemyNo;	// エネミー番号.
+	pEMD->m_nLife = iLife;	// ライフ.
 	pEMD->m_nState = iState;	// 状態.
 	// 追加.
 	m_vecEnemyMapDataList.push_back(pEMD);	// 追加.
@@ -319,11 +325,16 @@ int CEnemyMap::Proc(){
 					int iHeight = m_pEnemies->m_vecEnemiesList[nEnemyNo]->m_iHeight;	// 高さ.
 					int iDrawPosStart = iDrawPos - iHeight;	// 配置場所から高さを引く.
 					int iDrawPosEnd = iDrawPosStart + iHeight + 480;	// 描画開始にエネミー高さとスクリーン高さを足す.
-					if (iDrawPosStart <= iScreenUY && iDrawPosEnd > iScreenUY){	// 描画位置.
-						m_vecEnemyMapDataList[i]->m_nState = 1;	// 表示状態.
+					if (m_vecEnemyMapDataList[i]->m_nLife <= 0){	// ライフが0以下.
+						m_vecEnemyMapDataList[i]->m_nState = 3;	// 表示状態3.
 					}
-					else if (iDrawPosEnd <= iScreenUY){	// 超えたら.
-						m_vecEnemyMapDataList[i]->m_nState = 2;	// 通過非表示状態.
+					else{
+						if (iDrawPosStart <= iScreenUY && iDrawPosEnd > iScreenUY){	// 描画位置.
+							m_vecEnemyMapDataList[i]->m_nState = 1;	// 表示状態.
+						}
+						else if (iDrawPosEnd <= iScreenUY){	// 超えたら.
+							m_vecEnemyMapDataList[i]->m_nState = 2;	// 通過非表示状態.
+						}
 					}
 				}
 			}

@@ -143,9 +143,16 @@ int CGameScene::InitGameObjects(){
 	m_pEnemyMap->ImportResourceEnemies(IDR_TESTENEMIES1);	// リソースからインポート.
 #endif
 	// エネミー配置.
-	//m_pEnemyMap->DeployEnemy(0, 100, 0, 0);	// (0, 100)にエネミー0を状態0で配置.
-	//m_pEnemyMap->DeployEnemy(100, 600, 0, 0);	// (100, 600)にエネミー0を状態0で配置.
-	//m_pEnemyMap->DeployEnemy(200, 1000, 0, 0);	// (200, 1000)にエネミー0を状態0で配置.
+#if 0
+	m_pEnemyMap->DeployEnemy(200, 600, 0, 1, 0);	// (200, 600)にエネミー0をライフ1状態0で配置.
+	m_pEnemyMap->DeployEnemy(400, 1000, 0, 1, 0);	// (400, 1000)にエネミー0をライフ1状態0で配置.
+	m_pEnemyMap->DeployEnemy(200, 1400, 0, 1, 0);	// (200, 1400)にエネミー0をライフ1状態0で配置.
+	m_pEnemyMap->DeployEnemy(400, 1800, 0, 1, 0);	// (400, 1800)にエネミー0をライフ1状態0で配置.
+	m_pEnemyMap->DeployEnemy(200, 2200, 0, 1, 0);	// (200, 2200)にエネミー0をライフ1状態0で配置.
+	m_pEnemyMap->DeployEnemy(400, 2600, 0, 1, 0);	// (400, 2600)にエネミー0をライフ1状態0で配置.
+	m_pEnemyMap->DeployEnemy(200, 3000, 0, 1, 0);	// (200, 3000)にエネミー0をライフ1状態0で配置.
+	m_pEnemyMap->DeployEnemy(400, 3400, 0, 1, 0);	// (400, 3400)にエネミー0をライフ1状態0で配置.
+#endif
 #endif
 	//m_pEnemyMap->ExportFileEnemyMapData(_T("testenemymapdata1.bin"));	// エネミーマップデータをファイルにエクスポート.
 	//m_pEnemyMap->ImportFileEnemyMapData(_T("testenemymapdata1.bin"));	// エネミーマップデータをファイルからインポート.

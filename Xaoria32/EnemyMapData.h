@@ -7,6 +7,7 @@ struct EnemyMapData{
 	int m_x;	// x座標.
 	int m_y;	// y座標.
 	int m_nEnemyNo;	// エネミー番号.
+	int m_nLife;	// ライフ.
 	int m_nState;	// 状態.
 };
 
