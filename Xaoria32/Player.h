@@ -21,6 +21,7 @@ class CPlayer : public CCharacter{
 		int m_iNo;	// アニメーション番号m_iNo.
 		std::vector<CSharedObject *> m_vecpShotList;	// ショットリストm_vecpShotList.
 		int m_iShotIdx;	// ショットのインデックス.(発射する番号.)
+		int m_nState;	// 状態.
 
 		// publicメンバ関数
 		// コンストラクタ・デストラクタ
@@ -37,6 +38,8 @@ class CPlayer : public CCharacter{
 		virtual int Proc();	// 処理をするProc.
 		virtual void Set(int x, int y);	// 位置をセットするSet.
 		virtual void Set(int iNo);	// アニメーションをセットするSet.
+		virtual void SetState(int iState);	// 状態をセットするSetState.
+		virtual int GetState();	// 状態を取得するGetState.
 		virtual void Draw();	// 描画をするDraw.
 		virtual void DrawShot();	// ショットを描画するDrawShot.
 		virtual void CreateShot(int iSize);	// ショットの作成CreateShot.
