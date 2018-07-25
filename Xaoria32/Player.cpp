@@ -158,7 +158,33 @@ int CPlayer::Proc(){
 
 #if 1
 	// ループ.
-	// 敵の描画.
+	// 発射.
+	for (int k = 0, m = m_iShotIdx; k < m_vecpShotList.size(); k++){
+		int iState = ((CShot *)m_vecpShotList[m])->Get();	// iState取得.
+		if (iState == 0){	// ショット状態が0なら.
+			if (GetState() == 0){	// プレイヤーの状態が0なら.
+				if (m_bShot){	// ショットが押された時.
+					((CShot *)m_vecpShotList[m])->Set(1);	// 1をセット.
+					m_iShotIdx++;	// 1増やす.
+					if (m_iShotIdx >= m_vecpShotList.size()){	// サイズ以上.
+						m_iShotIdx = 0;	// 0に戻す.
+					}
+					break;	// 抜ける.
+				}
+			}
+		}
+		else if (iState == 1){
+			((CShot *)m_vecpShotList[m])->m_y--;	// y座標を1減らす.
+			if (((CShot *)m_vecpShotList[m])->m_y <= -32){	// -32以下.
+				((CShot *)m_vecpShotList[m])->Set(2);
+			}
+		}
+		m++;
+		if (m >= m_vecpShotList.size()){
+			m = 0;
+		}
+	}
+	// 当たり判定.
 	CGameScene *pGameScene = (CGameScene *)m_pScene;	// pGameSceneにキャスト.
 	CEnemyMap *pEnemyMap = pGameScene->m_pEnemyMap;	// pEnemyMapを取得.
 	CEnemies *pEnemies = pEnemyMap->m_pEnemies;	// pEnemiesの取得.
@@ -166,57 +192,34 @@ int CPlayer::Proc(){
 	int n = pEnemyMap->m_vecEnemyMapDataList.size();	// サイズを取得.
 	for (int i = 0; i < n; i++){	// n繰り返す.
 		// 敵とショットの当たり判定.
-		for (int j = 0, k = m_iShotIdx; j < m_vecpShotList.size(); j++){
-			int iState = ((CShot *)m_vecpShotList[k])->Get();	// iState取得.
-			if (iState == 0){	// 0なら.
-				if (m_bShot){	// ショットが押された時.
-					if (GetState() == 0){	// プレイヤーの状態が0なら.
-						m_bShot = FALSE;	// これ付けないと, 同時発射ができない.
-						((CShot *)m_vecpShotList[k])->Set(1);	// 1をセット.
-						m_iShotIdx = k + 1;
-						if (m_iShotIdx >= m_vecpShotList.size()){	// サイズ以上.
-							m_iShotIdx = 0;	// 0に戻す.
-						}
-						break;	// 抜ける.
-					}
-				}
-			}
-			else if (iState == 1){	// 1なら.
-				((CShot *)m_vecpShotList[k])->m_y--;	// y座標を1減らす.
-				if (((CShot *)m_vecpShotList[k])->m_y <= -32){	// -32以下.
-					((CShot *)m_vecpShotList[k])->Set(2);
-				}
-				else{	// ショットが有効な場合.
-					if (pEnemyMap->m_vecEnemyMapDataList[i]->m_nState == 1){	// 表示.
-						int ex = pEnemyMap->m_vecEnemyMapDataList[i]->m_x - pMap->m_iScreenRX;	// 敵の画面座標ex.(こちらは右が正, なので正.)
-						int ey = pMap->m_iScreenUY - pEnemyMap->m_vecEnemyMapDataList[i]->m_y;	// 敵の画面座標ey.(こちらは上が正, なので逆.)
-						int ew = pEnemies->m_vecEnemiesList[pEnemyMap->m_vecEnemyMapDataList[i]->m_nEnemyNo]->m_iWidth;	// 幅.
-						int eh = pEnemies->m_vecEnemiesList[pEnemyMap->m_vecEnemyMapDataList[i]->m_nEnemyNo]->m_iHeight;	// 高さ.
-						int sx = ((CShot *)m_vecpShotList[k])->m_x;	// ショットx.
-						int sy = ((CShot *)m_vecpShotList[k])->m_y;	// ショットy.
-						int sw = ((CShot *)m_vecpShotList[k])->m_iWidth;	// 幅.
-						int sh = ((CShot *)m_vecpShotList[k])->m_iHeight;	// 高さ.
-						if ((ex <= sx && sx <= ex + ew && ey <= sy && sy <= ey + eh)		// ショットの左上.
-							|| (sx <= ex && ex <= sx + sw && ey <= sy && sy <= ey + eh)		// ショットの右上.
-							|| (ex <= sx && sx <= ex + ew && sy <= ey && ey <= sy + sh)		// ショットの左下.
-							|| (sx <= ex && ex <= sx + sw && sy <= ey && ey <= sy + sh))	// ショットの右下.
-						{
-							((CShot *)m_vecpShotList[k])->Set(2);	// 2にセット.
-							pEnemyMap->m_vecEnemyMapDataList[i]->m_nLife--;	// ライフを減らす.
-							if (pEnemyMap->m_vecEnemyMapDataList[i]->m_nLife <= 0){	// 0以下.
-								pEnemyMap->m_vecEnemyMapDataList[i]->m_nState = 3;	// 状態3.
-							}
+		for (int j = 0; j < m_vecpShotList.size(); j++){
+			int iState = ((CShot *)m_vecpShotList[j])->Get();	// iState取得.
+			if (iState == 1){	// 1なら.
+				if (pEnemyMap->m_vecEnemyMapDataList[i]->m_nState == 1){	// 表示.
+					int ex = pEnemyMap->m_vecEnemyMapDataList[i]->m_x - pMap->m_iScreenRX;	// 敵の画面座標ex.(こちらは右が正, なので正.)
+					int ey = pMap->m_iScreenUY - pEnemyMap->m_vecEnemyMapDataList[i]->m_y;	// 敵の画面座標ey.(こちらは上が正, なので逆.)
+					int ew = pEnemies->m_vecEnemiesList[pEnemyMap->m_vecEnemyMapDataList[i]->m_nEnemyNo]->m_iWidth;	// 幅.
+					int eh = pEnemies->m_vecEnemiesList[pEnemyMap->m_vecEnemyMapDataList[i]->m_nEnemyNo]->m_iHeight;	// 高さ.
+					int sx = ((CShot *)m_vecpShotList[j])->m_x;	// ショットx.
+					int sy = ((CShot *)m_vecpShotList[j])->m_y;	// ショットy.
+					int sw = ((CShot *)m_vecpShotList[j])->m_iWidth;	// 幅.
+					int sh = ((CShot *)m_vecpShotList[j])->m_iHeight;	// 高さ.
+					if ((ex <= sx && sx <= ex + ew && ey <= sy && sy <= ey + eh)		// ショットの左上.
+						|| (sx <= ex && ex <= sx + sw && ey <= sy && sy <= ey + eh)		// ショットの右上.
+						|| (ex <= sx && sx <= ex + ew && sy <= ey && ey <= sy + sh)		// ショットの左下.
+						|| (sx <= ex && ex <= sx + sw && sy <= ey && ey <= sy + sh))	// ショットの右下.
+					{
+						((CShot *)m_vecpShotList[j])->Set(2);	// 2にセット.
+						pEnemyMap->m_vecEnemyMapDataList[i]->m_nLife--;	// ライフを減らす.
+						if (pEnemyMap->m_vecEnemyMapDataList[i]->m_nLife <= 0){	// 0以下.
+							pEnemyMap->m_vecEnemyMapDataList[i]->m_nState = 3;	// 状態3.
 						}
 					}
 				}
 			}
 			else if (iState == 2){	// 2なら.
-				((CShot *)m_vecpShotList[k])->Set(0);	// 0にリセット.
+				((CShot *)m_vecpShotList[j])->Set(0);	// 0にリセット.
 			}
-			k++;	// kを増やす.
-			if (k >= m_vecpShotList.size()){	// kがサイズ以上.
-				k = 0;	// 0に戻す.
-			}	
 		}
 		// 敵と自機の当たり判定.
 		if (pEnemyMap->m_vecEnemyMapDataList[i]->m_nState == 1){	// 表示.
