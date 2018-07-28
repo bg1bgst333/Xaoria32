@@ -2,6 +2,7 @@
 // 独自のヘッダ
 #include "Player.h"	// CPlayer
 #include "Shot.h"	// CShot
+#include "Explosion.h"	// CExplosion
 #include "GameScene.h"	// CGameScene
 #include "EnemyMap.h"	// CEnemyMap
 #include "resource.h"	// リソース.
@@ -18,6 +19,7 @@ CPlayer::CPlayer() : CCharacter(){
 	m_vecpShotList.clear(); // m_vecpShotList.clearでクリア.
 	m_iShotIdx = 0;	// m_iShotIdxに0をセット.
 	m_nState = 0;	// m_nStateに0をセット.
+	m_pExplosion = NULL;	// m_pExplosionにNULLをセット.
 
 }
 
@@ -33,6 +35,7 @@ CPlayer::CPlayer(CScene *pScene) : CCharacter(pScene){
 	m_vecpShotList.clear(); // m_vecpShotList.clearでクリア.
 	m_iShotIdx = 0;	// m_iShotIdxに0をセット.
 	m_nState = 0;	// m_nStateに0をセット.
+	m_pExplosion = NULL;	// m_pExplosionにNULLをセット.
 
 }
 
@@ -64,6 +67,13 @@ void CPlayer::Destroy(){
 	m_vecpShotList.clear();	// クリア.
 	m_nState = 0;	// m_nStateに0をセット.
 
+	// エクスプロージョンの破棄.
+	if (m_pExplosion != NULL){	// m_pExplosionがNULLでない.
+		m_pExplosion->Destroy();	// 破棄.
+		delete m_pExplosion;	// 削除.
+		m_pExplosion = NULL;	// NULLをセット.
+	}
+	
 	// 親クラスのメンバ関数.
 	CCharacter::Destroy();	// CCharacter::Destroyで破棄.
 
@@ -347,6 +357,9 @@ void CPlayer::Draw(){
 		//CCharacter::Draw(m_x, m_y, m_iNo);	// CCharacter::Drawで描画.
 		CCharacter::DrawSprite(m_x, m_y, m_iNo);	// CCharacter::DrawSpriteで描画.
 	}
+	else if (iState == 1){	// 1の場合.
+		DrawExplosion();	// 爆発.
+	}
 
 }
 
@@ -367,6 +380,16 @@ void CPlayer::DrawShot(){
 
 }
 
+// エクスプロージョンを描画するDrawExplosion.
+void CPlayer::DrawExplosion(){
+
+	// エクスプロージョンの描画.
+	if (m_pExplosion != NULL){	// m_pExplosionがNULLでない.
+		((CExplosion *)m_pExplosion)->DrawAnimation(m_x, m_y);	// アニメーション描画.
+	}
+
+}
+
 // ショットの作成CreateShot.
 void CPlayer::CreateShot(int iSize){
 
@@ -374,10 +397,28 @@ void CPlayer::CreateShot(int iSize){
 	for (int i = 0; i < iSize; i++){	// iSize個繰り返す.
 		CShot *pShot = new CShot(m_pScene);	// CShotオブジェクトの作成.
 		pShot->Add(0, 32, 4, 32, IDB_SHARED2);	// イメージ追加.
-		pShot->AddMask(320 + 0, 32, 4, 32, IDB_SHARED2);	// イメージ追加.
+		pShot->AddMask(320 + 0, 32, 4, 32, IDB_SHARED2);	// マスク.追加.
 		pShot->Set(m_x + 32 / 2 - 4 / 2, m_y);	// pShot->Setでm_x, m_yをセット.
 		pShot->Set(0);	// 状態0をセット.
 		m_vecpShotList.push_back(pShot);	// m_vecpShotList.push_backで追加.
 	}
+
+}
+
+// エクスプロージョンの作成CreateExplosion.
+void CPlayer::CreateExplosion(){
+
+	// CExplosionの作成.
+	CExplosion *pExplosion = new CExplosion(m_pScene);	// pExplosionの生成.
+	pExplosion->Add(0, 64, 32, 32, IDB_SHARED2);	// イメージ追加.
+	pExplosion->AddMask(320 + 0, 64, 32, 32, IDB_SHARED2);	// マスク追加.
+	pExplosion->Add(32, 64, 32, 32, IDB_SHARED2);	// イメージ追加.
+	pExplosion->AddMask(320 + 32, 64, 32, 32, IDB_SHARED2);	// マスク追加.
+	pExplosion->Add(64, 64, 32, 32, IDB_SHARED2);	// イメージ追加.
+	pExplosion->AddMask(320 + 64, 64, 32, 32, IDB_SHARED2);	// マスク追加.
+	pExplosion->Add(96, 64, 32, 32, IDB_SHARED2);	// イメージ追加.
+	pExplosion->AddMask(320 + 96, 64, 32, 32, IDB_SHARED2);	// マスク追加.
+	pExplosion->Set(m_x, m_y);	// 位置のセット.
+	m_pExplosion = pExplosion;	// m_pExplosionにpExplosionをセット.
 
 }

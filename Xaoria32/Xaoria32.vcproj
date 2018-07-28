@@ -209,6 +209,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Explosion.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\File.cpp"
 				>
 			</File>
@@ -348,6 +352,10 @@
 			</File>
 			<File
 				RelativePath=".\EnemyMapData.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Explosion.h"
 				>
 			</File>
 			<File

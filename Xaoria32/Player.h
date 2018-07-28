@@ -20,6 +20,7 @@ class CPlayer : public CCharacter{
 		BOOL m_bShot;	// ショットが押されているフラグm_bShot.
 		int m_iNo;	// アニメーション番号m_iNo.
 		std::vector<CSharedObject *> m_vecpShotList;	// ショットリストm_vecpShotList.
+		CSharedObject *m_pExplosion;	// エクスプロージョンオブジェクトm_pExplosion.
 		int m_iShotIdx;	// ショットのインデックス.(発射する番号.)
 		int m_nState;	// 状態.
 
@@ -42,7 +43,9 @@ class CPlayer : public CCharacter{
 		virtual int GetState();	// 状態を取得するGetState.
 		virtual void Draw();	// 描画をするDraw.
 		virtual void DrawShot();	// ショットを描画するDrawShot.
+		virtual void DrawExplosion();	// エクスプロージョンを描画するDrawExplosion.
 		virtual void CreateShot(int iSize);	// ショットの作成CreateShot.
+		virtual void CreateExplosion();	// エクスプロージョンの作成CreateExplosion.
 
 };
 

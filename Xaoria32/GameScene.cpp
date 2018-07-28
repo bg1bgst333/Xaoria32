@@ -168,6 +168,7 @@ int CGameScene::InitGameObjects(){
 	m_pPlayer->AddMask(320 + 64, 0, 32, 32, IDB_SHARED2);	// AddMaskで追加.
 	m_pPlayer->Set(640 / 2 - 32 / 2, 480 - 32);	// Setで初期位置をセット.
 	m_pPlayer->CreateShot(3);	// ショットを3つ作成.
+	m_pPlayer->CreateExplosion();	// エクスプロージョンを作成.
 #else
 	m_pCharacter = new CCharacter(this);	// CCharacterオブジェクトを生成.
 	m_pCharacter->Add(0, 0, 32, 32, IDB_SHARED2);	// Addで追加.
