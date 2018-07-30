@@ -192,6 +192,7 @@ BOOL CEnemyMap::ImportResourceEnemies(int nID){
 	int n = *(int *)pBinaryResource->Get(sizeof(int));	// リソースからn取得.
 	for (int i = 0; i < n; i++){	// n繰り返す.
 		CEnemy *pEnemy = new CEnemy(m_pScene);	// pEnemyを生成.
+		pEnemy->CreateExplosion(0, 64, 64, 64, IDB_SHARED3);	// 本当は敵ごと爆発だが, ひとまずこれだけ.
 		pEnemy->m_x = *(int *)pBinaryResource->Get(sizeof(int));	// リソースからm_x取得.
 		pEnemy->m_y = *(int *)pBinaryResource->Get(sizeof(int));	// リソースからm_y取得.
 		pEnemy->m_iWidth = *(int *)pBinaryResource->Get(sizeof(int));	// m_iWidth.
@@ -304,6 +305,7 @@ void CEnemyMap::DeployEnemy(int x, int y, int iEnemyNo, int iLife, int iState){
 	pEMD->m_nEnemyNo = iEnemyNo;	// エネミー番号.
 	pEMD->m_nLife = iLife;	// ライフ.
 	pEMD->m_nState = iState;	// 状態.
+	pEMD->m_nExplosionAnimation = 0;	// 0.
 	// 追加.
 	m_vecEnemyMapDataList.push_back(pEMD);	// 追加.
 
@@ -365,6 +367,21 @@ void CEnemyMap::Draw(){
 						int y = iScreenUY - m_vecEnemyMapDataList[i]->m_y;	// スクリーン位置yからエネミーyを引く.
 						pEnemy->Set(x, y);	// セット.
 						pEnemy->Draw();	// 描画.
+					}
+					else if (m_vecEnemyMapDataList[i]->m_nState == 3){	// 3の時は表示.
+						pEnemy->Set(0);	// アニメーション0.
+						int x = m_vecEnemyMapDataList[i]->m_x;	// x
+						int y = iScreenUY - m_vecEnemyMapDataList[i]->m_y;	// スクリーン位置yからエネミーyを引く.
+						pEnemy->Set(x, y);	// セット.
+						if (m_vecEnemyMapDataList[i]->m_nExplosionAnimation != -1){	// -1でない.
+							if (m_vecEnemyMapDataList[i]->m_nExplosionAnimation <= 3){	// 3以下なら.
+								pEnemy->DrawExplosion(x, y, m_vecEnemyMapDataList[i]->m_nExplosionAnimation);	// 爆発.
+								m_vecEnemyMapDataList[i]->m_nExplosionAnimation++;	// アニメーション加算.
+							}
+						}
+						else if (m_vecEnemyMapDataList[i]->m_nExplosionAnimation >= 4){	// 4以上.
+							m_vecEnemyMapDataList[i]->m_nExplosionAnimation = -1;	// -1にする.
+						}
 					}
 				}
 			}

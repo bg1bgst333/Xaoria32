@@ -9,6 +9,7 @@ struct EnemyMapData{
 	int m_nEnemyNo;	// エネミー番号.
 	int m_nLife;	// ライフ.
 	int m_nState;	// 状態.
+	int m_nExplosionAnimation;	// 爆発アニメ.
 };
 
 #endif

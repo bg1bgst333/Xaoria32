@@ -14,6 +14,7 @@ class CEnemy : public CCharacter{
 
 		// publicメンバ変数
 		int m_iNo;	// アニメーション番号m_iNo.
+		CSharedObject *m_pExplosion;	// エクスプロージョンオブジェクトm_pExplosion.
 
 		// publicメンバ関数
 		// コンストラクタ・デストラクタ
@@ -25,6 +26,8 @@ class CEnemy : public CCharacter{
 		virtual void Set(int x, int y);	// 位置をセットするSet.
 		virtual void Set(int iNo);	// アニメーションをセットするSet.
 		virtual void Draw();	// 描画をするDraw.
+		virtual void CreateExplosion(int nFirstX, int nFirstY, int iWidth, int iHeight, int nID);	// エクスプロージョンの作成CreateExplosion.
+		virtual void DrawExplosion(int x, int y, int nAnimationNo);	// エクスプロージョンを描画するDrawExplosion.
 
 };
 
