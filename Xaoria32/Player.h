@@ -23,6 +23,8 @@ class CPlayer : public CCharacter{
 		CSharedObject *m_pExplosion;	// エクスプロージョンオブジェクトm_pExplosion.
 		int m_iShotIdx;	// ショットのインデックス.(発射する番号.)
 		int m_nState;	// 状態.
+		DWORD m_dwRestartInterval;	// リスタート間隔m_dwRestartInterval.
+		DWORD m_dwRestartTimerStart;	// リスタートタイマー開始時刻m_dwRestartTimerStart.
 
 		// publicメンバ関数
 		// コンストラクタ・デストラクタ
@@ -46,6 +48,8 @@ class CPlayer : public CCharacter{
 		virtual void DrawExplosion();	// エクスプロージョンを描画するDrawExplosion.
 		virtual void CreateShot(int iSize);	// ショットの作成CreateShot.
 		virtual void CreateExplosion();	// エクスプロージョンの作成CreateExplosion.
+		virtual void SetRestartTimer(DWORD dwInterval);	// リスタートタイマーのセットSetRestartTimer.
+		virtual BOOL IsRestartElapsed();	// リスタートタイマーが経過時間を過ぎたかをチェックIsRestartElapsed.
 
 };
 

@@ -20,6 +20,8 @@ CPlayer::CPlayer() : CCharacter(){
 	m_iShotIdx = 0;	// m_iShotIdxに0をセット.
 	m_nState = 0;	// m_nStateに0をセット.
 	m_pExplosion = NULL;	// m_pExplosionにNULLをセット.
+	m_dwRestartInterval = 0;	// m_dwRestartIntervalに0をセット.
+	m_dwRestartTimerStart = 0;	// m_dwRestartTimerStartに0をセット.
 
 }
 
@@ -36,6 +38,8 @@ CPlayer::CPlayer(CScene *pScene) : CCharacter(pScene){
 	m_iShotIdx = 0;	// m_iShotIdxに0をセット.
 	m_nState = 0;	// m_nStateに0をセット.
 	m_pExplosion = NULL;	// m_pExplosionにNULLをセット.
+	m_dwRestartInterval = 0;	// m_dwRestartIntervalに0をセット.
+	m_dwRestartTimerStart = 0;	// m_dwRestartTimerStartに0をセット.
 
 }
 
@@ -247,6 +251,9 @@ int CPlayer::Proc(){
 				|| (px <= ex && ex <= px + pw && py <= ey && ey <= py + ph))	// プレイヤーの右下.
 			{
 				SetState(1);	// 1にする.
+				if (m_dwRestartInterval == 0){	// まだセットされていないなら.
+					SetRestartTimer(5000);	// 5秒.
+				}
 			}
 		}
 	}
@@ -309,6 +316,13 @@ int CPlayer::Proc(){
 		}
 	}
 #endif
+
+	// タイマー経過でリスタート.
+	if (m_dwRestartInterval != 0){	// まだセットされているなら.
+		if (IsRestartElapsed()){	// 経過時間になったら.
+			return 1;	// 1を返す.
+		}
+	}
 
 	// シーン継続なら0.
 	return 0;	// 0を返す.
@@ -420,5 +434,37 @@ void CPlayer::CreateExplosion(){
 	pExplosion->AddMask(320 + 96, 64, 32, 32, IDB_SHARED2);	// マスク追加.
 	pExplosion->Set(m_x, m_y);	// 位置のセット.
 	m_pExplosion = pExplosion;	// m_pExplosionにpExplosionをセット.
+
+}
+
+// リスタートタイマーのセットSetRestartTimer.
+void CPlayer::SetRestartTimer(DWORD dwInterval){
+
+	// リスタートインターバルのセット.
+	m_dwRestartInterval = dwInterval;	// m_dwRestartIntervalにdwIntervalをセット.
+
+	// タイマーのセット.
+	const CScene *pScene = m_pScene;	// m_pSceneをpSceneに格納.
+	CGameTime *pTime = pScene->m_pGameTime;	// pScene->m_pGameTimeをpTimeに格納.
+	m_dwRestartTimerStart = pTime->GetSystemTime();	// pTime->GetSystemTimeで取得した時刻をm_dwRestartTimerStartに格納.
+
+}
+
+// リスタートタイマーが経過時間を過ぎたかをチェックIsRestartElapsed.
+BOOL CPlayer::IsRestartElapsed(){
+
+	// 現在時刻の取得.
+	const CScene *pScene = m_pScene;	// m_pSceneをpSceneに格納.
+	CGameTime *pTime = pScene->m_pGameTime;	// pScene->m_pGameTimeをpTimeに格納.
+	DWORD dwNow = pTime->GetSystemTime();	// pTime->GetSystemTimeで取得した時刻をdwNowに格納.
+
+	// 経過時間チェック.
+	if (dwNow - m_dwRestartTimerStart >= m_dwRestartInterval){	// m_dwRestartInterval以上なら.
+		m_dwRestartTimerStart = dwNow;	// dwNowをm_dwRestartTimerStartにセット.
+		return TRUE;	// TRUEを返す.
+	}
+	else{
+		return FALSE;	// FALSEを返す.
+	}
 
 }

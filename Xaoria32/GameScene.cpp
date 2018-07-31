@@ -267,7 +267,10 @@ int CGameScene::RunProc(){
 
 	// プレイヤー処理.
 	if (m_pPlayer != NULL){	// m_pPlayerがNULLでなければ.
-		m_pPlayer->Proc();	// m_pPlayer->Procで処理.
+		int iRet = m_pPlayer->Proc();	// m_pPlayer->Procで処理.
+		if (iRet == 1){	// 1なら.
+			return 1;	// 1を返す.
+		}
 	}
 
 	// ゲームタイムボックス処理.
