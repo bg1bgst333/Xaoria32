@@ -116,7 +116,14 @@ int CMainApplication::Main(){
 			m_pScene = NULL;	// NULLをセット.
 			//m_iNo++;	// m_iNoをインクリメント.
 			if (m_pGameSystem->GetMode() == 1){
-				m_iNo = 1;	// m_iNoを1にする.
+				if (m_pGameSystem->m_nRest > 0){	// 残機がある.
+					m_iNo = 1;	// m_iNoを1にする.
+					m_pGameSystem->m_nRest--;	// 減らす.
+				}
+				else{	// 残機0.
+					m_iNo = 0;	// m_iNoを0にする.
+					m_pGameSystem->m_nRest = 3;	// 3に戻す.
+				}
 			}
 			else if (m_pGameSystem->GetMode() == 2){
 				m_iNo = 2;	// m_iNoを2にする.
