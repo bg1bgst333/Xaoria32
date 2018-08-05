@@ -61,7 +61,8 @@ int CTitleScene::InitGameObjects(){
 
 	// タイトルの作成.
 	m_pTitle = new CTitle(this);	// CTitleオブジェクトを生成(thisを渡す.)し, ポインタをm_pTitleに格納.
-	m_pTitle->Create(160, 60, 320, 240, m_pMainWnd->m_hWnd, IDB_TITLE1, 48, _T("ＭＳ 明朝"));	// m_pTitle->Createでタイトルオブジェクトを作成.
+	//m_pTitle->Create(160, 60, 320, 240, m_pMainWnd->m_hWnd, IDB_TITLE1, 48, _T("ＭＳ 明朝"));	// m_pTitle->Createでタイトルオブジェクトを作成.
+	m_pTitle->Create(0, 60, 640, 240, m_pMainWnd->m_hWnd, IDB_TITLE1, 48, _T("ＭＳ 明朝"));	// m_pTitle->Createでタイトルオブジェクトを作成.
 
 	// セレクトボックスの作成.
 	m_pSelectBox = new CSelectBox(this);	// CSelectBoxオブジェクトを生成(thisを渡す.), ポインタをm_pSelectBoxに格納.
@@ -161,8 +162,9 @@ int CTitleScene::DrawGameObjects(){
 
 	// タイトルの描画.
 	if (m_pTitle != NULL){	// m_pTitleがNULLでない時.
-		m_pTitle->DrawRect(160, 60);	// m_pTitle->DrawRectで(160, 60)の位置に描画.
-		m_pTitle->DrawText(160, 60, 320, 240, _T("Xaoria"), RGB(0xff, 0xff, 0xff));	// m_pTitle->DrawTextでタイトルテキストの描画.
+		//m_pTitle->DrawRect(160, 60);	// m_pTitle->DrawRectで(160, 60)の位置に描画.
+		m_pTitle->DrawRect(0, 60);	// m_pTitle->DrawRectで(0, 60)の位置に描画.
+		//m_pTitle->DrawText(160, 60, 320, 240, _T("Xaoria"), RGB(0xff, 0xff, 0xff));	// m_pTitle->DrawTextでタイトルテキストの描画.
 	}
 
 	// セレクトボックスの描画.
