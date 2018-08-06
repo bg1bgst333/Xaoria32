@@ -104,6 +104,9 @@ int CScene::InitScene(){
 		return -1;	// -1を返して強制終了.
 	}
 
+	// FPSOKはFALSE.
+	m_pGameTime->m_bFPSOK = FALSE;	// FALSEにする.
+
 	// 成功なら0.
 	return 0;	// 0を返す.
 
@@ -124,14 +127,27 @@ int CScene::RunScene(){
 	int iRet = 0;	// iRetを0に初期化.
 	if (m_pGameTime->IsProc()){	// m_pGameTime->IsProcがTRUE.
 
-		// キー状態の取得.
-		CheckKeyboard();	// CheckKeyboardでキーボードのチェック.
+		// FPSが落ち着いたら, ゲーム描画.
+		if (m_pGameTime->m_bFPSOK){	// TRUEの時.
 
-		// 入力や状態から次の状態を計算.
-		iRet = RunProc();	// RunProcで計算処理.
+			// キー状態の取得.
+			CheckKeyboard();	// CheckKeyboardでキーボードのチェック.
 
-		// ゲームオブジェクトの描画.
-		DrawGameObjects();	// DrawGameObjectsでバックバッファへ描画処理.	
+			// 入力や状態から次の状態を計算.
+			iRet = RunProc();	// RunProcで計算処理.
+
+			// ゲームオブジェクトの描画.
+			DrawGameObjects();	// DrawGameObjectsでバックバッファへ描画処理.	
+
+		}
+		else{	// FALSEの時.
+
+			// 落ち着いたら, フラグ変更.
+			if (m_pGameTime->GetRunFPS() >= m_pGameTime->m_dwTargetFPS - 10 && m_pGameTime->GetRunFPS() <= m_pGameTime->m_dwTargetFPS + 10){	// ターゲットから20以内.
+				m_pGameTime->m_bFPSOK = TRUE;	// TRUEにする.
+			}
+
+		}
 
 		// フロントバッファに転送.
 		Present();	// Presentでバックバッファからフロントバッファへ転送.

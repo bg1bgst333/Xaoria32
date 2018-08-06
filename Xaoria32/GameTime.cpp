@@ -17,6 +17,7 @@ CGameTime::CGameTime(){
 	m_dwFPS = 0;	// m_dwFPS‚ğ0‚Å‰Šú‰».
 	m_dwTargetFPS = 0;	// m_dwTargetFPS‚ğ0‚Å‰Šú‰».
 	m_dwRunFPS = 0;	// m_dwRunFPS‚ğ0‚Å‰Šú‰».
+	m_bFPSOK = FALSE;	// m_bFPSOK‚ğFALSE‚Å‰Šú‰».
 
 }
 
@@ -35,6 +36,7 @@ CGameTime::~CGameTime(){
 	m_dwFPS = 0;	// m_dwFPS‚ğ0‚Å‰Šú‰».
 	m_dwTargetFPS = 0;	// m_dwTargetFPS‚ğ0‚Å‰Šú‰».
 	m_dwRunFPS = 0;	// m_dwRunFPS‚ğ0‚Å‰Šú‰».
+	m_bFPSOK = FALSE;	// m_bFPSOK‚ğFALSE‚Å‰Šú‰».
 
 }
 

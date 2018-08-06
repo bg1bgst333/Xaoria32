@@ -26,6 +26,7 @@ class CGameTime{
 		DWORD m_dwFrameStartMilliTime;	// フレーム計測開始時間m_dwFrameStartMilliTime.
 		DWORD m_dwTargetFPS;	// 目標FPS値m_dwTargetFPS.
 		DWORD m_dwRunFPS;	// 実行FPS値m_dwRunFPS.
+		BOOL m_bFPSOK;	// FPSが落ち着いたかどうかのフラグm_bFPSOK.
 
 		// publicメンバ関数
 		// コンストラクタ・デストラクタ
