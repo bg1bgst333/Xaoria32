@@ -251,8 +251,21 @@ int CPlayer::Proc(){
 				|| (px <= ex && ex <= px + pw && py <= ey && ey <= py + ph))	// プレイヤーの右下.
 			{
 				SetState(1);	// 1にする.
+				// ゲームオーバー.
+				//if (((CGameScene *)m_pScene)->m_pMessageArea->m_dwVisibleInterval == 0){	// まだセットされてないなら.
+				//	if (m_pScene->m_pGameSystem->m_nRest == 0){	// 残機なし.
+				//		((CGameScene *)m_pScene)->m_pMessageArea->SetVisibleTimer(5000);	// 5秒.
+				//	}
+				//}
+				// リスタート.
 				if (m_dwRestartInterval == 0){	// まだセットされていないなら.
-					SetRestartTimer(5000);	// 5秒.
+					if (m_pScene->m_pGameSystem->m_nRest == 0){	// 残機なし.
+						((CGameScene *)m_pScene)->m_pMessageArea->SetVisibleTimer(5000);	// 5秒.
+						SetRestartTimer(10000);	// 10秒.
+					}
+					else{
+						SetRestartTimer(5000);	// 5秒.
+					}
 				}
 			}
 		}
@@ -316,6 +329,13 @@ int CPlayer::Proc(){
 		}
 	}
 #endif
+
+	// タイマー経過でゲームオーバー表示.
+	if (((CGameScene *)m_pScene)->m_pMessageArea->m_dwVisibleInterval != 0){	// セットされている.
+		if (((CGameScene *)m_pScene)->m_pMessageArea->IsVisibleElapsed()){	// タイマー経過.
+			((CGameScene *)m_pScene)->m_pMessageArea->m_bVisible = TRUE;	// TRUEにする.
+		}
+	}
 
 	// タイマー経過でリスタート.
 	if (m_dwRestartInterval != 0){	// まだセットされているなら.

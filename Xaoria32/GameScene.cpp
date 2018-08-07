@@ -18,6 +18,7 @@ CGameScene::CGameScene() : CScene(){
 	m_pEnemyMap = NULL;	// m_pEnemyMapにNULLをセット.
 	m_pPlayer = NULL;	// m_pPlayerにNULLをセット.
 	m_pGameTimeBox = NULL;	// m_pGameTimeBoxをNULLで初期化.
+	m_pMessageArea = NULL;	// m_pMessageAreaをNULLで初期化.
 
 }
 
@@ -36,6 +37,7 @@ CGameScene::CGameScene(const CWindow *pWnd) : CScene(pWnd){
 	m_pEnemyMap = NULL;	// m_pEnemyMapにNULLをセット.
 	m_pPlayer = NULL;	// m_pPlayerにNULLをセット.
 	m_pGameTimeBox = NULL;	// m_pGameTimeBoxをNULLで初期化.
+	m_pMessageArea = NULL;	// m_pMessageAreaをNULLで初期化.
 
 }
 
@@ -54,6 +56,7 @@ CGameScene::CGameScene(const CWindow *pWnd, CGameTime *pTime) : CScene(pWnd, pTi
 	m_pEnemyMap = NULL;	// m_pEnemyMapにNULLをセット.
 	m_pPlayer = NULL;	// m_pPlayerにNULLをセット.
 	m_pGameTimeBox = NULL;	// m_pGameTimeBoxをNULLで初期化.
+	m_pMessageArea = NULL;	// m_pMessageAreaをNULLで初期化.
 
 }
 
@@ -72,6 +75,7 @@ CGameScene::CGameScene(const CWindow *pWnd, CGameTime *pTime, CGameSystem *pSyst
 	m_pEnemyMap = NULL;	// m_pEnemyMapにNULLをセット.
 	m_pPlayer = NULL;	// m_pPlayerにNULLをセット.
 	m_pGameTimeBox = NULL;	// m_pGameTimeBoxをNULLで初期化.
+	m_pMessageArea = NULL;	// m_pMessageAreaをNULLで初期化.
 
 }
 
@@ -180,6 +184,10 @@ int CGameScene::InitGameObjects(){
 	m_pGameTimeBox = new CGameTimeBox(this);	// CGameTimeBoxオブジェクトを生成(thisを渡す.), ポインタをm_pGameTimeBoxに格納.
 	m_pGameTimeBox->Create(0, 0, 160, 30, 36, _T("ＭＳ ゴシック"));	// m_pGameTimeBox->Createで作成.
 
+	// メッセージエリアの描画.
+	m_pMessageArea = new CMessageArea(this);	// CMessageAreaオブジェクトを生成(thisを渡す.), ポインタをm_pMessageAreaに格納.
+	m_pMessageArea->Create(300, 200, 300, 100, 32, _T("ＭＳ ゴシック"), 0);	// m_pMessageArea->Createで作成.
+	
 	// iRet.
 	return iRet;	// iRetを返す.
 
@@ -326,6 +334,11 @@ int CGameScene::DrawGameObjects(){
 	}
 #endif
 
+	// メッセージエリアの描画.
+	if (m_pMessageArea != NULL){	// m_pMessageAreaがNULLでない時.
+		m_pMessageArea->DrawMessage(248, 220, _T("GAME OVER"), RGB(0xff, 0x0, 0x0));	// "GAME OVER"を表示.
+	}
+
 	// ゲームタイムボックスの描画.
 	if (m_pGameTimeBox != NULL){	// m_pGameTimeBoxがNULLでない時.
 		m_pGameTimeBox->DrawTime(0, 0, 160, 30, RGB(0x98, 0xfb, 0x98));	// m_pGameTimeBox->DrawTimeで時刻を描画.
@@ -339,6 +352,16 @@ int CGameScene::DrawGameObjects(){
 		m_pMap->DrawScreenRXUY(0, 90, 160, 30, RGB(0x98, 0xfb, 0x98));	// m_pMap->DrawScreenRXUYでスクリーン座標を描画.
 	}
 
+	// ゲームオーバータイマーのデバッグ用.
+#if 0
+	CGameTime *pTime = this->m_pGameTime;
+	DWORD dwNow = pTime->GetSystemTime();
+	DWORD t = dwNow - ((CGameScene *)this)->m_pMessageArea->m_dwVisibleTimerStart;
+	TCHAR tt[128] = {0};
+	_stprintf(tt, _T("%lu"), t);
+	((CGameScene *)this)->m_pGameTimeBox->DrawText(400, 300, 100, 100, tt, RGB(0x0, 0x0, 0x0));
+#endif
+
 	// 基底クラスの処理.
 	return CScene::DrawGameObjects();	// CScene::DrawGameObjectsを呼ぶ.
 
@@ -346,6 +369,13 @@ int CGameScene::DrawGameObjects(){
 
 // ゲームオブジェクトの終了処理.
 int CGameScene::ExitGameObjects(){
+
+	// メッセージエリアの破棄.
+	if (m_pMessageArea != NULL){
+		m_pMessageArea->Destroy();	// m_pMessageArea->Destroyで破棄.
+		delete m_pMessageArea;	// deleteでm_pMessageAreaを解放.
+		m_pMessageArea = NULL;	// m_pMessageAreaにNULLをセット.
+	}
 
 	// ゲームタイムボックスの破棄.
 	if (m_pGameTimeBox != NULL){	// m_pGameTimeBoxがNULLでない時.

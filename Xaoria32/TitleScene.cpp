@@ -67,9 +67,10 @@ int CTitleScene::InitGameObjects(){
 	// セレクトボックスの作成.
 	m_pSelectBox = new CSelectBox(this);	// CSelectBoxオブジェクトを生成(thisを渡す.), ポインタをm_pSelectBoxに格納.
 	m_pSelectBox->Create(160, 300, 320, 120, m_pMainWnd->m_hWnd, IDB_SELECTBOX1, 24, _T("ＭＳ ゴシック"), 20, 32, 32, IDB_CURSOR1);	// m_pSelectBox->Createでセレクトボックスオブジェクトを作成.
-	m_pSelectBox->AddSelectItem(_T("NEW GAME"));	// "NEW GAME"を追加.
-	m_pSelectBox->AddSelectItem(_T("CONTINUE"));	// "CONTINUE"を追加.
-	m_pSelectBox->AddSelectItem(_T("SETTING"));	// "SETTING"を追加.
+	m_pSelectBox->AddSelectItem(_T("PRESS ENTER START"));	// "PRESS ENTER START"を追加.
+	//m_pSelectBox->AddSelectItem(_T("NEW GAME"));	// "NEW GAME"を追加.
+	//m_pSelectBox->AddSelectItem(_T("CONTINUE"));	// "CONTINUE"を追加.
+	//m_pSelectBox->AddSelectItem(_T("SETTING"));	// "SETTING"を追加.
 
 	// ゲームタイムボックスの描画.
 	m_pGameTimeBox = new CGameTimeBox(this);	// CGameTimeBoxオブジェクトを生成(thisを渡す.), ポインタをm_pGameTimeBoxに格納.
@@ -169,9 +170,9 @@ int CTitleScene::DrawGameObjects(){
 
 	// セレクトボックスの描画.
 	if (m_pSelectBox != NULL){	// m_pSelectBoxがNULLでない時.
-		m_pSelectBox->DrawRect(160, 300);	// m_pSelectBox->DrawRectで(160, 300)の位置に描画.
+		m_pSelectBox->DrawRect(120, 300);	// m_pSelectBox->DrawRectで(80, 300)の位置に描画.
 		m_pSelectBox->DrawSelectItemList(115, 0, RGB(0xff, 0xff, 0xff));	// m_pSelectBox->DrawSelectItemListでリスト描画.
-		m_pSelectBox->DrawCursor(80, 0);	// m_pSelectBox->DrawCursorで(80, 0)の位置に描画.
+		m_pSelectBox->DrawCursor(70, -5);	// m_pSelectBox->DrawCursorで(70, -5)の位置に描画.
 	}
 
 	// ゲームタイムボックスの描画.

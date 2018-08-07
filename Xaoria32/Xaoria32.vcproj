@@ -269,6 +269,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\MessageArea.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Player.cpp"
 				>
 			</File>
@@ -420,6 +424,10 @@
 			</File>
 			<File
 				RelativePath=".\MenuWindow.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MessageArea.h"
 				>
 			</File>
 			<File

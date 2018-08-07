@@ -11,6 +11,7 @@
 //#include "Enemy.h"	// CEnemy
 #include "Player.h"	// CPlayer
 #include "GameTimeBox.h"	// CGameTimeBox
+#include "MessageArea.h"	// CMessageArea
 
 // 前方宣言.
 class CScene;	// CScene.
@@ -36,7 +37,8 @@ class CGameScene : public CScene{
 		CEnemyMap *m_pEnemyMap;	// エネミーマップm_pEnemyMap.
 		CPlayer *m_pPlayer;	// プレイヤーm_pPlayer.
 		CGameTimeBox *m_pGameTimeBox;	// ゲームタイムボックスm_pGameTimeBox.
-		
+		CMessageArea *m_pMessageArea;	// メッセージエリアm_pMessageArea.
+
 		// コンストラクタ・デストラクタ
 		CGameScene();	// コンストラクタCGameScene
 		CGameScene(const CWindow *pWnd);	// コンストラクタCGameScene(const CWindow *pWnd)
