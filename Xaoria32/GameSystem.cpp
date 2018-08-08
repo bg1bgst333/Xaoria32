@@ -42,6 +42,7 @@ void CGameSystem::Init(HINSTANCE hInstance){
 	// シェアードリソース生成.
 	m_pSharedResources = new CSharedResources(hInstance);	// CSharedResourcesのコンストラクタにhInstanceを渡して生成.
 	m_nRest = 3;	// 残機は3とする.
+	m_nScore = 0;	// スコアは0とする.
 
 }
 

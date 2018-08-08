@@ -18,6 +18,7 @@ CGameScene::CGameScene() : CScene(){
 	m_pEnemyMap = NULL;	// m_pEnemyMapにNULLをセット.
 	m_pPlayer = NULL;	// m_pPlayerにNULLをセット.
 	m_pGameTimeBox = NULL;	// m_pGameTimeBoxをNULLで初期化.
+	m_pStatusBox = NULL;	// m_pStatusBoxをNULLで初期化.
 	m_pMessageArea = NULL;	// m_pMessageAreaをNULLで初期化.
 
 }
@@ -37,6 +38,7 @@ CGameScene::CGameScene(const CWindow *pWnd) : CScene(pWnd){
 	m_pEnemyMap = NULL;	// m_pEnemyMapにNULLをセット.
 	m_pPlayer = NULL;	// m_pPlayerにNULLをセット.
 	m_pGameTimeBox = NULL;	// m_pGameTimeBoxをNULLで初期化.
+	m_pStatusBox = NULL;	// m_pStatusBoxをNULLで初期化.
 	m_pMessageArea = NULL;	// m_pMessageAreaをNULLで初期化.
 
 }
@@ -56,6 +58,7 @@ CGameScene::CGameScene(const CWindow *pWnd, CGameTime *pTime) : CScene(pWnd, pTi
 	m_pEnemyMap = NULL;	// m_pEnemyMapにNULLをセット.
 	m_pPlayer = NULL;	// m_pPlayerにNULLをセット.
 	m_pGameTimeBox = NULL;	// m_pGameTimeBoxをNULLで初期化.
+	m_pStatusBox = NULL;	// m_pStatusBoxをNULLで初期化.
 	m_pMessageArea = NULL;	// m_pMessageAreaをNULLで初期化.
 
 }
@@ -148,14 +151,14 @@ int CGameScene::InitGameObjects(){
 #endif
 	// エネミー配置.
 #if 0
-	m_pEnemyMap->DeployEnemy(200, 600, 0, 1, 0);	// (200, 600)にエネミー0をライフ1状態0で配置.
-	m_pEnemyMap->DeployEnemy(400, 1000, 0, 1, 0);	// (400, 1000)にエネミー0をライフ1状態0で配置.
-	m_pEnemyMap->DeployEnemy(200, 1400, 0, 1, 0);	// (200, 1400)にエネミー0をライフ1状態0で配置.
-	m_pEnemyMap->DeployEnemy(400, 1800, 0, 1, 0);	// (400, 1800)にエネミー0をライフ1状態0で配置.
-	m_pEnemyMap->DeployEnemy(200, 2200, 0, 1, 0);	// (200, 2200)にエネミー0をライフ1状態0で配置.
-	m_pEnemyMap->DeployEnemy(400, 2600, 0, 1, 0);	// (400, 2600)にエネミー0をライフ1状態0で配置.
-	m_pEnemyMap->DeployEnemy(200, 3000, 0, 1, 0);	// (200, 3000)にエネミー0をライフ1状態0で配置.
-	m_pEnemyMap->DeployEnemy(400, 3400, 0, 1, 0);	// (400, 3400)にエネミー0をライフ1状態0で配置.
+	m_pEnemyMap->DeployEnemy(200, 600, 0, 1, 0, 1);	// (200, 600)にエネミー0をライフ1状態0スコア1で配置.
+	m_pEnemyMap->DeployEnemy(400, 1000, 0, 1, 0, 1);	// (400, 1000)にエネミー0をライフ1状態0スコア1で配置.
+	m_pEnemyMap->DeployEnemy(200, 1400, 0, 1, 0, 1);	// (200, 1400)にエネミー0をライフ1状態0スコア1で配置.
+	m_pEnemyMap->DeployEnemy(400, 1800, 0, 1, 0, 1);	// (400, 1800)にエネミー0をライフ1状態0スコア1で配置.
+	m_pEnemyMap->DeployEnemy(200, 2200, 0, 1, 0, 1);	// (200, 2200)にエネミー0をライフ1状態0スコア1で配置.
+	m_pEnemyMap->DeployEnemy(400, 2600, 0, 1, 0, 1);	// (400, 2600)にエネミー0をライフ1状態0スコア1で配置.
+	m_pEnemyMap->DeployEnemy(200, 3000, 0, 1, 0, 1);	// (200, 3000)にエネミー0をライフ1状態0スコア1で配置.
+	m_pEnemyMap->DeployEnemy(400, 3400, 0, 1, 0, 1);	// (400, 3400)にエネミー0をライフ1状態0スコア1で配置.
 #endif
 #endif
 	//m_pEnemyMap->ExportFileEnemyMapData(_T("testenemymapdata1.bin"));	// エネミーマップデータをファイルにエクスポート.
@@ -183,6 +186,10 @@ int CGameScene::InitGameObjects(){
 	// ゲームタイムボックスの描画.
 	m_pGameTimeBox = new CGameTimeBox(this);	// CGameTimeBoxオブジェクトを生成(thisを渡す.), ポインタをm_pGameTimeBoxに格納.
 	m_pGameTimeBox->Create(0, 0, 160, 30, 36, _T("ＭＳ ゴシック"));	// m_pGameTimeBox->Createで作成.
+
+	// ステータスボックスの描画.
+	m_pStatusBox = new CStatusBox(this);	// CStatusBoxオブジェクトを生成(thisを渡す.), ポインタをm_pStatusBoxに格納.
+	m_pStatusBox->Create(320, 0, 160, 30, 24, _T("ＭＳ ゴシック"));	// m_pStatusBox->Createで作成.
 
 	// メッセージエリアの描画.
 	m_pMessageArea = new CMessageArea(this);	// CMessageAreaオブジェクトを生成(thisを渡す.), ポインタをm_pMessageAreaに格納.
@@ -347,6 +354,12 @@ int CGameScene::DrawGameObjects(){
 		m_pGameTimeBox->DrawFrameIntervalMilliTime(0, 60, 160, 30, RGB(0x98, 0xfb, 0x98));	// m_pGameTimeBox->DrawFrameIntervalMilliTimeでフレーム間隔を描画.
 	}
 
+	// ステータスボックスの描画.
+	if (m_pStatusBox != NULL){	// m_pStatusBoxがNULLでない時.
+		m_pStatusBox->DrawRest(480, 0, 160, 30, RGB(0x0, 0x0, 0xff));	// m_pStatusBox->DrawRestで残機を描画.
+		m_pStatusBox->DrawScore(480, 30, 160, 30, RGB(0x0, 0x0, 0xff));	// m_pStatusBox->DrawScoreでスコアを描画.
+	}
+
 	// マップ情報の描画.
 	if (m_pMap != NULL){	// m_pMapがNULLでなければ.
 		m_pMap->DrawScreenRXUY(0, 90, 160, 30, RGB(0x98, 0xfb, 0x98));	// m_pMap->DrawScreenRXUYでスクリーン座標を描画.
@@ -375,6 +388,13 @@ int CGameScene::ExitGameObjects(){
 		m_pMessageArea->Destroy();	// m_pMessageArea->Destroyで破棄.
 		delete m_pMessageArea;	// deleteでm_pMessageAreaを解放.
 		m_pMessageArea = NULL;	// m_pMessageAreaにNULLをセット.
+	}
+
+	// ステータスボックスの破棄.
+	if (m_pStatusBox != NULL){	// m_pStatusBoxがNULLでない時.
+		m_pStatusBox->Destroy();	// m_pStatusBox->Destroyで破棄.
+		delete m_pStatusBox;	// deleteでm_pStatusBoxを解放.
+		m_pStatusBox = NULL;	// m_pStatusBoxにNULLをセット.
 	}
 
 	// ゲームタイムボックスの破棄.

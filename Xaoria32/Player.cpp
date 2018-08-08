@@ -226,6 +226,7 @@ int CPlayer::Proc(){
 						((CShot *)m_vecpShotList[j])->Set(2);	// 2にセット.
 						pEnemyMap->m_vecEnemyMapDataList[i]->m_nLife--;	// ライフを減らす.
 						if (pEnemyMap->m_vecEnemyMapDataList[i]->m_nLife <= 0){	// 0以下.
+							m_pScene->m_pGameSystem->m_nScore += pEnemyMap->m_vecEnemyMapDataList[i]->m_nScore;	// スコアを加算.
 							pEnemyMap->m_vecEnemyMapDataList[i]->m_nState = 3;	// 状態3.
 						}
 					}

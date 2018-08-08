@@ -1,9 +1,9 @@
 // ヘッダのインクルード
 // 独自のヘッダ
-#include "GameTimeBox.h"	// CGameTimeBoxe
+#include "GameTimeBox.h"	// CGameTimeBox
 
 // コンストラクタCGameTimeBox
-CGameTimeBox::CGameTimeBox(){
+CGameTimeBox::CGameTimeBox() : CGameObject(){
 
 	// メンバの初期化.
 	m_hFont = NULL;	// m_hFontをNULLで初期化.

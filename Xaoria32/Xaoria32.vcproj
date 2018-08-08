@@ -301,6 +301,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\StatusBox.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Title.cpp"
 				>
 			</File>
@@ -460,6 +464,10 @@
 			</File>
 			<File
 				RelativePath=".\Shot.h"
+				>
+			</File>
+			<File
+				RelativePath=".\StatusBox.h"
 				>
 			</File>
 			<File

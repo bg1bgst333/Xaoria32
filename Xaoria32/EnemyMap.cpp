@@ -241,6 +241,8 @@ BOOL CEnemyMap::ExportFileEnemyMapData(LPCTSTR lpctszFileName){
 		pBinaryFile->Write();	// 書き込み.
 		pBinaryFile->Set((BYTE *)&m_vecEnemyMapDataList[i]->m_nState, sizeof(int));	// m_nState.
 		pBinaryFile->Write();	// 書き込み.
+		pBinaryFile->Set((BYTE *)&m_vecEnemyMapDataList[i]->m_nScore, sizeof(int));	// m_nScore.
+		pBinaryFile->Write();	// 書き込み.
 	}
 	delete pBinaryFile;	// 削除.
 	return TRUE;	// TRUEを返す.
@@ -266,7 +268,9 @@ BOOL CEnemyMap::ImportFileEnemyMapData(LPCTSTR lpctszFileName){
 		int iLife = *(int *)pBinaryFile->m_pBytes;	// iLife.
 		pBinaryFile->Read(sizeof(int));	// pBinaryFile->Readで読み込み.
 		int iState = *(int *)pBinaryFile->m_pBytes;	// iState.
-		DeployEnemy(x, y, iEnemyNo, iLife, iState);	// DeployEnemyでエネミーマップデータに追加.
+		pBinaryFile->Read(sizeof(int));	// pBinaryFile->Readで読み込み.
+		int iScore = *(int *)pBinaryFile->m_pBytes;	// iScore.
+		DeployEnemy(x, y, iEnemyNo, iLife, iState, iScore);	// DeployEnemyでエネミーマップデータに追加.
 	}
 	delete pBinaryFile;	// 削除.
 	return TRUE;	// TRUEを返す.
@@ -286,7 +290,8 @@ BOOL CEnemyMap::ImportResourceEnemyMapData(int nID){
 		int iEnemyNo = *(int *)pBinaryResource->Get(sizeof(int));	// iEnemyNo.
 		int iLife = *(int *)pBinaryResource->Get(sizeof(int));	// iEnemyNo.
 		int iState = *(int *)pBinaryResource->Get(sizeof(int));	// iState.
-		DeployEnemy(x, y, iEnemyNo, iLife, iState);	// DeployEnemyでエネミーマップデータに追加.
+		int iScore = *(int *)pBinaryResource->Get(sizeof(int));	// iScore.
+		DeployEnemy(x, y, iEnemyNo, iLife, iState, iScore);	// DeployEnemyでエネミーマップデータに追加.
 	}
 	// バイナリリソースオブジェクトの破棄.
 	delete pBinaryResource;	// pBinaryResourceの終了処理.
@@ -295,7 +300,7 @@ BOOL CEnemyMap::ImportResourceEnemyMapData(int nID){
 }
 
 // エネミー配置.
-void CEnemyMap::DeployEnemy(int x, int y, int iEnemyNo, int iLife, int iState){
+void CEnemyMap::DeployEnemy(int x, int y, int iEnemyNo, int iLife, int iState, int iScore){
 
 	// エネミーマップデータの生成.
 	EnemyMapData *pEMD = new EnemyMapData();	// pEMDの生成.
@@ -305,6 +310,7 @@ void CEnemyMap::DeployEnemy(int x, int y, int iEnemyNo, int iLife, int iState){
 	pEMD->m_nEnemyNo = iEnemyNo;	// エネミー番号.
 	pEMD->m_nLife = iLife;	// ライフ.
 	pEMD->m_nState = iState;	// 状態.
+	pEMD->m_nScore = iScore;	// スコア.
 	pEMD->m_nExplosionAnimation = 0;	// 0.
 	// 追加.
 	m_vecEnemyMapDataList.push_back(pEMD);	// 追加.

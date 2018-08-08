@@ -19,6 +19,7 @@ class CGameSystem{
 		int m_iMode;	// モードm_iMode.
 		CSharedResources *m_pSharedResources;	// CSharedResourcesオブジェクトポインタm_pSharedResources.
 		int m_nRest;	// 残機.
+		int m_nScore;	// スコア.
 
 		// publicメンバ関数
 		// コンストラクタ・デストラクタ
