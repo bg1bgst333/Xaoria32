@@ -99,7 +99,7 @@ BOOL CSelectBox::Create(int x, int y, int iWidth, int iHeight, HWND hWnd, UINT n
 	m_iHeight = iHeight;	// m_iHeightにiHeightをセット.
 
 	// フォントの作成.
-	m_hFont = CreateFont(nFontSize, 0, 0, 0, FW_REGULAR, FALSE, FALSE, FALSE, SHIFTJIS_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, lpctszFontName);	// CreateFontでフォントを作成し, m_hFontに格納.
+	m_hFont = CreateFont(nFontSize, 0, 0, 0, FW_REGULAR, TRUE, FALSE, FALSE, SHIFTJIS_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, lpctszFontName);	// CreateFontでフォントを作成し, m_hFontに格納.
 	if (m_hFont == NULL){	// m_hFontがNULLなら.
 		SelectObject(m_hBackgroundMemDC, m_hOldBackgroundBitmap);	// SelectObjectでm_hOldBackgroundBitmapを選択.
 		m_hOldBackgroundBitmap = NULL;	// m_hOldBackgroundBitmapにNULLをセット.

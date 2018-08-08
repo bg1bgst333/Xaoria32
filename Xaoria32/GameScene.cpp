@@ -343,7 +343,7 @@ int CGameScene::DrawGameObjects(){
 
 	// メッセージエリアの描画.
 	if (m_pMessageArea != NULL){	// m_pMessageAreaがNULLでない時.
-		m_pMessageArea->DrawMessage(248, 220, _T("GAME OVER"), RGB(0xff, 0x0, 0x0));	// "GAME OVER"を表示.
+		m_pMessageArea->DrawMessage(248, 220, _T("GAME OVER"), RGB(223, 85, 32));	// "GAME OVER"を表示.
 	}
 
 	// ゲームタイムボックスの描画.
@@ -356,8 +356,8 @@ int CGameScene::DrawGameObjects(){
 
 	// ステータスボックスの描画.
 	if (m_pStatusBox != NULL){	// m_pStatusBoxがNULLでない時.
-		m_pStatusBox->DrawRest(480, 0, 160, 30, RGB(0x0, 0x0, 0xff));	// m_pStatusBox->DrawRestで残機を描画.
-		m_pStatusBox->DrawScore(480, 30, 160, 30, RGB(0x0, 0x0, 0xff));	// m_pStatusBox->DrawScoreでスコアを描画.
+		m_pStatusBox->DrawRest(330, 0, 320, 30, RGB(170, 170, 255));	// m_pStatusBox->DrawRestで残機を描画.
+		m_pStatusBox->DrawScore(360, 30, 320, 30, RGB(170, 170, 255));	// m_pStatusBox->DrawScoreでスコアを描画.
 	}
 
 	// マップ情報の描画.

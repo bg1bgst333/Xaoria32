@@ -46,7 +46,7 @@ BOOL CMessageArea::Create(int x, int y, int iWidth, int iHeight, int nFontSize, 
 	m_bVisible = FALSE;	// m_bVisible‚ÉFALSE‚ðƒZƒbƒg.
 
 	// ƒtƒHƒ“ƒg‚Ìì¬.
-	m_hFont = CreateFont(nFontSize, 0, 0, 0, FW_REGULAR, FALSE, FALSE, FALSE, SHIFTJIS_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, lpctszFontName);	// CreateFont‚ÅƒtƒHƒ“ƒg‚ðì¬‚µ, m_hFont‚ÉŠi”[.
+	m_hFont = CreateFont(nFontSize, 0, 0, 0, FW_REGULAR, TRUE, FALSE, FALSE, SHIFTJIS_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, lpctszFontName);	// CreateFont‚ÅƒtƒHƒ“ƒg‚ðì¬‚µ, m_hFont‚ÉŠi”[.
 	if (m_hFont == NULL){	// m_hFont‚ªNULL‚È‚ç.
 		return FALSE;	// FALSE‚ð•Ô‚·.
 	}
@@ -95,18 +95,34 @@ void CMessageArea::Destroy(){
 // ƒƒbƒZ[ƒW‚Ì•`‰æDrawMessage.
 void CMessageArea::DrawMessage(int x, int y, LPCTSTR lpctszMessage, COLORREF clrColor){
 
+	// ‰e.
+	// ‘O€”õ.
+	SetTextColor(m_pScene->m_hMemDC, RGB(89, 34, 13));	// SetTextColor‚ÅF‚ÍclrColor‚ðŽw’è.
+	SetBkMode(m_pScene->m_hMemDC, TRANSPARENT);	// SetBkMode‚Å”wŒi‚Í“§‰ß.
+	SelectObject(m_pScene->m_hMemDC, m_hFont);	// SelectObject‚Åm_hFont‚ð‘I‘ð.
+	// •`‰æ.
+	RECT rc = {0};
+	rc.left = x + 2;
+	rc.top = y + 2;
+	rc.right = x + m_iWidth + 2;
+	rc.bottom = y + m_iHeight + 2;
+	if (m_bVisible){	// TRUE‚È‚ç•\Ž¦.
+		::DrawText(m_pScene->m_hMemDC, lpctszMessage, _tcslen(lpctszMessage), &rc, DT_LEFT | DT_SINGLELINE);	// DrawText‚Å•`‰æ.
+	}
+
+	// ƒƒCƒ“ƒeƒLƒXƒg.
 	// ‘O€”õ.
 	SetTextColor(m_pScene->m_hMemDC, clrColor);	// SetTextColor‚ÅF‚ÍclrColor‚ðŽw’è.
 	SetBkMode(m_pScene->m_hMemDC, TRANSPARENT);	// SetBkMode‚Å”wŒi‚Í“§‰ß.
 	SelectObject(m_pScene->m_hMemDC, m_hFont);	// SelectObject‚Åm_hFont‚ð‘I‘ð.
 	// •`‰æ.
-	RECT rc = {0};
-	rc.left = x;
-	rc.top = y;
-	rc.right = x + m_iWidth;
-	rc.bottom = y + m_iHeight;
+	RECT rc2 = {0};
+	rc2.left = x;
+	rc2.top = y;
+	rc2.right = x + m_iWidth;
+	rc2.bottom = y + m_iHeight;
 	if (m_bVisible){	// TRUE‚È‚ç•\Ž¦.
-		::DrawText(m_pScene->m_hMemDC, lpctszMessage, _tcslen(lpctszMessage), &rc, DT_LEFT | DT_SINGLELINE);	// DrawText‚Å•`‰æ.
+		::DrawText(m_pScene->m_hMemDC, lpctszMessage, _tcslen(lpctszMessage), &rc2, DT_LEFT | DT_SINGLELINE);	// DrawText‚Å•`‰æ.
 	}
 
 }

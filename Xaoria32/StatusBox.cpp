@@ -35,7 +35,7 @@ BOOL CStatusBox::Create(int x, int y, int iWidth, int iHeight, int nFontSize, LP
 	m_iHeight = iHeight;	// m_iHeightにiHeightをセット.
 
 	// フォントの作成.
-	m_hFont = CreateFont(nFontSize, 0, 0, 0, FW_REGULAR, FALSE, FALSE, FALSE, SHIFTJIS_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, lpctszFontName);	// CreateFontでフォントを作成し, m_hFontに格納.
+	m_hFont = CreateFont(nFontSize, 0, 0, 0, FW_REGULAR, TRUE, FALSE, FALSE, SHIFTJIS_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY, DEFAULT_PITCH, lpctszFontName);	// CreateFontでフォントを作成し, m_hFontに格納.
 	if (m_hFont == NULL){	// m_hFontがNULLなら.
 		return FALSE;	// FALSEを返す.
 	}
@@ -82,7 +82,8 @@ void CStatusBox::DrawRest(int x, int y, int iWidth, int iHeight, COLORREF clrCol
 
 	// 残機を取得.
 	TCHAR tszRest[256] = {0};	// TCHAR配列tszRestを{0}で初期化.
-	_stprintf(tszRest, _T("REST : %lu"), m_pScene->m_pGameSystem->m_nRest);	// _stprintfでm_pScene->m_pGameSystem->m_nRestからtszRestに変換.
+	_stprintf(tszRest, _T("REST : %02lu"), m_pScene->m_pGameSystem->m_nRest);	// _stprintfでm_pScene->m_pGameSystem->m_nRestからtszRestに変換.
+	DrawText(x + 2, y + 2, iWidth, iHeight, tszRest, RGB(0, 0, 115));	// DrawTextで残機を描画.
 	DrawText(x, y, iWidth, iHeight, tszRest, clrColor);	// DrawTextで残機を描画.
 
 }
@@ -92,7 +93,8 @@ void CStatusBox::DrawScore(int x, int y, int iWidth, int iHeight, COLORREF clrCo
 
 	// スコアを取得.
 	TCHAR tszScore[256] = {0};	// TCHAR配列tszScoreを{0}で初期化.
-	_stprintf(tszScore, _T("SCORE: %lu"), m_pScene->m_pGameSystem->m_nScore);	// _stprintfでm_pScene->m_pGameSystem->m_nScoreからtszScoreに変換.
+	_stprintf(tszScore, _T("SCORE : %08lu"), m_pScene->m_pGameSystem->m_nScore);	// _stprintfでm_pScene->m_pGameSystem->m_nScoreからtszScoreに変換.
+	DrawText(x + 2, y + 2, iWidth, iHeight, tszScore, RGB(0, 0, 115));	// DrawTextでスコアを描画.
 	DrawText(x, y, iWidth, iHeight, tszScore, clrColor);	// DrawTextでスコアを描画.
 
 }
