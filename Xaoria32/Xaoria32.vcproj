@@ -197,6 +197,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\cpp_string_utility.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Enemies.cpp"
 				>
 			</File>
@@ -305,6 +309,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\TextFile.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Title.cpp"
 				>
 			</File>
@@ -344,6 +352,10 @@
 			</File>
 			<File
 				RelativePath=".\Character.h"
+				>
+			</File>
+			<File
+				RelativePath=".\cpp_string_utility.h"
 				>
 			</File>
 			<File
@@ -468,6 +480,10 @@
 			</File>
 			<File
 				RelativePath=".\StatusBox.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TextFile.h"
 				>
 			</File>
 			<File

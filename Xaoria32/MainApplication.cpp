@@ -122,7 +122,7 @@ int CMainApplication::Main(){
 				}
 				else{	// 残機0.
 					m_iNo = 0;	// m_iNoを0にする.
-					// スコアログはこの辺で書き込まないといけない.
+					m_pGameSystem->AppendScore(m_pMainWnd->m_hWnd);	// スコアを出力.
 					m_pGameSystem->m_nRest = 3;	// 3に戻す.(ここがあるから最初からやる時, 3機に戻ってる.)
 					m_pGameSystem->m_nScore = 0;	// 同様に0に戻す.
 				}

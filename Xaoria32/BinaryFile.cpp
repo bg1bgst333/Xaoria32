@@ -142,6 +142,24 @@ BOOL CBinaryFile::Write() {
 
 }
 
+// 指定のバイナリファイルに追加書き込み.
+BOOL CBinaryFile::Append(LPCTSTR lpctszFileName){
+	
+	// ファイルのオープン
+	BOOL bRet = Open(lpctszFileName, FILE_APPEND_DATA, OPEN_ALWAYS);	// Openで指定のファイルを開く.
+	if (bRet) {	// 成功.
+
+		// ファイルの書き込み.
+		::SetFilePointer(m_hFile, 0, NULL, FILE_END);	// SetFilePointerで末尾に.
+		CFile::Write(m_pBytes, m_dwSize);	// CFile::Writeでデータを書き込む.
+
+	}
+
+	// bRetで成功かどうかがわかる.
+	return bRet;	// bRetを返す.
+
+}
+
 // 全部一斉に書き込むバッファのセット.
 void CBinaryFile::Set(BYTE * pBytes, DWORD dwSize) {
 

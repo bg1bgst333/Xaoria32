@@ -8,6 +8,7 @@
 #include <windows.h>	// 標準WindowsAPI
 // 独自のヘッダ
 #include "SharedResources.h"	// CSharedResources
+#include "TextFile.h"	// CTextFile
 
 // ゲームシステムクラスCGameSystem
 class CGameSystem{
@@ -28,6 +29,7 @@ class CGameSystem{
 		// メンバ関数
 		void SetMode(int iMode);	// モードの設定SetMode.
 		int GetMode();	// モードの取得GetMode.
+		void AppendScore(HWND hWnd);	// スコアを出力AppendScore.
 		void Init(HINSTANCE hInstance);	// 初期化.
 		void Exit();	// 終了処理.
 
