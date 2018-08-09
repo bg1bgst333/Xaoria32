@@ -99,6 +99,7 @@ BOOL CMap::Create(int iChipWidth, int iChipHeight, int iChipCountX, int iChipCou
 		for (int x = 1; x < m_iChipCountX + 1; x++){	// ‰¡•ûŒü.
 			m_ppMapDataMatrix[y][x].m_nID = IDB_SHARED1;
 			if (x <= 2){
+				/*
 				m_ppMapDataMatrix[y][x].m_iDestX = x - 1;
 				m_ppMapDataMatrix[y][x].m_iDestY = y - 1;
 				m_ppMapDataMatrix[y][x].m_iSrcX = y - 1;
@@ -107,6 +108,11 @@ BOOL CMap::Create(int iChipWidth, int iChipHeight, int iChipCountX, int iChipCou
 					m_ppMapDataMatrix[y][x].m_iSrcX = y - 11;
 					m_ppMapDataMatrix[y][x].m_iSrcY = 1;
 				}
+				*/
+				m_ppMapDataMatrix[y][x].m_iDestX = x - 1;
+				m_ppMapDataMatrix[y][x].m_iDestY = y - 1;
+				m_ppMapDataMatrix[y][x].m_iSrcX = 0;
+				m_ppMapDataMatrix[y][x].m_iSrcY = 2;
 			}
 			else{
 				m_ppMapDataMatrix[y][x].m_iDestX = x - 1;

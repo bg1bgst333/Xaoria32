@@ -22,6 +22,7 @@ CPlayer::CPlayer() : CCharacter(){
 	m_pExplosion = NULL;	// m_pExplosionにNULLをセット.
 	m_dwRestartInterval = 0;	// m_dwRestartIntervalに0をセット.
 	m_dwRestartTimerStart = 0;	// m_dwRestartTimerStartに0をセット.
+	m_bClear = FALSE;
 
 }
 
@@ -40,6 +41,7 @@ CPlayer::CPlayer(CScene *pScene) : CCharacter(pScene){
 	m_pExplosion = NULL;	// m_pExplosionにNULLをセット.
 	m_dwRestartInterval = 0;	// m_dwRestartIntervalに0をセット.
 	m_dwRestartTimerStart = 0;	// m_dwRestartTimerStartに0をセット.
+	m_bClear = FALSE;
 
 }
 
@@ -70,6 +72,7 @@ void CPlayer::Destroy(){
 	}
 	m_vecpShotList.clear();	// クリア.
 	m_nState = 0;	// m_nStateに0をセット.
+	m_bClear = FALSE;
 
 	// エクスプロージョンの破棄.
 	if (m_pExplosion != NULL){	// m_pExplosionがNULLでない.
@@ -198,6 +201,7 @@ int CPlayer::Proc(){
 			m = 0;
 		}
 	}
+	BOOL bClear = TRUE;
 	// 当たり判定.
 	CGameScene *pGameScene = (CGameScene *)m_pScene;	// pGameSceneにキャスト.
 	CEnemyMap *pEnemyMap = pGameScene->m_pEnemyMap;	// pEnemyMapを取得.
@@ -270,6 +274,9 @@ int CPlayer::Proc(){
 				}
 			}
 		}
+		if (pEnemyMap->m_vecEnemyMapDataList[i]->m_nState <= 1){
+			bClear = FALSE;
+		}
 	}
 #else
 	// ショットの描画.
@@ -330,6 +337,15 @@ int CPlayer::Proc(){
 		}
 	}
 #endif
+	if (bClear){
+		if (m_dwRestartInterval == 0){	// まだセットされていないなら.
+			m_bClear = TRUE;
+			((CGameScene *)m_pScene)->m_pMessageArea->SetVisibleTimer(5000);	// 5秒.
+			SetRestartTimer(10000);	// 10秒.
+			m_pScene->m_pGameSystem->m_nRest = 0;
+			bClear = FALSE;
+		}
+	}
 
 	// タイマー経過でゲームオーバー表示.
 	if (((CGameScene *)m_pScene)->m_pMessageArea->m_dwVisibleInterval != 0){	// セットされている.

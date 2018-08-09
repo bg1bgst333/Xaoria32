@@ -177,10 +177,10 @@ int CTitleScene::DrawGameObjects(){
 
 	// ゲームタイムボックスの描画.
 	if (m_pGameTimeBox != NULL){	// m_pGameTimeBoxがNULLでない時.
-		m_pGameTimeBox->DrawTime(0, 0, 160, 30, RGB(0xff, 0xff, 0xff));	// m_pGameTimeBox->DrawTimeで時刻を描画.
-		//m_pGameTimeBox->DrawFPS(0, 30, 160, 30, RGB(0xff, 0xff, 0xff));	// m_pGameTimeBox->DrawFPSでFPSを描画.
-		m_pGameTimeBox->DrawRunFPS(0, 30, 160, 30, RGB(0xff, 0xff, 0xff));	// m_pGameTimeBox->DrawRunFPSで実行PFSを描画.
-		m_pGameTimeBox->DrawFrameIntervalMilliTime(0, 60, 160, 30, RGB(0xff, 0xff, 0xff));	// m_pGameTimeBox->DrawFrameIntervalMilliTimeでフレーム間隔を描画.
+		//m_pGameTimeBox->DrawTime(0, 0, 160, 30, RGB(0xff, 0xff, 0xff));	// m_pGameTimeBox->DrawTimeで時刻を描画.
+		////m_pGameTimeBox->DrawFPS(0, 30, 160, 30, RGB(0xff, 0xff, 0xff));	// m_pGameTimeBox->DrawFPSでFPSを描画.
+		//m_pGameTimeBox->DrawRunFPS(0, 30, 160, 30, RGB(0xff, 0xff, 0xff));	// m_pGameTimeBox->DrawRunFPSで実行PFSを描画.
+		//m_pGameTimeBox->DrawFrameIntervalMilliTime(0, 60, 160, 30, RGB(0xff, 0xff, 0xff));	// m_pGameTimeBox->DrawFrameIntervalMilliTimeでフレーム間隔を描画.
 	}
 
 	// 常に成功なので0.

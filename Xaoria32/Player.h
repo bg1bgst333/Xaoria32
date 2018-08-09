@@ -25,6 +25,7 @@ class CPlayer : public CCharacter{
 		int m_nState;	// 状態.
 		DWORD m_dwRestartInterval;	// リスタート間隔m_dwRestartInterval.
 		DWORD m_dwRestartTimerStart;	// リスタートタイマー開始時刻m_dwRestartTimerStart.
+		BOOL m_bClear;
 
 		// publicメンバ関数
 		// コンストラクタ・デストラクタ

@@ -213,13 +213,17 @@ int CGameScene::InitGameObjects(){
 	m_pEnemyMap->DeployEnemy(112+64*4, 720+320, 0, 1, 0, 100, 0);
 	m_pEnemyMap->DeployEnemy(112+64*5, 720+320, 0, 1, 0, 100, 0);
 
-	m_pEnemyMap->DeployEnemy(144, 720+480, 0, 1, 0, 100, 5);
-	m_pEnemyMap->DeployEnemy(144+64, 720+480, 0, 1, 0, 100, 5);
-	m_pEnemyMap->DeployEnemy(144+64*2, 720+480, 0, 1, 0, 100, 5);
-	m_pEnemyMap->DeployEnemy(144+64*3, 720+480, 0, 1, 0, 100, 5);
+	m_pEnemyMap->DeployEnemy(144, 720+480, 3, 2, 0, 200, 5);
+	m_pEnemyMap->DeployEnemy(144+64, 720+480, 3, 2, 0, 200, 5);
+	m_pEnemyMap->DeployEnemy(144+64*2, 720+480, 3, 2, 0, 200, 5);
+	m_pEnemyMap->DeployEnemy(144+64*3, 720+480, 3, 2, 0, 200, 5);
 	
 	m_pEnemyMap->DeployEnemy(128, 720+640, 1, 2, 0, 200, 2);
 	m_pEnemyMap->DeployEnemy(640 - 160, 720+800, 1, 2, 0, 200, 2);
+	
+	m_pEnemyMap->DeployEnemy(256, 720+840, 3, 2, 0, 200, 5);
+	m_pEnemyMap->DeployEnemy(640 - 288, 720+920, 3, 2, 0, 200, 5);
+
 	m_pEnemyMap->DeployEnemy(128, 720+960, 1, 2, 0, 200, 2);
 	m_pEnemyMap->DeployEnemy(640 - 160, 720+1120, 1, 2, 0, 200, 2);
 
@@ -233,7 +237,20 @@ int CGameScene::InitGameObjects(){
 	m_pEnemyMap->DeployEnemy(208+64+64*2, 720+1600, 2, 3, 0, 300, 3);
 	m_pEnemyMap->DeployEnemy(208+64+64*3, 720+1600, 2, 3, 0, 300, 3);
 
-	m_pEnemyMap->DeployEnemy(320-32, 720+2240, 5, 50, 0, 5000, 4);
+	m_pEnemyMap->DeployEnemy(320-32, 720+2240, 5, 100, 0, 10000, 4);
+
+	m_pEnemyMap->DeployEnemy(320-64, 720+2240, 3, 2, 0, 200, 5);
+	m_pEnemyMap->DeployEnemy(320-64, 720+2240+80, 3, 2, 0, 200, 5);
+	m_pEnemyMap->DeployEnemy(320-64, 720+2240+80*2, 3, 2, 0, 200, 5);
+	m_pEnemyMap->DeployEnemy(320-64, 720+2240+80*3, 3, 2, 0, 200, 5);
+	m_pEnemyMap->DeployEnemy(320-64, 720+2240+80*4, 3, 2, 0, 200, 5);
+	m_pEnemyMap->DeployEnemy(320-64, 720+2240+80*5, 3, 2, 0, 200, 5);
+	m_pEnemyMap->DeployEnemy(320-64, 720+2240+80*6, 3, 2, 0, 200, 5);
+	m_pEnemyMap->DeployEnemy(320-64, 720+2240+80*7, 3, 2, 0, 200, 5);
+	m_pEnemyMap->DeployEnemy(320-64, 720+2240+80*8, 3, 2, 0, 200, 5);
+	m_pEnemyMap->DeployEnemy(320-64, 720+2240+80*9, 3, 2, 0, 200, 5);
+	m_pEnemyMap->DeployEnemy(320-64, 720+2240+80*10, 3, 2, 0, 200, 5);
+	m_pEnemyMap->DeployEnemy(320-64, 720+2240+80*11, 3, 2, 0, 200, 5);
 
 #endif
 #endif
@@ -419,15 +436,20 @@ int CGameScene::DrawGameObjects(){
 
 	// メッセージエリアの描画.
 	if (m_pMessageArea != NULL){	// m_pMessageAreaがNULLでない時.
-		m_pMessageArea->DrawMessage(248, 220, _T("GAME OVER"), RGB(223, 85, 32));	// "GAME OVER"を表示.
+		if (m_pPlayer->m_bClear){
+			m_pMessageArea->DrawMessage(248, 220, _T("GAME CLEAR"), RGB(248, 213, 48));	// "GAME CLEAR"を表示.
+		}
+		else{
+			m_pMessageArea->DrawMessage(248, 220, _T("GAME OVER"), RGB(223, 85, 32));	// "GAME OVER"を表示.
+		}
 	}
 
 	// ゲームタイムボックスの描画.
 	if (m_pGameTimeBox != NULL){	// m_pGameTimeBoxがNULLでない時.
-		m_pGameTimeBox->DrawTime(0, 0, 160, 30, RGB(0x98, 0xfb, 0x98));	// m_pGameTimeBox->DrawTimeで時刻を描画.
-		//m_pGameTimeBox->DrawFPS(0, 30, 160, 30, RGB(0x98, 0xfb, 0x98));	// m_pGameTimeBox->DrawFPSでFPSを描画.
-		m_pGameTimeBox->DrawRunFPS(0, 30, 160, 30, RGB(0x98, 0xfb, 0x98));	// m_pGameTimeBox->DrawRunFPSで実行PFSを描画.
-		m_pGameTimeBox->DrawFrameIntervalMilliTime(0, 60, 160, 30, RGB(0x98, 0xfb, 0x98));	// m_pGameTimeBox->DrawFrameIntervalMilliTimeでフレーム間隔を描画.
+		//m_pGameTimeBox->DrawTime(0, 0, 160, 30, RGB(0x98, 0xfb, 0x98));	// m_pGameTimeBox->DrawTimeで時刻を描画.
+		////m_pGameTimeBox->DrawFPS(0, 30, 160, 30, RGB(0x98, 0xfb, 0x98));	// m_pGameTimeBox->DrawFPSでFPSを描画.
+		//m_pGameTimeBox->DrawRunFPS(0, 30, 160, 30, RGB(0x98, 0xfb, 0x98));	// m_pGameTimeBox->DrawRunFPSで実行PFSを描画.
+		//m_pGameTimeBox->DrawFrameIntervalMilliTime(0, 60, 160, 30, RGB(0x98, 0xfb, 0x98));	// m_pGameTimeBox->DrawFrameIntervalMilliTimeでフレーム間隔を描画.
 	}
 
 	// ステータスボックスの描画.
@@ -438,7 +460,7 @@ int CGameScene::DrawGameObjects(){
 
 	// マップ情報の描画.
 	if (m_pMap != NULL){	// m_pMapがNULLでなければ.
-		m_pMap->DrawScreenRXUY(0, 90, 160, 30, RGB(0x98, 0xfb, 0x98));	// m_pMap->DrawScreenRXUYでスクリーン座標を描画.
+		//m_pMap->DrawScreenRXUY(0, 90, 160, 30, RGB(0x98, 0xfb, 0x98));	// m_pMap->DrawScreenRXUYでスクリーン座標を描画.
 	}
 
 	// ゲームオーバータイマーのデバッグ用.
