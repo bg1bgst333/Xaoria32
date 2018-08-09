@@ -198,40 +198,42 @@ int CGameScene::InitGameObjects(){
 	m_pEnemyMap->DeployEnemy(200, 3000, 0, 1, 0, 1);	// (200, 3000)にエネミー0をライフ1状態0スコア1で配置.
 	m_pEnemyMap->DeployEnemy(400, 3400, 0, 1, 0, 1);	// (400, 3400)にエネミー0をライフ1状態0スコア1で配置.
 	*/
-	m_pEnemyMap->DeployEnemy(112+64, 720, 0, 1, 0, 100);
-	m_pEnemyMap->DeployEnemy(112+64*2, 720, 0, 1, 0, 100);
-	m_pEnemyMap->DeployEnemy(112+64*3, 720, 0, 1, 0, 100);
-	m_pEnemyMap->DeployEnemy(112+64*4, 720, 0, 1, 0, 100);
-	m_pEnemyMap->DeployEnemy(112+64*5, 720, 0, 1, 0, 100);
-	m_pEnemyMap->DeployEnemy(144+64, 720+160, 0, 1, 0, 100);
-	m_pEnemyMap->DeployEnemy(144+64*2, 720+160, 0, 1, 0, 100);
-	m_pEnemyMap->DeployEnemy(144+64*3, 720+160, 0, 1, 0, 100);
-	m_pEnemyMap->DeployEnemy(144+64*4, 720+160, 0, 1, 0, 100);
-	m_pEnemyMap->DeployEnemy(112+64, 720+320, 0, 1, 0, 100);
-	m_pEnemyMap->DeployEnemy(112+64*2, 720+320, 0, 1, 0, 100);
-	m_pEnemyMap->DeployEnemy(112+64*3, 720+320, 0, 1, 0, 100);
-	m_pEnemyMap->DeployEnemy(112+64*4, 720+320, 0, 1, 0, 100);
-	m_pEnemyMap->DeployEnemy(112+64*5, 720+320, 0, 1, 0, 100);
-	m_pEnemyMap->DeployEnemy(144+64, 720+480, 0, 1, 0, 100);
-	m_pEnemyMap->DeployEnemy(144+64*2, 720+480, 0, 1, 0, 100);
-	m_pEnemyMap->DeployEnemy(144+64*3, 720+480, 0, 1, 0, 100);
-	m_pEnemyMap->DeployEnemy(144+64*4, 720+480, 0, 1, 0, 100);
-	
-	m_pEnemyMap->DeployEnemy(128, 720+640, 1, 2, 0, 200);
-	m_pEnemyMap->DeployEnemy(640 - 160, 720+800, 1, 2, 0, 200);
-	m_pEnemyMap->DeployEnemy(128, 720+960, 1, 2, 0, 200);
-	m_pEnemyMap->DeployEnemy(640 - 160, 720+1120, 1, 2, 0, 200);
+	m_pEnemyMap->DeployEnemy(112+64, 720, 0, 1, 0, 100, 0);
+	m_pEnemyMap->DeployEnemy(112+64*2, 720, 0, 1, 0, 100, 0);
+	m_pEnemyMap->DeployEnemy(112+64*3, 720, 0, 1, 0, 100, 0);
+	m_pEnemyMap->DeployEnemy(112+64*4, 720, 0, 1, 0, 100, 0);
+	m_pEnemyMap->DeployEnemy(112+64*5, 720, 0, 1, 0, 100, 0);
+	m_pEnemyMap->DeployEnemy(144+64, 720+160, 0, 1, 0, 100, 0);
+	m_pEnemyMap->DeployEnemy(144+64*2, 720+160, 0, 1, 0, 100, 0);
+	m_pEnemyMap->DeployEnemy(144+64*3, 720+160, 0, 1, 0, 100, 0);
+	m_pEnemyMap->DeployEnemy(144+64*4, 720+160, 0, 1, 0, 100, 0);
+	m_pEnemyMap->DeployEnemy(112+64, 720+320, 0, 1, 0, 100, 0);
+	m_pEnemyMap->DeployEnemy(112+64*2, 720+320, 0, 1, 0, 100, 0);
+	m_pEnemyMap->DeployEnemy(112+64*3, 720+320, 0, 1, 0, 100, 0);
+	m_pEnemyMap->DeployEnemy(112+64*4, 720+320, 0, 1, 0, 100, 0);
+	m_pEnemyMap->DeployEnemy(112+64*5, 720+320, 0, 1, 0, 100, 0);
 
-	m_pEnemyMap->DeployEnemy(208-64, 720+1280, 2, 3, 0, 300);
-	m_pEnemyMap->DeployEnemy(208-64+64, 720+1280, 2, 3, 0, 300);
-	m_pEnemyMap->DeployEnemy(208-64+64*2, 720+1280, 2, 3, 0, 300);
-	m_pEnemyMap->DeployEnemy(208-64+64*3, 720+1280, 2, 3, 0, 300);
+	m_pEnemyMap->DeployEnemy(144, 720+480, 0, 1, 0, 100, 5);
+	m_pEnemyMap->DeployEnemy(144+64, 720+480, 0, 1, 0, 100, 5);
+	m_pEnemyMap->DeployEnemy(144+64*2, 720+480, 0, 1, 0, 100, 5);
+	m_pEnemyMap->DeployEnemy(144+64*3, 720+480, 0, 1, 0, 100, 5);
 	
-	m_pEnemyMap->DeployEnemy(208+64, 720+1600, 2, 3, 0, 300);
-	m_pEnemyMap->DeployEnemy(208+64+64, 720+1600, 2, 3, 0, 300);
-	m_pEnemyMap->DeployEnemy(208+64+64*2, 720+1600, 2, 3, 0, 300);
-	m_pEnemyMap->DeployEnemy(208+64+64*3, 720+1600, 2, 3, 0, 300);
-	m_pEnemyMap->DeployEnemy(320-32, 720+2240, 5, 10, 0, 1000);
+	m_pEnemyMap->DeployEnemy(128, 720+640, 1, 2, 0, 200, 2);
+	m_pEnemyMap->DeployEnemy(640 - 160, 720+800, 1, 2, 0, 200, 2);
+	m_pEnemyMap->DeployEnemy(128, 720+960, 1, 2, 0, 200, 2);
+	m_pEnemyMap->DeployEnemy(640 - 160, 720+1120, 1, 2, 0, 200, 2);
+
+	m_pEnemyMap->DeployEnemy(208-64, 720+1280, 2, 3, 0, 300, 1);
+	m_pEnemyMap->DeployEnemy(208-64+64, 720+1280, 2, 3, 0, 300, 1);
+	m_pEnemyMap->DeployEnemy(208-64+64*2, 720+1280, 2, 3, 0, 300, 1);
+	m_pEnemyMap->DeployEnemy(208-64+64*3, 720+1280, 2, 3, 0, 300, 1);
+	
+	m_pEnemyMap->DeployEnemy(208+64, 720+1600, 2, 3, 0, 300, 3);
+	m_pEnemyMap->DeployEnemy(208+64+64, 720+1600, 2, 3, 0, 300, 3);
+	m_pEnemyMap->DeployEnemy(208+64+64*2, 720+1600, 2, 3, 0, 300, 3);
+	m_pEnemyMap->DeployEnemy(208+64+64*3, 720+1600, 2, 3, 0, 300, 3);
+
+	m_pEnemyMap->DeployEnemy(320-32, 720+2240, 5, 50, 0, 5000, 4);
 
 #endif
 #endif

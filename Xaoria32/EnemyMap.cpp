@@ -248,6 +248,8 @@ BOOL CEnemyMap::ExportFileEnemyMapData(LPCTSTR lpctszFileName){
 		pBinaryFile->Write();	// 書き込み.
 		pBinaryFile->Set((BYTE *)&m_vecEnemyMapDataList[i]->m_nScore, sizeof(int));	// m_nScore.
 		pBinaryFile->Write();	// 書き込み.
+		pBinaryFile->Set((BYTE *)&m_vecEnemyMapDataList[i]->m_nMoveType, sizeof(int));	// m_nMoveType.
+		pBinaryFile->Write();	// 書き込み.
 	}
 	delete pBinaryFile;	// 削除.
 	return TRUE;	// TRUEを返す.
@@ -275,7 +277,9 @@ BOOL CEnemyMap::ImportFileEnemyMapData(LPCTSTR lpctszFileName){
 		int iState = *(int *)pBinaryFile->m_pBytes;	// iState.
 		pBinaryFile->Read(sizeof(int));	// pBinaryFile->Readで読み込み.
 		int iScore = *(int *)pBinaryFile->m_pBytes;	// iScore.
-		DeployEnemy(x, y, iEnemyNo, iLife, iState, iScore);	// DeployEnemyでエネミーマップデータに追加.
+		pBinaryFile->Read(sizeof(int));	// pBinaryFile->Readで読み込み.
+		int iMoveType = *(int *)pBinaryFile->m_pBytes;	// iMoveType.
+		DeployEnemy(x, y, iEnemyNo, iLife, iState, iScore, iMoveType);	// DeployEnemyでエネミーマップデータに追加.
 	}
 	delete pBinaryFile;	// 削除.
 	return TRUE;	// TRUEを返す.
@@ -296,7 +300,8 @@ BOOL CEnemyMap::ImportResourceEnemyMapData(int nID){
 		int iLife = *(int *)pBinaryResource->Get(sizeof(int));	// iEnemyNo.
 		int iState = *(int *)pBinaryResource->Get(sizeof(int));	// iState.
 		int iScore = *(int *)pBinaryResource->Get(sizeof(int));	// iScore.
-		DeployEnemy(x, y, iEnemyNo, iLife, iState, iScore);	// DeployEnemyでエネミーマップデータに追加.
+		int iMoveType = *(int *)pBinaryResource->Get(sizeof(int));	// iMoveType.
+		DeployEnemy(x, y, iEnemyNo, iLife, iState, iScore, iMoveType);	// DeployEnemyでエネミーマップデータに追加.
 	}
 	// バイナリリソースオブジェクトの破棄.
 	delete pBinaryResource;	// pBinaryResourceの終了処理.
@@ -305,7 +310,7 @@ BOOL CEnemyMap::ImportResourceEnemyMapData(int nID){
 }
 
 // エネミー配置.
-void CEnemyMap::DeployEnemy(int x, int y, int iEnemyNo, int iLife, int iState, int iScore){
+void CEnemyMap::DeployEnemy(int x, int y, int iEnemyNo, int iLife, int iState, int iScore, int iMoveType){
 
 	// エネミーマップデータの生成.
 	EnemyMapData *pEMD = new EnemyMapData();	// pEMDの生成.
@@ -317,6 +322,9 @@ void CEnemyMap::DeployEnemy(int x, int y, int iEnemyNo, int iLife, int iState, i
 	pEMD->m_nState = iState;	// 状態.
 	pEMD->m_nScore = iScore;	// スコア.
 	pEMD->m_nExplosionAnimation = 0;	// 0.
+	pEMD->m_nMoveType = iMoveType;	// 動作タイプ.
+	pEMD->m_nMoveState = 0;	// 0.
+	pEMD->m_nMoveValue = 0;	// 0.
 	// 追加.
 	m_vecEnemyMapDataList.push_back(pEMD);	// 追加.
 
@@ -332,6 +340,57 @@ int CEnemyMap::Proc(){
 		int iScreenUY = pMap->m_iScreenUY;	// スクリーン座標y.
 		if (pGameScene != NULL && pMap != NULL){	// どちらもNULLでない.
 			for (int i = 0; i < m_vecEnemyMapDataList.size(); i++){
+				if (m_vecEnemyMapDataList[i]->m_nState == 1){	// 表示時のみ.
+					if (m_vecEnemyMapDataList[i]->m_nMoveType == 0){	// 移動タイプ0.
+						// 移動しない.
+					}
+					else if (m_vecEnemyMapDataList[i]->m_nMoveType == 1){	// 移動タイプ1.
+						m_vecEnemyMapDataList[i]->m_x++;	// 右へ移動.
+					}
+					else if (m_vecEnemyMapDataList[i]->m_nMoveType == 2){	// 移動タイプ2.
+						m_vecEnemyMapDataList[i]->m_y--;	// 下へ移動.(下からの通算位置なので--で下がる.)
+					}
+					else if (m_vecEnemyMapDataList[i]->m_nMoveType == 3){	// 移動タイプ3.
+						m_vecEnemyMapDataList[i]->m_x--;	// 左へ移動.
+					}
+					else if (m_vecEnemyMapDataList[i]->m_nMoveType == 4){	// 移動タイプ4.
+						if (m_vecEnemyMapDataList[i]->m_nMoveState == 0){	// 表示しきっていない.
+							int v = m_vecEnemyMapDataList[i]->m_nMoveValue;
+							int h = m_pEnemies->m_vecEnemiesList[m_vecEnemyMapDataList[i]->m_nEnemyNo]->m_iHeight;
+							if (v > h+32){	// 高さ超えたら.(+32しないと変なブレがおきる.)
+								m_vecEnemyMapDataList[i]->m_nMoveState = 1;	// 1にする.
+							}
+							else{
+								m_vecEnemyMapDataList[i]->m_nMoveValue++;
+							}
+						}
+						else{
+							//m_vecEnemyMapDataList[i]->m_y++;	// 上へ移動.(下からの通算位置なので++で上がる.) <- これだと上に行ってしまう.
+							m_vecEnemyMapDataList[i]->m_y = iScreenUY;	// これだと画面内にとどまる.
+						}
+					}
+					else if (m_vecEnemyMapDataList[i]->m_nMoveType == 5){	// 移動タイプ5.
+						if (m_vecEnemyMapDataList[i]->m_nMoveValue >= 128){
+							if (m_vecEnemyMapDataList[i]->m_nMoveState == 0){
+								m_vecEnemyMapDataList[i]->m_nMoveState = 1;
+								m_vecEnemyMapDataList[i]->m_nMoveValue = 0;
+							}
+							else{
+								m_vecEnemyMapDataList[i]->m_nMoveState = 0;
+								m_vecEnemyMapDataList[i]->m_nMoveValue = 0;
+							}
+						}
+						else{
+							m_vecEnemyMapDataList[i]->m_nMoveValue++;
+							if (m_vecEnemyMapDataList[i]->m_nMoveState == 0){
+								m_vecEnemyMapDataList[i]->m_x++;
+							}
+							else{
+								m_vecEnemyMapDataList[i]->m_x--;
+							}
+						}
+					}
+				}
 				int iDrawPos = m_vecEnemyMapDataList[i]->m_y;	// 配置場所.
 				int nEnemyNo = m_vecEnemyMapDataList[i]->m_nEnemyNo;	// エネミー番号.
 				if (nEnemyNo < m_pEnemies->m_vecEnemiesList.size()){	// 番号がサイズ未満.

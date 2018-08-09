@@ -11,6 +11,9 @@ struct EnemyMapData{
 	int m_nState;	// 状態.
 	int m_nScore;	// 獲得スコア.
 	int m_nExplosionAnimation;	// 爆発アニメ.
+	int m_nMoveType;	// 動作タイプ.
+	int m_nMoveState;	// 動作状態.
+	int m_nMoveValue;	// 動作時の値.
 };
 
 #endif
