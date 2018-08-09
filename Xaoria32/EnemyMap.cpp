@@ -192,11 +192,16 @@ BOOL CEnemyMap::ImportResourceEnemies(int nID){
 	int n = *(int *)pBinaryResource->Get(sizeof(int));	// リソースからn取得.
 	for (int i = 0; i < n; i++){	// n繰り返す.
 		CEnemy *pEnemy = new CEnemy(m_pScene);	// pEnemyを生成.
-		pEnemy->CreateExplosion(0, 64, 64, 64, IDB_SHARED3);	// 本当は敵ごと爆発だが, ひとまずこれだけ.
 		pEnemy->m_x = *(int *)pBinaryResource->Get(sizeof(int));	// リソースからm_x取得.
 		pEnemy->m_y = *(int *)pBinaryResource->Get(sizeof(int));	// リソースからm_y取得.
 		pEnemy->m_iWidth = *(int *)pBinaryResource->Get(sizeof(int));	// m_iWidth.
 		pEnemy->m_iHeight = *(int *)pBinaryResource->Get(sizeof(int));	// m_iHeight.
+		if (pEnemy->m_iWidth == 32){	// 32
+			pEnemy->CreateExplosion(0, 64, 32, 32, IDB_SHARED2);	// 32用.
+		}
+		else if (pEnemy->m_iWidth == 64){	// 64
+			pEnemy->CreateExplosion(0, 64, 64, 64, IDB_SHARED3);	// 64用.
+		}
 		int iSize = 0;	// アニメーションリストサイズ.
 		iSize = *(int *)pBinaryResource->Get(sizeof(int));	// リソースからiSize取得.
 		for (int j = 0; j < iSize; j++){	// iSize分繰り返す.

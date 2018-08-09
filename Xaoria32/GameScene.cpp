@@ -138,12 +138,49 @@ int CGameScene::InitGameObjects(){
 #if 0
 	// エネミーズエクスポート.
 	// エネミー追加.
-	int iEnemyNo = m_pEnemyMap->AddEnemy(640 / 2 - 64 / 2, 0, 64, 64);	// エネミー追加.
+	//int iEnemyNo = m_pEnemyMap->AddEnemy(640 / 2 - 64 / 2, 0, 64, 64);	// エネミー追加.
 	// アニメーション追加.
-	RECT rcImg = {0, 0, 64, 64};	// 左上.
-	RECT rcMask = {320, 0, 320 + 64, 0 + 64};	// 真ん中から左上.
-	m_pEnemyMap->AddEnemyAnimation(iEnemyNo, &rcImg, IDB_SHARED3, &rcMask, IDB_SHARED3);
-	m_pEnemyMap->ExportFileEnemies(_T("testenemies1.bin"));	// "testenemies1.bin"としてエクスポート.
+	//RECT rcImg = {0, 0, 64, 64};	// 左上.
+	//RECT rcMask = {320, 0, 320 + 64, 0 + 64};	// 真ん中から左上.
+	//m_pEnemyMap->AddEnemyAnimation(iEnemyNo, &rcImg, IDB_SHARED3, &rcMask, IDB_SHARED3);
+	//m_pEnemyMap->ExportFileEnemies(_T("testenemies1.bin"));	// "testenemies1.bin"としてエクスポート.
+	
+	int e1 = m_pEnemyMap->AddEnemy(0,0,32,32);
+	RECT i1 = {0,96,0+32,96+32};
+	RECT m1 = {320+0,96,320+0+32,96+32};
+	m_pEnemyMap->AddEnemyAnimation(e1,&i1,IDB_SHARED2,&m1,IDB_SHARED2);
+	int e2 = m_pEnemyMap->AddEnemy(0,0,32,32);
+	RECT i2 = {0+32,96,0+32+32,96+32};
+	RECT m2 = {320+0+32,96,320+0+32+32,96+32};
+	m_pEnemyMap->AddEnemyAnimation(e2,&i2,IDB_SHARED2,&m2,IDB_SHARED2);
+	int e3 = m_pEnemyMap->AddEnemy(0,0,32,32);
+	RECT i3= {0+64,96,0+64+32,96+32};
+	RECT m3 = {320+0+64,96,320+0+64+32,96+32};
+	m_pEnemyMap->AddEnemyAnimation(e3,&i3,IDB_SHARED2,&m3,IDB_SHARED2);
+	int e4 = m_pEnemyMap->AddEnemy(0,0,32,32);
+	RECT i4= {0+96,96,0+96+32,96+32};
+	RECT m4 = {320+0+96,96,320+0+96+32,96+32};
+	m_pEnemyMap->AddEnemyAnimation(e4,&i4,IDB_SHARED2,&m4,IDB_SHARED2);
+	int e5 = m_pEnemyMap->AddEnemy(0,0,32,32);
+	RECT i5= {0+128,96,0+128+32,96+32};
+	RECT m5 = {320+0+128,96,320+0+128+32,96+32};
+	m_pEnemyMap->AddEnemyAnimation(e5,&i5,IDB_SHARED2,&m5,IDB_SHARED2);
+
+	int e6 = m_pEnemyMap->AddEnemy(0,0,64,64);
+	RECT i6 = {0,128,0+64,128+64};
+	RECT m6 = {320+0,128,320+0+64,128+64};
+	m_pEnemyMap->AddEnemyAnimation(e6,&i6,IDB_SHARED3,&m6,IDB_SHARED3);
+	int e7 = m_pEnemyMap->AddEnemy(0,0,64,64);
+	RECT i7 = {0+64,128,0+64+64,128+64};
+	RECT m7 = {320+0+64,128,320+0+64+64,128+64};
+	m_pEnemyMap->AddEnemyAnimation(e7,&i7,IDB_SHARED3,&m7,IDB_SHARED3);
+	int e8 = m_pEnemyMap->AddEnemy(0,0,64,64);
+	RECT i8 = {0+128,128,0+128+64,128+64};
+	RECT m8 = {320+0+128,128,320+0+128+64,128+64};
+	m_pEnemyMap->AddEnemyAnimation(e8,&i8,IDB_SHARED3,&m8,IDB_SHARED3);
+
+	m_pEnemyMap->ExportFileEnemies(_T("testenemies1.bin"));
+
 #else
 	// エネミーズインポート.
 	//m_pEnemyMap->ImportFileEnemies(_T("testenemies1.bin"));	// "testenemies1.bin"からインポート.
@@ -151,6 +188,7 @@ int CGameScene::InitGameObjects(){
 #endif
 	// エネミー配置.
 #if 0
+	/*
 	m_pEnemyMap->DeployEnemy(200, 600, 0, 1, 0, 1);	// (200, 600)にエネミー0をライフ1状態0スコア1で配置.
 	m_pEnemyMap->DeployEnemy(400, 1000, 0, 1, 0, 1);	// (400, 1000)にエネミー0をライフ1状態0スコア1で配置.
 	m_pEnemyMap->DeployEnemy(200, 1400, 0, 1, 0, 1);	// (200, 1400)にエネミー0をライフ1状態0スコア1で配置.
@@ -159,6 +197,42 @@ int CGameScene::InitGameObjects(){
 	m_pEnemyMap->DeployEnemy(400, 2600, 0, 1, 0, 1);	// (400, 2600)にエネミー0をライフ1状態0スコア1で配置.
 	m_pEnemyMap->DeployEnemy(200, 3000, 0, 1, 0, 1);	// (200, 3000)にエネミー0をライフ1状態0スコア1で配置.
 	m_pEnemyMap->DeployEnemy(400, 3400, 0, 1, 0, 1);	// (400, 3400)にエネミー0をライフ1状態0スコア1で配置.
+	*/
+	m_pEnemyMap->DeployEnemy(112+64, 720, 0, 1, 0, 100);
+	m_pEnemyMap->DeployEnemy(112+64*2, 720, 0, 1, 0, 100);
+	m_pEnemyMap->DeployEnemy(112+64*3, 720, 0, 1, 0, 100);
+	m_pEnemyMap->DeployEnemy(112+64*4, 720, 0, 1, 0, 100);
+	m_pEnemyMap->DeployEnemy(112+64*5, 720, 0, 1, 0, 100);
+	m_pEnemyMap->DeployEnemy(144+64, 720+160, 0, 1, 0, 100);
+	m_pEnemyMap->DeployEnemy(144+64*2, 720+160, 0, 1, 0, 100);
+	m_pEnemyMap->DeployEnemy(144+64*3, 720+160, 0, 1, 0, 100);
+	m_pEnemyMap->DeployEnemy(144+64*4, 720+160, 0, 1, 0, 100);
+	m_pEnemyMap->DeployEnemy(112+64, 720+320, 0, 1, 0, 100);
+	m_pEnemyMap->DeployEnemy(112+64*2, 720+320, 0, 1, 0, 100);
+	m_pEnemyMap->DeployEnemy(112+64*3, 720+320, 0, 1, 0, 100);
+	m_pEnemyMap->DeployEnemy(112+64*4, 720+320, 0, 1, 0, 100);
+	m_pEnemyMap->DeployEnemy(112+64*5, 720+320, 0, 1, 0, 100);
+	m_pEnemyMap->DeployEnemy(144+64, 720+480, 0, 1, 0, 100);
+	m_pEnemyMap->DeployEnemy(144+64*2, 720+480, 0, 1, 0, 100);
+	m_pEnemyMap->DeployEnemy(144+64*3, 720+480, 0, 1, 0, 100);
+	m_pEnemyMap->DeployEnemy(144+64*4, 720+480, 0, 1, 0, 100);
+	
+	m_pEnemyMap->DeployEnemy(128, 720+640, 1, 2, 0, 200);
+	m_pEnemyMap->DeployEnemy(640 - 160, 720+800, 1, 2, 0, 200);
+	m_pEnemyMap->DeployEnemy(128, 720+960, 1, 2, 0, 200);
+	m_pEnemyMap->DeployEnemy(640 - 160, 720+1120, 1, 2, 0, 200);
+
+	m_pEnemyMap->DeployEnemy(208-64, 720+1280, 2, 3, 0, 300);
+	m_pEnemyMap->DeployEnemy(208-64+64, 720+1280, 2, 3, 0, 300);
+	m_pEnemyMap->DeployEnemy(208-64+64*2, 720+1280, 2, 3, 0, 300);
+	m_pEnemyMap->DeployEnemy(208-64+64*3, 720+1280, 2, 3, 0, 300);
+	
+	m_pEnemyMap->DeployEnemy(208+64, 720+1600, 2, 3, 0, 300);
+	m_pEnemyMap->DeployEnemy(208+64+64, 720+1600, 2, 3, 0, 300);
+	m_pEnemyMap->DeployEnemy(208+64+64*2, 720+1600, 2, 3, 0, 300);
+	m_pEnemyMap->DeployEnemy(208+64+64*3, 720+1600, 2, 3, 0, 300);
+	m_pEnemyMap->DeployEnemy(320-32, 720+2240, 5, 10, 0, 1000);
+
 #endif
 #endif
 	//m_pEnemyMap->ExportFileEnemyMapData(_T("testenemymapdata1.bin"));	// エネミーマップデータをファイルにエクスポート.
