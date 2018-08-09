@@ -188,7 +188,7 @@ int CPlayer::Proc(){
 			}
 		}
 		else if (iState == 1){
-			((CShot *)m_vecpShotList[m])->m_y--;	// yÀ•W‚ğ1Œ¸‚ç‚·.
+			((CShot *)m_vecpShotList[m])->m_y -= 8;	// yÀ•W‚ğ8Œ¸‚ç‚·.
 			if (((CShot *)m_vecpShotList[m])->m_y <= -32){	// -32ˆÈ‰º.
 				((CShot *)m_vecpShotList[m])->Set(2);
 			}

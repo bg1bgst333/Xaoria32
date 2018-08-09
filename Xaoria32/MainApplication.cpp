@@ -138,6 +138,7 @@ int CMainApplication::Main(){
 			m_pScene->ExitScene();	// 終了処理.
 			delete m_pScene;	// m_pSceneを削除.
 			m_pScene = NULL;	// NULLをセット.
+			m_pGameSystem->AppendScore(m_pMainWnd->m_hWnd);	// スコアを出力.
 			m_iNo = -1;	// m_iNoを-1にすることで終了したこと(もうシーン切り替えしないこと)を示す.
 			m_pMainWnd->Destroy();	// m_pMainWnd->Destroyでウィンドウを閉じる.
 		}
