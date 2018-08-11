@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual Studio 2005
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Xaoria32", "Xaoria32\Xaoria32.vcproj", "{6CF5B0DB-1C6C-48EE-8548-8D879F578320}"
 EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Xaoria32Setup", "Xaoria32Setup\Xaoria32Setup.vdproj", "{2772A507-E84A-4397-85EE-26AB14A5509E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -13,6 +15,10 @@ Global
 		{6CF5B0DB-1C6C-48EE-8548-8D879F578320}.Debug|Win32.Build.0 = Debug|Win32
 		{6CF5B0DB-1C6C-48EE-8548-8D879F578320}.Release|Win32.ActiveCfg = Release|Win32
 		{6CF5B0DB-1C6C-48EE-8548-8D879F578320}.Release|Win32.Build.0 = Release|Win32
+		{2772A507-E84A-4397-85EE-26AB14A5509E}.Debug|Win32.ActiveCfg = Debug
+		{2772A507-E84A-4397-85EE-26AB14A5509E}.Debug|Win32.Build.0 = Debug
+		{2772A507-E84A-4397-85EE-26AB14A5509E}.Release|Win32.ActiveCfg = Release
+		{2772A507-E84A-4397-85EE-26AB14A5509E}.Release|Win32.Build.0 = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
