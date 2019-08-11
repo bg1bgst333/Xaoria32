@@ -325,8 +325,42 @@ void CEnemyMap::DeployEnemy(int x, int y, int iEnemyNo, int iLife, int iState, i
 	pEMD->m_nMoveType = iMoveType;	// 動作タイプ.
 	pEMD->m_nMoveState = 0;	// 0.
 	pEMD->m_nMoveValue = 0;	// 0.
+	if (pEMD->m_nEnemyNo == 0 || pEMD->m_nEnemyNo == 2 || pEMD->m_nEnemyNo == 4){
+		// ショットの作成.
+		pEMD->m_nShotIdx = 0;
+		for (int i = 0; i < 3; i++){	// 3個繰り返す.
+			CShot *pShot = new CShot(m_pScene);	// CShotオブジェクトの作成.
+			pShot->Add(0, 32, 4, 32, IDB_SHARED2);	// イメージ追加.
+			pShot->AddMask(320 + 0, 32, 4, 32, IDB_SHARED2);	// マスク.追加.
+			pShot->Set(pEMD->m_x + 32 / 2 - 4 / 2, pEMD->m_y);	// pShot->Setで座標をセット.
+			pShot->Set(0);	// 状態0をセット.
+			pEMD->m_vecpShotList.push_back(pShot);	// m_vecpShotList.push_backで追加.
+		}
+	}
 	// 追加.
 	m_vecEnemyMapDataList.push_back(pEMD);	// 追加.
+
+}
+
+// ショットを描画するDrawShot.
+void CEnemyMap::DrawShot(){
+
+	CGameScene *pGameScene = (CGameScene *)m_pScene;	// pGameSceneにキャスト.
+	CMap *pMap = pGameScene->m_pMap;	// pMapに保持.
+	int iScreenUY = pMap->m_iScreenUY;	// スクリーン座標y.
+
+	int n = m_vecEnemyMapDataList.size();
+	for (int j = 0; j < n; j++){
+		// ショットの描画.
+		for (int i = 0; i <  m_vecEnemyMapDataList[j]->m_vecpShotList.size(); i++){
+			int iState = ((CShot *)m_vecEnemyMapDataList[j]->m_vecpShotList[i])->Get();	// iState取得.
+			int x = m_vecEnemyMapDataList[j]->m_vecpShotList[i]->m_x + 32 / 2 - 4 / 2;
+			int y = iScreenUY - m_vecEnemyMapDataList[j]->m_vecpShotList[i]->m_y;
+			if (iState == 1){	// 状態が1なら描画.
+				((CShot *)m_vecEnemyMapDataList[j]->m_vecpShotList[i])->DrawSprite(x, y, 0);	// 描画.
+			}
+		}
+	}
 
 }
 
@@ -399,10 +433,34 @@ int CEnemyMap::Proc(){
 					int iDrawPosEnd = iDrawPosStart + iHeight + 480;	// 描画開始にエネミー高さとスクリーン高さを足す.
 					if (m_vecEnemyMapDataList[i]->m_nLife <= 0){	// ライフが0以下.
 						m_vecEnemyMapDataList[i]->m_nState = 3;	// 表示状態3.
+						EnemyMapData *pEMD = m_vecEnemyMapDataList[i];
+						if (m_vecEnemyMapDataList[i]->m_nEnemyNo == 0 || m_vecEnemyMapDataList[i]->m_nEnemyNo == 2 || m_vecEnemyMapDataList[i]->m_nEnemyNo == 4){
+							if (((CShot *)pEMD->m_vecpShotList[pEMD->m_nShotIdx])->Get() == 1){
+								//((CShot *)pEMD->m_vecpShotList[pEMD->m_nShotIdx])->Set(pEMD->m_x, pEMD->m_y);	// pShot->Setで座標をセット.
+								int x = ((CShot *)(pEMD->m_vecpShotList[pEMD->m_nShotIdx]))->m_x;
+								int y = ((CShot *)(pEMD->m_vecpShotList[pEMD->m_nShotIdx]))->m_y;
+								y = y - 4;
+								((CShot *)(pEMD->m_vecpShotList[pEMD->m_nShotIdx]))->Set(x, y);
+							}
+						}
 					}
 					else{
 						if (iDrawPosStart <= iScreenUY && iDrawPosEnd > iScreenUY){	// 描画位置.
 							m_vecEnemyMapDataList[i]->m_nState = 1;	// 表示状態.
+							if (m_vecEnemyMapDataList[i]->m_nEnemyNo == 0 || m_vecEnemyMapDataList[i]->m_nEnemyNo == 2 || m_vecEnemyMapDataList[i]->m_nEnemyNo == 4){
+								EnemyMapData *pEMD = m_vecEnemyMapDataList[i];
+								if (((CShot *)pEMD->m_vecpShotList[pEMD->m_nShotIdx])->Get() == 0){
+									((CShot *)pEMD->m_vecpShotList[pEMD->m_nShotIdx])->Set(1);	// 敵ショットを表示状態にする.
+									((CShot *)pEMD->m_vecpShotList[pEMD->m_nShotIdx])->Set(pEMD->m_x, pEMD->m_y);	// pShot->Setで座標をセット.
+								}
+								else if (((CShot *)pEMD->m_vecpShotList[pEMD->m_nShotIdx])->Get() == 1 || ((CShot *)pEMD->m_vecpShotList[pEMD->m_nShotIdx])->Get() == 3){
+									//((CShot *)pEMD->m_vecpShotList[pEMD->m_nShotIdx])->Set(pEMD->m_x, pEMD->m_y);	// pShot->Setで座標をセット.
+									int x = ((CShot *)(pEMD->m_vecpShotList[pEMD->m_nShotIdx]))->m_x;
+									int y = ((CShot *)(pEMD->m_vecpShotList[pEMD->m_nShotIdx]))->m_y;
+									y = y - 4;
+									((CShot *)(pEMD->m_vecpShotList[pEMD->m_nShotIdx]))->Set(x, y);
+								}
+							}
 						}
 						else if (iDrawPosEnd <= iScreenUY){	// 超えたら.
 							m_vecEnemyMapDataList[i]->m_nState = 2;	// 通過非表示状態.
@@ -466,6 +524,13 @@ void CEnemyMap::RemoveAll(){
 	// すべてのオブジェクトを破棄.
 	for (int i = 0; i < m_vecEnemyMapDataList.size(); i++){
 		if (m_vecEnemyMapDataList[i] != NULL){	// NULLでなければ.
+			if (m_vecEnemyMapDataList[i]->m_vecpShotList.size() > 0){
+				for (int j = 0; j < m_vecEnemyMapDataList[i]->m_vecpShotList.size(); j++){
+					m_vecEnemyMapDataList[i]->m_vecpShotList[j]->Destroy();
+					delete m_vecEnemyMapDataList[i]->m_vecpShotList[j];
+				}
+				m_vecEnemyMapDataList[i]->m_vecpShotList.clear();
+			}
 			delete m_vecEnemyMapDataList[i];	// deleteでm_vecEnemyMapDataList[i]を破棄.
 			m_vecEnemyMapDataList[i] = NULL;	// NULLをセット.
 		}

@@ -414,6 +414,7 @@ int CGameScene::DrawGameObjects(){
 	// エネミーマップ描画.
 	if (m_pEnemyMap != NULL){
 		m_pEnemyMap->Draw();
+		m_pEnemyMap->DrawShot();
 	}
 
 	// キャラの描画.

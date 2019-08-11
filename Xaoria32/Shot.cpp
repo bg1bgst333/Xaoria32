@@ -81,15 +81,15 @@ void CShot::DrawSprite(int x, int y, int iNo){
 	m_vecpSharedObjectList[iNo]->m_x = x;	// m_vecpSharedObjectList[iNo]->m_xにxをセット.
 	m_vecpSharedObjectList[iNo]->m_y = y;	// m_vecpSharedObjectList[iNo]->m_yにyをセット.
 	HDC hMemDC = m_vecpSharedObjectList[iNo]->m_pScene->m_pSharedImageBuffer->Get(m_vecpSharedObjectList[iNo]->m_nID);	// hMemDCを取得.
-	m_x = x;	// m_xにxをセット.
-	m_y = y;	// m_yにyをセット.
+	//m_x = x;	// m_xにxをセット.
+	//m_y = y;	// m_yにyをセット.
 	m_iWidth = m_vecpSharedObjectList[iNo]->m_iWidth;	// m_iWidthのセット.
 	m_iHeight = m_vecpSharedObjectList[iNo]->m_iHeight;	// m_iHeightのセット.
 	m_sx = m_vecpSharedObjectList[iNo]->m_sx;	// m_sxのセット.
 	m_sy = m_vecpSharedObjectList[iNo]->m_sy;	// m_syのセット.
 	HDC hMaskMemDC = m_vecpMaskList[iNo]->m_pScene->m_pSharedImageBuffer->Get(m_vecpMaskList[iNo]->m_nID);	// hMasMemDCを取得.
-	BitBlt(m_pScene->m_hMemDC, m_x, m_y, m_iWidth, m_iHeight, hMaskMemDC, m_vecpMaskList[iNo]->m_sx, m_vecpMaskList[iNo]->m_sy, SRCPAINT);	// マスクをSRCPAINT.
-	BitBlt(m_pScene->m_hMemDC, m_x, m_y, m_iWidth, m_iHeight, hMemDC, m_sx, m_sy, SRCAND);	// SRCANDでメインイメージを描画.
+	BitBlt(m_pScene->m_hMemDC, x, y, m_iWidth, m_iHeight, hMaskMemDC, m_vecpMaskList[iNo]->m_sx, m_vecpMaskList[iNo]->m_sy, SRCPAINT);	// マスクをSRCPAINT.
+	BitBlt(m_pScene->m_hMemDC, x, y, m_iWidth, m_iHeight, hMemDC, m_sx, m_sy, SRCAND);	// SRCANDでメインイメージを描画.
 
 }
 

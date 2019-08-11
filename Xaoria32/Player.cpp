@@ -240,6 +240,41 @@ int CPlayer::Proc(){
 				((CShot *)m_vecpShotList[j])->Set(0);	// 0にリセット.
 			}
 		}
+		// 敵ショットと自機の当たり判定.
+		int nn = pEnemyMap->m_vecEnemyMapDataList[i]->m_vecpShotList.size();
+		for (int iii = 0; iii < nn; iii++){
+			int esx = pEnemyMap->m_vecEnemyMapDataList[i]->m_vecpShotList[iii]->m_x - pMap->m_iScreenRX;	// 敵の画面座標ex.(こちらは右が正, なので正.)
+			int esy = pMap->m_iScreenUY - pEnemyMap->m_vecEnemyMapDataList[i]->m_vecpShotList[iii]->m_y;	// 敵の画面座標ey.(こちらは上が正, なので逆.)
+			int esw = pEnemyMap->m_vecEnemyMapDataList[i]->m_vecpShotList[iii]->m_iWidth;
+			int esh = pEnemyMap->m_vecEnemyMapDataList[i]->m_vecpShotList[iii]->m_iHeight;
+			int px = m_x;	// m_x.
+			int py = m_y;	// m_y.
+			int pw = m_iWidth;	// m_iWidth.
+			int ph = m_iHeight;	// m_iHeight.
+			if ((esx <= px && px <= esx + esw && esy <= py && py <= esy + esh)		// プレイヤーの左上.
+				|| (px <= esx && esx <= px + pw && esy <= py && py <= esy + esh)		// プレイヤーの右上.
+				|| (esx <= px && px <= esx + esw && py <= esy && esy <= py + ph)		// プレイヤーの左下.
+				|| (px <= esx && esx <= px + pw && py <= esy && esy <= py + ph))	// プレイヤーの右下.
+			{
+				SetState(1);	// 1にする.
+				// ゲームオーバー.
+				//if (((CGameScene *)m_pScene)->m_pMessageArea->m_dwVisibleInterval == 0){	// まだセットされてないなら.
+				//	if (m_pScene->m_pGameSystem->m_nRest == 0){	// 残機なし.
+				//		((CGameScene *)m_pScene)->m_pMessageArea->SetVisibleTimer(5000);	// 5秒.
+				//	}
+				//}
+				// リスタート.
+				if (m_dwRestartInterval == 0){	// まだセットされていないなら.
+					if (m_pScene->m_pGameSystem->m_nRest == 0){	// 残機なし.
+						((CGameScene *)m_pScene)->m_pMessageArea->SetVisibleTimer(5000);	// 5秒.
+						SetRestartTimer(10000);	// 10秒.
+					}
+					else{
+						SetRestartTimer(5000);	// 5秒.
+					}
+				}
+			}
+		}
 		// 敵と自機の当たり判定.
 		if (pEnemyMap->m_vecEnemyMapDataList[i]->m_nState == 1){	// 表示.
 			int ex = pEnemyMap->m_vecEnemyMapDataList[i]->m_x - pMap->m_iScreenRX;	// 敵の画面座標ex.(こちらは右が正, なので正.)

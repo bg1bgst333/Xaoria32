@@ -36,6 +36,7 @@ class CEnemyMap : public CSharedObject{
 		BOOL ImportFileEnemyMapData(LPCTSTR lpctszFileName);	// エネミーマップデータをファイルからインポートImportFileEnemyMapData.
 		BOOL ImportResourceEnemyMapData(int nID);	// エネミーマップデータをリソースからインポートImportResourceEnemyMapData.
 		void DeployEnemy(int x, int y, int iEnemyNo, int iLife, int iState, int iScore, int iMoveType);	// エネミー配置.
+		void DrawShot();	// ショットを描画するDrawShot.
 		virtual int Proc();	// 処理をするProc.
 		virtual void Draw();	// 描画をするDraw.
 		void RemoveAll();	// 全て削除.
